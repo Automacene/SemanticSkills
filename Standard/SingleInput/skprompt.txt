@@ -19,7 +19,8 @@ step 3: Add a clever twist or punch line to the joke.
 - example: Though flying he'll never be able to do!
 step 4: Detect the users style.
 - example: Yoda's seemingly nonsense but wise backwards talk.
-joke: Never too late to learn, even the chicken knows, though flying he'll never be able to do!
+[joke]
+Never too late to learn, even the chicken knows, though flying he'll never be able to do!
 
 prompt: Make a joke in the style of George Carlin about politicians.
 steps: Let's identify step by step what we need to do. 
@@ -31,7 +32,8 @@ step 3: Add a clever twist or punch line to the joke.
 - example: Just sounds like they're rambling until they get to those poll numbers!
 step 4: Detect the user's style.
 - example: George Carlin's no-nonsense and witty style.
-joke: Have you ever noticed how politicians always talk without actually listenin'? Just sounds like they're rambling until they get to those poll numbers!
+[joke]
+Have you ever noticed how politicians always talk without actually listenin'? Just sounds like they're rambling until they get to those poll numbers!
 
 [scenario]
 prompt:{{$input}}
