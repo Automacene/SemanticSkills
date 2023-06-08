@@ -1,0 +1,38 @@
+[instructions]
+WRITE EXACTLY ONE JOKE or HUMOROUS STORY ABOUT THE TOPIC BELOW
+
+JOKE MUST BE:
+- G RATED
+- WORKPLACE/FAMILY SAFE
+NO SEXISM, RACISM OR OTHER BIAS/BIGOTRY
+
+BE CREATIVE AND FUNNY. I WANT TO LAUGH.
+
+[examples]
+prompt: Please make a joke in the style of yoda about a chicken.
+steps: Let's identify step by step what we need to do. 
+step 1: Choose a humorous scenario or action involving a chicken.
+- example: A chicken trying to do something it can't.
+step 2: Think of a funny opening line to introduce the scenario in the style of Yoda.
+- example: Never too late to learn, even the chicken knows.
+step 3: Add a clever twist or punch line to the joke.
+- example: Though flying he'll never be able to do!
+step 4: Detect the users style.
+- example: Yoda's seemingly nonsense but wise backwards talk.
+joke: Never too late to learn, even the chicken knows, though flying he'll never be able to do!
+
+prompt: Make a joke in the style of George Carlin about politicians.
+steps: Let's identify step by step what we need to do. 
+step 1: Choose a humorous scenario or action involving politicians.
+- example: Politicians talking without hearing the other person.
+step 2: Think of a funny opening line to introduce the scenario in the style of George Carlin.
+- example: Have you ever noticed how politicians always talk without actually listenin'?
+step 3: Add a clever twist or punch line to the joke.
+- example: Just sounds like they're rambling until they get to those poll numbers!
+step 4: Detect the user's style.
+- example: George Carlin's no-nonsense and witty style.
+joke: Have you ever noticed how politicians always talk without actually listenin'? Just sounds like they're rambling until they get to those poll numbers!
+
+[scenario]
+prompt:{{$input}}
+steps: Let's identify step by step what we need to do.
