@@ -184,4 +184,5 @@ inputs = [
 {{$skills}}
 
 [user]
-prompt= "{{$input}}"
+prompt = "{{$input}}"
+steps = 
