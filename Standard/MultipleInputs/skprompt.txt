@@ -14,14 +14,14 @@ name: Codie Petersen
 
 prompt: Please make an email for Jeffery about his appointment with Doctor Henry at 3pm tomorrow.
 steps: Let's identify step by step what we need to do. 
-step 1: Address the recipient "Jeffery"
+1. Address the recipient "Jeffery"
 - example: Hello Jeffery, 
 Today is 6-7-23.
-step 2: Identify the purpose of your email
+2. Identify the purpose of your email
 - example: I am writing to remind you that you have an appointment with Doctor Henry at 3pm tomorrow.
-step 3: Check if the sender has specified relevant information about the appointment.
+3. Check if the sender has specified relevant information about the appointment.
 - example: They have not.
-Step 4: Closing line
+4. Closing line
 Let me know if you need any further assistance.
 Best wishes, Codie Petersen
 [email]
@@ -31,14 +31,14 @@ Best wishes, Codie Petersen
 
 prompt: Please make an email to my wife about the groceries she needs to pick up. She can use the red car. The keys are in the pantry.
 steps: Let's identify step by step what we need to do. 
-step 1: Address the recipient "wife"
+1. Address the recipient "wife"
 - example: Hello Wife, 
 Today is 6-7-23.
-step 2: Identify the purpose of your email
+2. Identify the purpose of your email
 - example: I am writing to remind you to pick up the groceries you need. You can use the red car, the keys are in the pantry. We need milk.
-step 3: Check if the sender has specified relevant information about the groceries.
+3. Check if the sender has specified relevant information about the groceries.
 - example: The sender needs milk.
-Step 4: Closing line
+4. Closing line
 I hope this is helpful.
 Best wishes, 
 Babe
