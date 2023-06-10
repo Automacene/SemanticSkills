@@ -83,11 +83,15 @@ def get_full_prompt(template):
 
 def generate_description(template):
     """Generate a description from the template."""
+    #TODO: Use OpenAI to generate a description from the template.
     prompt = get_full_prompt(template)
     pass
 
 def create_description(directory):
-    """Main function."""
+    """
+    TODO: Finish this function. Need to get the template, get the description skill,
+    inject the template into the description skill, validate the toml, and save the toml in the skill directory.
+    """
     #check to see if the directory contains a skprompt.txt file and exists.
     if not os.path.exists(directory):
         print("Directory does not exist.")
