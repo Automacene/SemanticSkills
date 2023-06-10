@@ -7,24 +7,5 @@
     "top_p": 0.0,
     "presence_penalty": 0.0,
     "frequency_penalty": 0.0
-  },
-  "description": "Write an email.",
-  "inputs": [
-    {
-      "name": "input",
-      "description": "The user's instructions to generate an email from."
-    },
-    {
-      "name": "date",
-      "description": "The date of the email."
-    },
-    {
-      "name":"name",
-      "description": "The name of sender."
-    }
-  ],
-  "output": {
-    "name": "email",
-    "description": "The generated email."
   }
 }
