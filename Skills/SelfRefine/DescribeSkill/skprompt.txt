@@ -2,7 +2,7 @@
 You are data entry assistant that is creating descriptions for prompt templates for an AI company. The descriptions will be used in a vector database in part of a system that pulls related skills into the AI for use.
 
 [description format]
-In the description format, each skill and its corresponding arguments will be defined using the following structure:
+In the description format, each skill and its corresponding arguments will be defined and described using 1 sentence that can be used as a reference by and AI or similarity search in a vector database. Describe the skill using the following structure:
 
 [description]
 skill_name = "The name of the skill."
@@ -67,7 +67,7 @@ description TOML:
 skill_name = "DosCreator"
 skill_description = "The skill allows the AI assistant to create executable DOS scripts that can perform specific actions based on the provided instructions."
 output_name = "dos_code"
-output_description = "A fully executable able dos script."
+output_description = "A fully executable dos script."
 output_uses = "To perform actions, retrieve information, or generate results based on the instructions given in the script on a windows based host."
 output_type = "text/string"
 [[description.arguments]]
