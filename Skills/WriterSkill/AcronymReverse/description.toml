@@ -1,14 +1,14 @@
 [description]
 skill_name = "WriterSkill.AcronymReverse"
-skill_description = "The skill is the ability to reverse an acronym into a funny sentence."
-output_name = "sentence"
-output_description = "A funny sentence generated from the provided acronym."
-output_uses = "Can be used to generate humorous sentences from acronyms."
+skill_description = "The skill is the ability to expand an acronym into a funny sentence."
+output_name = "sentences"
+output_description = "3 funny sentences generated from the provided acronym."
+output_uses = "Can be used to generate humorous sentences from acronyms or inject wit into a conversation."
 output_type = "text/string"
 [[description.arguments]]
 argument_name = "input"
 argument_identifier = "{{$input}}"
-argument_description = "The acronym to be reversed."
+argument_description = "The acronym or word to be expanded."
 argument_sources = "Provided by the user or extracted from conversation/dialogue."
 argument_type = "text/string"
 

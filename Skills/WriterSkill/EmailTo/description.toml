@@ -9,20 +9,20 @@ output_type = "text/string"
 argument_name = "to"
 argument_identifier = "{{$to}}"
 argument_description = "The recipient of the email."
-argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_sources = "Provided by the user, another skill, any source of highlevel concepts, topics and subjects, or extracted from conversation/dialogue."
 argument_type = "text/string"
 
 [[description.arguments]]
 argument_name = "input"
 argument_identifier = "{{$input}}"
 argument_description = "The bullet points to be rewritten into an email."
-argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_sources = "Provided by the user, another skill, any source of highlevel concepts, topics and subjects, or extracted from conversation/dialogue."
 argument_type = "text/string"
 
 [[description.arguments]]
 argument_name = "sender"
 argument_identifier = "{{$sender}}"
 argument_description = "The sender of the email."
-argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_sources = "Provided by the user, another skill, any source of highlevel concepts, topics and subjects, or extracted from conversation/dialogue."
 argument_type = "text/string"
 
