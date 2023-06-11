@@ -1,0 +1,14 @@
+[description]
+skill_name = "QASkill.GitHubMemoryQuery"
+skill_description = "The skill is the ability to recall information from a GitHub repository."
+output_name = "recall"
+output_description = "The recalled information from the GitHub repository."
+output_uses = "Can be used to answer questions or provide information from the repository."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The question or information to be recalled from the repository."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+

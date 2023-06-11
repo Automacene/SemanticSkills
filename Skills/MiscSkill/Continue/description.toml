@@ -1,0 +1,14 @@
+[description]
+skill_name = "MiscSkill.Continue"
+skill_description = "The skill is the ability to parse user input and extract relevant information."
+output_name = "parsed_input"
+output_description = "The extracted information from the user input."
+output_uses = "Can be used to extract information from user input for further processing."
+output_type = "application/json"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The user input to be parsed."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+

@@ -1,0 +1,77 @@
+[description]
+skill_name = "ChatSkill.ChatGPT"
+skill_description = "The skill is the ability to simulate a conversation with a user, using the provided context to learn about the user and the conversation history to recall previous interactions."
+output_name = "conversation"
+output_description = "A conversation between the AI assistant and the user, using the provided context to learn about the user and the conversation history to recall previous interactions."
+output_uses = "Can be used to simulate a conversation with a user, providing a more natural and personalized experience."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "firstName"
+argument_identifier = "{{$firstName}}"
+argument_description = "The first name or identifier of the user interacting with the AI assistant."
+argument_sources = "The user's first name can be directly provided, inferred from previous interactions, or obtained from a user profile."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "botName"
+argument_identifier = "{{$botName}}"
+argument_description = "The name of the AI assistant."
+argument_sources = "The name of the AI assistant can be provided by the user or set by the system."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "attitude"
+argument_identifier = "{{$attitude}}"
+argument_description = "The attitude or persona the AI assistant should take on during the conversation."
+argument_sources = "The attitude can be provided by the user or set by the system."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "date"
+argument_identifier = "{{date}}"
+argument_description = "The current date."
+argument_sources = "The date can be obtained from the system."
+argument_type = "text/date"
+
+[[description.arguments]]
+argument_name = "lastName"
+argument_identifier = "{{$lastName}}"
+argument_description = "The last name of the user interacting with the AI assistant."
+argument_sources = "The user's last name can be directly provided, inferred from previous interactions, or obtained from a user profile."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "city"
+argument_identifier = "{{$city}}"
+argument_description = "The city of the user interacting with the AI assistant."
+argument_sources = "The user's city can be directly provided, inferred from previous interactions, or obtained from a user profile."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "state"
+argument_identifier = "{{$state}}"
+argument_description = "The state of the user interacting with the AI assistant."
+argument_sources = "The user's state can be directly provided, inferred from previous interactions, or obtained from a user profile."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "country"
+argument_identifier = "{{$country}}"
+argument_description = "The country of the user interacting with the AI assistant."
+argument_sources = "The user's country can be directly provided, inferred from previous interactions, or obtained from a user profile."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The user's input to the conversation."
+argument_sources = "The user's input can be directly provided or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "history"
+argument_identifier = "{{$history}}"
+argument_description = "The conversation history between the AI assistant and the user."
+argument_sources = "The conversation history can be obtained from previous interactions."
+argument_type = "text/string"
+

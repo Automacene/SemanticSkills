@@ -1,0 +1,14 @@
+[description]
+skill_name = "CodingSkill.CodePython"
+skill_description = "The skill is the ability to generate Python code based on a given problem and instructions."
+output_name = "python_code"
+output_description = "Generated Python code based on the user's instructions."
+output_uses = "Can be used by developers to quickly convert instructions into code."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The instructions for the Python code to generate."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+

@@ -1,0 +1,28 @@
+[description]
+skill_name = "ClassificationSkill.Importance"
+skill_description = "The skill is the ability to determine the importance level of a message based on its tone, context, content, and time sensitivity."
+output_name = "importance_level"
+output_description = "The importance level of the message, such as urgent, high, medium, or low."
+output_uses = "Can be used to prioritize messages and tasks for the AI assistant."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "highTopics"
+argument_identifier = "{{$highTopics}}"
+argument_description = "A list of topics that are considered high importance."
+argument_sources = "Can be provided by the user or inferred from the context."
+argument_type = "list/string"
+
+[[description.arguments]]
+argument_name = "lowTopics"
+argument_identifier = "{{$lowTopics}}"
+argument_description = "A list of topics that are considered low importance."
+argument_sources = "Can be provided by the user or inferred from the context."
+argument_type = "list/string"
+
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The message to be evaluated for importance."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+

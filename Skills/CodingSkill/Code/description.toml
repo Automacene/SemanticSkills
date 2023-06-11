@@ -1,0 +1,21 @@
+[description]
+skill_name = "CodingSkill.Code"
+skill_description = "The skill is the ability to generate code based on a natural language description of desired functionality, helping the user by providing the corresponding code."
+output_name = "code"
+output_description = "Generated code based on the user's natural language description."
+output_uses = "Can be used by developers to quickly convert natural language requirements into code."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The natural language description of the desired functionality."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "programming_language"
+argument_identifier = "{{$programming_language}}"
+argument_description = "The programming language in which the code should be generated."
+argument_sources = "Specified by the user or inferred from the context."
+argument_type = "text/string"
+

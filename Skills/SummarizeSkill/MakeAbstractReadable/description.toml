@@ -1,0 +1,14 @@
+[description]
+skill_name = "SummarizeSkill.MakeAbstractReadable"
+skill_description = "The skill is the ability to read user input and store it for further processing."
+output_name = "input"
+output_description = "The user input stored as a string."
+output_uses = "Can be used to store user input for further processing."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The user input to be stored."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+

@@ -178,6 +178,33 @@ def main(directory, describe_template):
         print("Description generation failed validation.", validation_results[1])
         sys.exit(1)
 
+def deep_search(directory, describe_template_location):
+    """Automatically search for skills in the repo and describe them."""
+    directory = os.path.normpath(directory)
+    for root, dirs, files in os.walk(directory):
+        for dir in dirs:
+            child_path = os.path.join(root, dir)
+            
+            #Check if the directory has a description.toml file.
+            if os.path.isfile(os.path.join(child_path, "description.toml")):
+                skill_name = get_skill_name_from_directory(child_path)
+                print(f"Skipping {skill_name} because it already has a description file.")
+                continue
+
+            #Check if the directory has a skprompt.txt file.
+            if not os.path.isfile(os.path.join(child_path, "skprompt.txt")):
+                skill_name = get_skill_name_from_directory(child_path)
+                print(f"Directory {skill_name} is possibly a parent directory. Searching for children.")
+                deep_search(child_path, describe_template_location)
+                print(f"Done searching {skill_name} for skills to describe.")
+                continue
+            try:
+                print("Describing", child_path)
+                main(child_path, describe_template_location)
+            except Exception as e:
+                skill_name = get_skill_name_from_directory(child_path)
+                print(f"Failed to describe {skill_name}.", e, "\nContinuing.......")
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a description file for skills in the repo.')
     parser.add_argument('skill_template_location', type=str, help='The directory where the skill that needs describing is stored.')
@@ -216,14 +243,6 @@ if __name__ == '__main__':
         else:
             print("One or more required parameters are missing in the TOML string.", results[1])
     elif auto_search:
-        directory = os.path.normpath(directory)
-        for root, dirs, files in os.walk(directory):
-            for dir in dirs:
-                child_path = os.path.join(root, dir)
-                try:
-                    main(child_path, describe_template_location)
-                except Exception as e:
-                    skill_name = get_skill_name_from_directory(child_path)
-                    print(f"Failed to describe {skill_name}.", e, "\nContinuing.......")
+        deep_search(directory, describe_template_location)
     else:
         main(directory, describe_template_location)

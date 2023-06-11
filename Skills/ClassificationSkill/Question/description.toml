@@ -1,0 +1,14 @@
+[description]
+skill_name = "ClassificationSkill.Question"
+skill_description = "The skill is the ability to identify the type of a sentence based on its structure and content."
+output_name = "sentence_type"
+output_description = "The type of sentence, either question or statement."
+output_uses = "Can be used to identify the type of sentence in a conversation or text."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The sentence to be identified."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+

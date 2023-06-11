@@ -1,0 +1,35 @@
+[description]
+skill_name = "CodingSkill.EmailSearch"
+skill_description = "The skill is the ability to search emails using Microsoft Graph and KQL property restrictions."
+output_name = "emails"
+output_description = "A list of emails that match the query criteria."
+output_uses = "Can be used to quickly search emails for specific information."
+output_type = "application/json"
+[[description.arguments]]
+argument_name = "year"
+argument_identifier = "{{year}}"
+argument_description = "The year of the current date."
+argument_sources = "The current year can be obtained from the system's date and time."
+argument_type = "number/integer"
+
+[[description.arguments]]
+argument_name = "month"
+argument_identifier = "{{month}}"
+argument_description = "The month of the current date."
+argument_sources = "The current month can be obtained from the system's date and time."
+argument_type = "number/integer"
+
+[[description.arguments]]
+argument_name = "day"
+argument_identifier = "{{day}}"
+argument_description = "The day of the current date."
+argument_sources = "The current day can be obtained from the system's date and time."
+argument_type = "number/integer"
+
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The query criteria for the email search."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
