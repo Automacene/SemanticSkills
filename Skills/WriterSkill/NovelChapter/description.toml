@@ -1,0 +1,35 @@
+[description]
+skill_name = "WriterSkill.NovelChapter"
+skill_description = "The skill is the ability to write a chapter of a story based on a given theme and previous chapter."
+output_name = "chapter"
+output_description = "A chapter of a story written based on the given theme and previous chapter."
+output_uses = "Can be used to generate stories for entertainment or educational purposes."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "theme"
+argument_identifier = "{{$theme}}"
+argument_description = "The theme of the story."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "previousChapter"
+argument_identifier = "{{$previousChapter}}"
+argument_description = "The previous chapter of the story."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The synopsis of the chapter to be written."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "chapterIndex"
+argument_identifier = "{{$chapterIndex}}"
+argument_description = "The index of the chapter to be written."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "number/integer"
+

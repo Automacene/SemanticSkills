@@ -1,0 +1,42 @@
+[description]
+skill_name = "WriterSkill.NovelChapterWithNotes"
+skill_description = "The skill is the ability to write a story based on a given context, theme, and notes."
+output_name = "story_chapter"
+output_description = "A chapter of a story based on the given context, theme, and notes."
+output_uses = "Can be used to create a story from a given context, theme, and notes."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "theme"
+argument_identifier = "{{$theme}}"
+argument_description = "The theme of the story."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "notes"
+argument_identifier = "{{$notes}}"
+argument_description = "Notes about the story so far."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "previousChapter"
+argument_identifier = "{{$previousChapter}}"
+argument_description = "The previous chapter of the story."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The description of the chapter to be written."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "chapterIndex"
+argument_identifier = "{{$chapterIndex}}"
+argument_description = "The index of the chapter to be written."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "number/integer"
+

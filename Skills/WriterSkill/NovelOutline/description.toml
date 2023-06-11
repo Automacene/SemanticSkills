@@ -1,0 +1,28 @@
+[description]
+skill_name = "WriterSkill.NovelOutline"
+skill_description = "The skill allows the AI assistant to generate a novella with a given number of chapters based on a provided description."
+output_name = "novella"
+output_description = "A novella with a given number of chapters, characters, and a synopsis for each chapter."
+output_uses = "Can be used to generate creative stories with a given number of chapters and characters."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "chapterCount"
+argument_identifier = "{{$chapterCount}}"
+argument_description = "The number of chapters the novella should have."
+argument_sources = "Specified by the user or inferred from the context."
+argument_type = "number/integer"
+
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The description of the novella's plot."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "endMarker"
+argument_identifier = "{{$endMarker}}"
+argument_description = "The marker that should be used to end each synopsis."
+argument_sources = "Specified by the user or inferred from the context."
+argument_type = "text/string"
+

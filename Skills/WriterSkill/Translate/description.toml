@@ -1,0 +1,21 @@
+[description]
+skill_name = "WriterSkill.Translate"
+skill_description = "The skill is the ability to translate text from one language to another."
+output_name = "translation"
+output_description = "The translated text from the input language to the specified language."
+output_uses = "Can be used to quickly translate text from one language to another."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "language"
+argument_identifier = "{{$language}}"
+argument_description = "The language to which the input should be translated."
+argument_sources = "Specified by the user or inferred from the context."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The text to be translated."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+

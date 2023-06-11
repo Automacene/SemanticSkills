@@ -1,0 +1,14 @@
+[description]
+skill_name = "WriterSkill.AcronymGenerator"
+skill_description = "The ability to generate tech themed acronyms."
+output_name = "generated_acronym"
+output_description = "The a tech themed acronym generated from the input."
+output_uses = "Can be used to generate names for high tech companies, products, projects, or entities."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "A theme, high level concept, or idea to generate an acronym from."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
+

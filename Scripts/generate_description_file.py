@@ -220,6 +220,10 @@ if __name__ == '__main__':
         for root, dirs, files in os.walk(directory):
             for dir in dirs:
                 child_path = os.path.join(root, dir)
-                main(child_path, describe_template_location)
+                try:
+                    main(child_path, describe_template_location)
+                except Exception as e:
+                    skill_name = get_skill_name_from_directory(child_path)
+                    print(f"Failed to describe {skill_name}.", e, "\nContinuing.......")
     else:
         main(directory, describe_template_location)
