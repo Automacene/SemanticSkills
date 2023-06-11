@@ -1,0 +1,13 @@
+[description]
+skill_name = "ChatSkill.ChatFilter"
+skill_description = "The skill is designed to detect and block malicious input based on predefined rules."
+output_name = "block_status"
+output_description = "Indicates whether the input should be blocked or not."
+output_uses = "Used to determine if the input should be blocked based on the predefined rules."
+output_type = "text/xml"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The input text to be analyzed and checked for malicious content."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"

@@ -22,8 +22,15 @@ argument_type = "text/string"
 [[description.arguments]]
 argument_name = "user"
 argument_identifier = "{{$user}}"
-argument_description = "The user's input in the conversation."
-argument_sources = "The user's input can be directly provided or extracted from conversation/dialogue."
+argument_description = "The user's tag or name in the conversation."
+argument_sources = "The user's name or tag can be directly provided or extracted from conversation/dialogue."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "bot"
+argument_identifier = "{{$bot}}"
+argument_description = "The bots's tag or name in the conversation."
+argument_sources = "The bots's name or tag is set by the system or pulled from hisorical interactions."
 argument_type = "text/string"
 
 [[description.arguments]]
@@ -37,7 +44,7 @@ argument_type = "text/string"
 argument_name = "history"
 argument_identifier = "{{$history}}"
 argument_description = "The conversation history between the user and the AI assistant."
-argument_sources = "The conversation history can be extracted from the conversation/dialogue."
+argument_sources = "The conversation history can be extracted from the conversation/dialogue or provided by a system tracking it."
 argument_type = "text/string"
 
 [[description.arguments]]

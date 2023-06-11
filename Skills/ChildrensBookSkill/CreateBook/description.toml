@@ -9,7 +9,7 @@ output_type = "application/json"
 argument_name = "input"
 argument_identifier = "{{$input}}"
 argument_description = "The input used to generate the children's book."
-argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_sources = "Provided by the user or extracted and summarized from conversation/dialogue."
 argument_type = "text/string"
 
 [[description.arguments]]
@@ -17,12 +17,12 @@ argument_name = "numWordsPerPage"
 argument_identifier = "{{$numWordsPerPage}}"
 argument_description = "The maximum number of words allowed per page."
 argument_sources = "Specified by the user or inferred from the context."
-argument_type = "number/integer"
+argument_type = "text/integer"
 
 [[description.arguments]]
 argument_name = "numPages"
 argument_identifier = "{{$numPages}}"
 argument_description = "The maximum number of pages allowed in the book."
 argument_sources = "Specified by the user or inferred from the context."
-argument_type = "number/integer"
+argument_type = "text/integer"
 

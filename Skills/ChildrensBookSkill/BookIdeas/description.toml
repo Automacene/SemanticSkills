@@ -17,5 +17,5 @@ argument_name = "numIdeas"
 argument_identifier = "{{$numIdeas}}"
 argument_description = "The number of ideas to generate."
 argument_sources = "Specified by the user or inferred from the context."
-argument_type = "number/integer"
+argument_type = "text/integer"
 
