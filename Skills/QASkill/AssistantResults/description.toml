@@ -9,7 +9,7 @@ output_type = "text/string"
 argument_name = "api"
 argument_identifier = "{{$api}}"
 argument_description = "The API call to be made."
-argument_sources = "Specified by the user or inferred from the context."
+argument_sources = "Injected by a program."
 argument_type = "text/string"
 
 [[description.arguments]]
@@ -17,13 +17,13 @@ argument_name = "results"
 argument_identifier = "{{$results}}"
 argument_description = "The results from the API call."
 argument_sources = "The results of the API call."
-argument_type = "text/string"
+argument_type = "application/data"
 
 [[description.arguments]]
 argument_name = "resultsContext"
 argument_identifier = "{{$resultsContext}}"
 argument_description = "The context of the results from the API call."
-argument_sources = "The context of the results of the API call."
+argument_sources = "Conversational context of the API usage, documentation, or other notes and information the AI has about the skills reason for use."
 argument_type = "text/string"
 
 [[description.arguments]]

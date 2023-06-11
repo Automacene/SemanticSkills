@@ -12,3 +12,10 @@ argument_description = "The question or information to be recalled from the repo
 argument_sources = "Provided by the user or extracted from conversation/dialogue."
 argument_type = "text/string"
 
+[[description.arguments]]
+argument_name = "skill_recaller"
+argument_identifier = "{{textmemoryskill.recall $input}}"
+argument_description = "Function whose input is the same as this skill's input and grabs a data from github."
+argument_sources = "Linked to this skill's input by a planner."
+argument_type = "text/string"
+
