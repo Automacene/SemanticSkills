@@ -20,8 +20,11 @@ argument_type = "The expected type of the argument, such as string, number, list
 
 The description file is saved in the same directory as the skprompt.txt file as skill_description.toml.
 """
+from ruamel.yaml.scalarstring import PreservedScalarString
+import ruamel.yaml as yaml
+import os, sys, argparse, re
 import toml
-import os, sys, argparse
+
 
 def validate_description_generation(description_toml):
     """
@@ -64,9 +67,38 @@ def validate_description_generation(description_toml):
     except toml.TomlDecodeError:
         return False, "TOMLDecodeError"
 
-def get_skprompt_template(directory):
-    """Get the skprompt.txt file from the folder and return it as a string."""
-    with open(directory + '/skprompt.txt', 'r') as f:
+def simplified_yaml(yaml_file):
+    if isinstance(yaml_file, dict):
+        for key, value in yaml_file.items():
+            if isinstance(value, dict):
+                simplified_yaml(value)
+            elif isinstance(value, list):
+                for item in value:
+                    simplified_yaml(item)
+            elif isinstance(value, PreservedScalarString):
+                yaml_file[key] = value.strip()
+
+    elif isinstance(yaml_file, list):
+        for item in yaml_file:
+            simplified_yaml(item)
+
+    text = yaml.dump(yaml_file, Dumper=yaml.RoundTripDumper, default_flow_style=False, indent=1, block_seq_indent=1, width=999999, allow_unicode=True)
+    text = re.sub(r'  ', r' ', text)
+    text = text.replace('|-', '')
+    text = text.replace('|', '')
+    text = text.strip()
+    return text
+
+def get_skprompt_template(template_parent_directory, is_yaml=False):
+    """
+    Get the skprompt.txt file from the folder and return it as a string.
+    """
+    prompt_file = "skprompt.txt"
+    if is_yaml:
+        prompt_file = "skprompt.yaml"
+    
+    file_location = template_parent_directory + "/" + prompt_file
+    with open(file_location, 'r') as f:
         return f.read()
 
 def get_skill_name_from_directory(directory):
@@ -74,9 +106,9 @@ def get_skill_name_from_directory(directory):
     directory_parts = os.path.normpath(directory).split(os.sep)
     return f"{directory_parts[-2]}.{directory_parts[-1]}"
 
-def get_full_prompt(template):
+def get_full_prompt(template, describe_template_location):
     """Get the full prompt from the template."""
-    system_prompt = """A 1 sentence description of the argument."\nargument_identifier = "{{argument_name}}"\n\n[example]\nprompt: <content> [instructions]\nThe following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\n\n[scenario]\n{{$user}}:I have a question. Can you help? \n{{$bot}}:Of course. I am your AI Copilot. Go on!\n{{$history}}\n{{$user}}:{{$input}}\n{{$bot}}: <end content>\ndescription (1 sentence): The skill of providing helpful, creative, clever, and friendly assistance to users in a wide range of scenarios.\n[end example]\n\n[example]\nprompt:<content>[BANNED COMMANDS]\nFORMAT\nDISKPART\nPARTITION\nCREATE PARTITION\nFSUTIL\n[END]\n\nWRITE A DOS SCRIPT. End each script with an exit /b %ERRORLEVEL%\n \nNEVER USE BANNED COMMANDS. BANNED COMMANDS DO DAMAGE. YOU NEVER WANT TO DO DAMAGE. \nINSTEAD ECHO "SORRY {{$firstName}}, I CAN\'T DO THAT. "\n\nList all pdf files in current folder\ndir *.pdf\nexit /b %ERRORLEVEL%\n\n{{$input}}<end content>\ndescription (1 sentence): The skill to generate DOS scripts that perform specific tasks while avoiding the use of banned commands for safety purposes.\n[end example]\n\n[instructions]\nYour job is to create a toml description of the prompt template for the given format. For each one, be thoughtful in how you summarize and describe them. They should be descriptive enough for an LLM to understand how to use it and a VectorDatabase to generate enough similarity to tasks the AI is trying to complete.\n\n[scenario]\nprompt: <content>{{$undescribed_template}}<end content>\ndescription (1 sentence):"""
+    system_prompt = get_skprompt_template(describe_template_location)
     embdedded_template_param = "{{$undescribed_template}}"
     full_prompt = system_prompt.replace(embdedded_template_param, template)
     return full_prompt
@@ -85,38 +117,38 @@ def generate_description(template):
     """Generate a description from the template."""
     #TODO: Use OpenAI to generate a description from the template.
     prompt = get_full_prompt(template)
-    pass
+    return prompt
 
-def create_description(directory):
+def create_description(directory, describe_template_location):
     """
     TODO: Finish this function. Need to get the template, get the description skill,
     inject the template into the description skill, validate the toml, and save the toml in the skill directory.
     """
-    #check to see if the directory contains a skprompt.txt file and exists.
-    if not os.path.exists(directory):
-        print("Directory does not exist.")
-        sys.exit(1)
-
-    if 'skprompt.txt' not in os.listdir(directory):
-        print("Directory does not contain a skprompt.txt file.")
-        sys.exit(1)
-    
-    #Get the skprompt.txt file
+    #Get the skill we are describing.
     template = get_skprompt_template(directory)
+    #Get the skill for describing other skills.
+    describing_skill = get_skprompt_template(describe_template_location, is_yaml=True)
+    #Simplify the YAML
+    describing_skill = simplified_yaml(describing_skill)
+    #Inject the template into the describing skill.
+    full_prompt = get_full_prompt(template, describing_skill)
+
     skill_name = get_skill_name_from_directory(directory)
 
     #Generate the description
 
-def main(directory):
+def main(directory, describe_template):
     pass
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate a description file for skills in the repo.')
     parser.add_argument('directory', type=str, help='The directory to search.')
+    parser.add_argument('describe_template_location', type=str, help='The location of the describe template.')
     parser.add_argument('--debug', type=bool, help='Debug mode to make sure validator is working', default=False)
     args = parser.parse_args()
 
     directory = args.directory
+    describe_template_location = args.describe_template_location
     debug = args.debug
 
     if debug:
@@ -144,4 +176,4 @@ if __name__ == '__main__':
         else:
             print("One or more required parameters are missing in the TOML string.", results[1])
     else:
-        main(directory)
+        main(directory, describe_template_location)

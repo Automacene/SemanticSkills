@@ -18,9 +18,9 @@ description_format: |
 
 examples:
   - prompt: |
-      <content>Explain what you would like to happen in natural language.  This will generate the corresponding code.  It helps to provide a programming language.  
-      Description: {{$input}}<end content>
-    description_TOML: |
+      Explain what you would like to happen in natural language.  This will generate the corresponding code.  It helps to provide a programming language.  
+      Description: {{$input}}
+  - description_TOML: |
       [description]
       skill_name = "CodeGenerator""
       skill_description = "The skill is the ability to generate code based on a natural language description of desired functionality, helping the user by providing the corresponding code."
@@ -42,7 +42,7 @@ examples:
       argument_type = "text/string"
 
   - prompt: |
-        <content>[BANNED COMMANDS]
+        [BANNED COMMANDS]
         FORMAT
         DISKPART
         PARTITION
@@ -59,34 +59,31 @@ examples:
         dir *.pdf
         exit /b %ERRORLEVEL%
     
-        {{$input}}<end content>
-    description_TOML: |
-        [description]
-        skill_name = "DosCreator"
-        skill_description = "The skill allows the AI assistant to create executable DOS scripts that can perform specific actions based on the provided instructions."
-        output_name = "dos_code"
-        output_description = "A fully executable dos script."
-        output_uses = "To perform actions, retrieve information, or generate results based on the instructions given in the script on a windows based host."
-        output_type = "text/string"
-        [[description.arguments]]
-        argument_name = "firstName"
-        argument_identifier = "{{$firstName}}"
-        argument_description = "The first name or identifier of the user interacting with the AI assistant."
-        argument_sources = "The user's first name can be directly provided, inferred from previous interactions, or obtained from a user profile."
-        argument_type = "text/string"
-        [[description.arguments]]
-        argument_name = "input"
-        argument_identifier = "{{$input}}"
-        argument_description = "The description of a task the DOS script must accomplish."
-        argument_sources = "A list of instructions, commands, or descriptions about a task that can be converted into a DOS script."
-        argument_type = "text/string"
+        {{$input}}
+  - description_TOML: |
+      [description]
+      skill_name = "DosCreator"
+      skill_description = "The skill allows the AI assistant to create executable DOS scripts that can perform specific actions based on the provided instructions."
+      output_name = "dos_code"
+      output_description = "A fully executable dos script."
+      output_uses = "To perform actions, retrieve information, or generate results based on the instructions given in the script on a windows based host."
+      output_type = "text/string"
+      [[description.arguments]]
+      argument_name = "firstName"
+      argument_identifier = "{{$firstName}}"
+      argument_description = "The first name or identifier of the user interacting with the AI assistant."
+      argument_sources = "The user's first name can be directly provided, inferred from previous interactions, or obtained from a user profile."
+      argument_type = "text/string"
+      [[description.arguments]]
+      argument_name = "input"
+      argument_identifier = "{{$input}}"
+      argument_description = "The description of a task the DOS script must accomplish."
+      argument_sources = "A list of instructions, commands, or descriptions about a task that can be converted into a DOS script."
+      argument_type = "text/string"
 
 instructions: Your job is to create a toml description of the prompt template for the given format. For each one, be thoughtful in how you summarize and describe them. They should be descriptive enough for an LLM to understand how to use it and a VectorDatabase to generate enough similarity to tasks the AI is trying to complete.
 
 scenario:
-  prompt: | 
-    <content>based on {{$INPUT}}, 
-    write me a children's book with at most {{$numWordsPerPage}} words on
-    each page and a maximum of {{$numPages}} pages.
-    Return it in JSON using the following format: [{ "page": 1, "content":"the content of the page" }]<end content>
-  description_TOML: |
+  - prompt: |
+    {{$undescribed_template}}
+  - description_TOML: |
