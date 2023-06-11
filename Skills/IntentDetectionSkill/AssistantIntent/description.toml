@@ -3,7 +3,7 @@ skill_name = "IntentDetectionSkill.AssistantIntent"
 skill_description = "The skill is the ability to identify the intent of a query from a list of available intents."
 output_name = "intent"
 output_description = "The intent of the query, as identified from the list of available intents."
-output_uses = "Can be used to determine the action the AI should take in response to the query."
+output_uses = "Can be used to determine the type of action or type of skill the AI should use in response to the query."
 output_type = "text/string"
 [[description.arguments]]
 argument_name = "input"

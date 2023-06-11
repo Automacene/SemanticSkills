@@ -1,0 +1,20 @@
+[description]
+skill_name = "Planning"
+skill_description = "The skill is a planning skill that can be used to plan a sequence of actions from a list of available skills."
+output_name = "plan"
+output_description = "A plan of actions using skills that the AI has access too."
+output_uses = "Used in thinking engines to allow the AI to plan a sequence of actions to achieve a goal."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "A user or AI's desired goal, objective, task, or high level idea that needs to be turned into a plan of actions/skills for an to autonomously enact."
+argument_sources = "Can come from other AI systems or users."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "skills"
+argument_identifier = "{{$skills}}"
+argument_description = "A list of skills that the AI has access to and descriptions of what they do and how they work."
+argument_sources = "Injected from a Vector Database query."
+argument_type = "text/string"
