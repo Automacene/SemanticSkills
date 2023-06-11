@@ -1,10 +1,10 @@
 [description]
 skill_name = "CodingSkill.Entity"
-skill_description = "The skill is the ability to inject xml tags into a given text."
+skill_description = "The skill is the ability to inject xml tags into a given text for formatting and rendering effects."
 output_name = "processed_text"
 output_description = "The original text with the xml tags injected inline."
 output_uses = "Can be used to add additional information to a text, such as formatting, styling, or other tags."
-output_type = "text/string"
+output_type = "text/xml"
 [[description.arguments]]
 argument_name = "tags"
 argument_identifier = "{{$tags}}"

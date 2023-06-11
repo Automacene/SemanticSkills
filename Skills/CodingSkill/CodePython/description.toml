@@ -4,11 +4,11 @@ skill_description = "The skill is the ability to generate Python code based on a
 output_name = "python_code"
 output_description = "Generated Python code based on the user's instructions."
 output_uses = "Can be used by developers to quickly convert instructions into code."
-output_type = "text/string"
+output_type = "text/python"
 [[description.arguments]]
 argument_name = "input"
 argument_identifier = "{{$input}}"
-argument_description = "The instructions for the Python code to generate."
+argument_description = "The task the user wants to perform in Python."
 argument_sources = "Provided by the user or extracted from conversation/dialogue."
 argument_type = "text/string"
 

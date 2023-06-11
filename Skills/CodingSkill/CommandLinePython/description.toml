@@ -4,7 +4,7 @@ skill_description = "The skill is the ability to write a Python 3.x command line
 output_name = "python_script"
 output_description = "A fully executable Python 3.x command line script."
 output_uses = "To perform actions, retrieve information, or generate results based on the instructions given in the script on a Python 3.x host."
-output_type = "text/string"
+output_type = "text/python"
 [[description.arguments]]
 argument_name = "input"
 argument_identifier = "{{$input}}"
