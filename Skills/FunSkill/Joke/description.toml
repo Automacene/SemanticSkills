@@ -1,0 +1,20 @@
+[description]
+skill_name = "FunSkill.Joke"
+skill_description = "The skill is the ability to generate a joke or humorous story based on a given topic."
+output_name = "joke"
+output_description = "A G-rated, workplace/family safe joke or humorous story."
+output_uses = "Can be used to provide a humorous response to a given topic."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "style"
+argument_identifier = "{{$style}}"
+argument_description = "The type of joke or humorous story to generate, such as puns, knock-knock jokes, etc."
+argument_sources = "Specified by the user or inferred from the context."
+argument_type = "text/string"
+
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The topic for which the joke or humorous story should be generated."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"

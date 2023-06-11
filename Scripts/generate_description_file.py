@@ -183,11 +183,13 @@ if __name__ == '__main__':
     parser.add_argument('skill_template_location', type=str, help='The directory where the skill that needs describing is stored.')
     parser.add_argument('describe_template_location', type=str, help='The location of the describe template.')
     parser.add_argument('--debug', type=bool, help='Debug mode to make sure validator is working', default=False)
+    parser.add_argument('--auto_search', type=bool, help='Tags the skill template location as a parent with many children. Describes each child.', default=False)
     args = parser.parse_args()
 
     directory = args.skill_template_location
     describe_template_location = args.describe_template_location
     debug = args.debug
+    auto_search = args.auto_search
 
     if debug:
         # Example usage
@@ -213,5 +215,11 @@ if __name__ == '__main__':
             print("All required parameters exist in the TOML string.")
         else:
             print("One or more required parameters are missing in the TOML string.", results[1])
+    elif auto_search:
+        directory = os.path.normpath(directory)
+        for root, dirs, files in os.walk(directory):
+            for dir in dirs:
+                child_path = os.path.join(root, dir)
+                main(child_path, describe_template_location)
     else:
         main(directory, describe_template_location)

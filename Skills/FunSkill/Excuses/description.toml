@@ -1,0 +1,13 @@
+[description]
+skill_name = "FunSkill.Excuses"
+skill_description = "The skill is the ability to generate creative and humorous excuses for a given event."
+output_name = "excuse"
+output_description = "A creative and humorous excuse for the given event."
+output_uses = "Can be used to provide a humorous response to a given event."
+output_type = "text/string"
+[[description.arguments]]
+argument_name = "input"
+argument_identifier = "{{$input}}"
+argument_description = "The event for which an excuse is needed."
+argument_sources = "Provided by the user or extracted from conversation/dialogue."
+argument_type = "text/string"
