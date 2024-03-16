@@ -1,0 +1,22 @@
+name: empty
+description: "An empty skill, for testing purposes or raw prompts."
+skill_class: semantic
+skill: | 
+  {input}
+inputs:
+  - name: input
+    type: text
+    description: "The input text to be processed."
+    default: "This is an empty prompt, the user forgot to prompt you."
+    required: True
+settings:
+    model: "gemini-pro"    
+    project: "testvertex-405920"
+    location: "us-west4"
+    stream: False
+    max_tokens: 1500
+    temperature: 0.0
+    top_p: 1.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0
+    stop: ""
