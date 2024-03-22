@@ -1,0 +1,45 @@
+name: chat
+description: "A chat skill to engage in generic conversations with an AI assistant."
+skill_class: semantic
+skill: | 
+  [Instructions]
+  The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.
+
+  [History]
+  <<init>> {{$user}}:I have a question. Can you help? 
+  <<start>> {{$bot}}:Of course. I am your AI Copilot. Go on!
+  {{$history}}
+  <<latest>> {{$user}}:{{$input}}
+  <<next>> {{$bot}}:
+inputs:
+  - name: input
+    type: text
+    description: "The input text to be processed."
+    default: "This is an empty prompt, the user forgot to prompt you."
+    required: True
+  - name: history
+    type: text
+    description: "The history of the conversation."
+    default: ""
+    required: True
+  - name: user
+    type: text
+    description: "The user's name."
+    default: "User"
+    required: True
+  - name: bot
+    type: text
+    description: "The bot's name."
+    default: "Assistant"
+    required: True
+settings:
+    model: "gemini-pro"    
+    project: "testvertex-405920"
+    location: "us-west4"
+    stream: False
+    max_tokens: 1500
+    temperature: 0.9
+    top_p: 0.0
+    presence_penalty: 0.6
+    frequency_penalty: 0.0
+    stop: "<<"
