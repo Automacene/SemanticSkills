@@ -2,7 +2,7 @@ name: empty
 description: "An empty skill, for testing purposes or raw prompts."
 skill_class: semantic
 skill: | 
-  {input}
+  {{$input}}
 inputs:
   - name: input
     type: text
