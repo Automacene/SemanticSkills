@@ -95,4 +95,4 @@ We welcome ongoing opensource efforts from Microsoft and other contributors to f
 We extend our sincere gratitude to Microsoft and all the contributors for their dedication and efforts in advancing the state of the art in AI and language understanding.
 
 
--- **With Love, ChatGPT and Team**
+-- **With Love, Various AI and The Automacene Team**
