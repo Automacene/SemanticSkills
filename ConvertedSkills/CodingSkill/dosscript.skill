@@ -1,0 +1,42 @@
+name: dosscript
+description: "Turns your intent into a SAFE DOS batch script"
+skill_class: semantic
+skill: |
+  [BANNED COMMANDS]
+  FORMAT
+  DISKPART
+  PARTITION
+  CREATE PARTITION
+  FSUTIL
+  [END]
+  
+  WRITE A DOS SCRIPT. End each script with an exit /b %ERRORLEVEL%
+   
+  NEVER USE BANNED COMMANDS. BANNED COMMANDS DO DAMAGE. YOU NEVER WANT TO DO DAMAGE. 
+  INSTEAD ECHO "SORRY {{$firstName}}, I CAN'T DO THAT. "
+  
+  List all pdf files in current folder
+  dir *.pdf
+  exit /b %ERRORLEVEL%
+  
+  {{$input}}
+  
+inputs:
+  - name: firstname
+    type: text
+    description: "The first name or identifier of the user interacting with the AI assistant."
+    default: ""
+    required: True
+  - name: input
+    type: text
+    description: "The description of a task the DOS script must accomplish."
+    default: ""
+    required: True
+settings:
+    model: "text-davinci-003"
+    max_tokens: 1000
+    temperature: 0.0
+    top_p: 0.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0
+    stop: "exit /b %ERRORLEVEL%"

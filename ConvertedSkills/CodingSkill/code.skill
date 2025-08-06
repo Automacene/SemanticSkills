@@ -1,0 +1,19 @@
+name: code
+description: "Turn natural language into code"
+skill_class: semantic
+skill: |
+  Explain what you would like to happen in natural language.  This will generate the corresponding code.  It helps to provide a programming language.  
+  Description: {{$input}}
+inputs:
+  - name: input
+    type: text
+    description: "The natural language description of the desired functionality."
+    default: ""
+    required: True
+settings:
+    model: "code-davinci-002"
+    max_tokens: 256
+    temperature: 0.0
+    top_p: 0.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0

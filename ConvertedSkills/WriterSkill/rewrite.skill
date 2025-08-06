@@ -1,0 +1,27 @@
+name: rewrite
+description: "Automatically generate compact notes for any text or text document"
+skill_class: semantic
+skill: |
+  Rewrite the given text like it was written in this style or by: {{$style}}. 
+  MUST RETAIN THE MEANING AND FACTUAL CONTENT AS THE ORIGINAL.
+  
+  
+  {{$input}}
+  
+inputs:
+  - name: style
+    type: text
+    description: "The style in which the text should be rewritten."
+    default: ""
+    required: True
+  - name: input
+    type: text
+    description: "The original text to be rewritten."
+    default: ""
+    required: True
+settings:
+    max_tokens: 256
+    temperature: 0.0
+    top_p: 0.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0

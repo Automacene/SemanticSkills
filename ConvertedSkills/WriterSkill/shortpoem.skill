@@ -1,0 +1,19 @@
+name: shortpoem
+description: "Turn a scenario into a short and entertaining poem."
+skill_class: semantic
+skill: |
+  Generate a short funny poem or limerick to explain the given event. Be creative and be funny. Let your imagination run wild.
+  Event:{{$input}}
+inputs:
+  - name: input
+    type: text
+    description: "The event or topic for which the poem should be generated."
+    default: ""
+    required: True
+settings:
+    model: "text-davinci-002"
+    max_tokens: 60
+    temperature: 0.5
+    top_p: 0.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0

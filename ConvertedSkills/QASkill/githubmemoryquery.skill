@@ -1,0 +1,27 @@
+name: githubmemoryquery
+description: ""
+skill_class: semantic
+skill: |
+  {{textmemoryskill.recall $input}}
+  ---
+  Considering only the information above, which has been loaded from a GitHub repository, answer the following.
+  Question: {{$input}}
+  
+  Answer:
+inputs:
+  - name: input
+    type: text
+    description: "The question or information to be recalled from the repository."
+    default: ""
+    required: True
+  - name: {{textmemoryskill.recall $input
+    type: text
+    description: "Function whose input is the same as this skill's input and grabs a data from github."
+    default: ""
+    required: True
+settings:
+    max_tokens: 1024
+    temperature: 0.8
+    top_p: 0.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0

@@ -1,0 +1,22 @@
+name: excuses
+description: "Turn a scenario into a creative or humorous excuse to send your boss"
+skill_class: semantic
+skill: |
+  Generate a creative reason or excuse for the given event. Be creative and be funny. Let your imagination run wild.
+  
+  Event:I am running late.
+  Excuse:I was being held ransom by giraffe gangsters. 
+  
+  Event:{{$input}}
+inputs:
+  - name: input
+    type: text
+    description: "The event for which an excuse is needed."
+    default: ""
+    required: True
+settings:
+    max_tokens: 60
+    temperature: 0.5
+    top_p: 0.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0
