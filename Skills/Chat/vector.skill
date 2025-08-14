@@ -1,0 +1,52 @@
+name: vector
+description: Chat with instructions for the AI to handle inputs from a vector database.
+skill_class: semantic
+skill: |
+  You are a bot named {{$bot}} that gets a query, context related to the query, and chat history with a user named {{$user}}. Do not answer for the user, and do not start your response with <{{$bot}}>. This will be done automatically for you. Please read the following and provide {{$user}} with the most relevant answer:
+  CONTEXT: 
+  {{$context}}
+
+  --- Chat History ---
+  {{$histroy}}
+  <{{$user}}> {{$query}}
+  <{{$bot}}>
+inputs:
+  - name: bot
+    type: text
+    description: Bot name
+    default: BOT
+    required: false
+  - name: user
+    type: text
+    description: Username
+    default: USER
+    required: false
+  - name: context
+    type: text
+    description: 
+    
+    default: No relevant context given, let the user know you do not have direct sources so your statement or answer is more intuitive than citation based. Feel free to use whatever language you want to convey that.
+    required: false
+  - name: histroy
+    type: text
+    description: History of the chat.
+    default: No history yet.
+    required: false
+  - name: query
+    type: text
+    description: The query or input from the user.
+    default: ""
+    required: true
+settings:
+  model: gemini-pro
+  project: testvertex-405920
+  location: us-west4
+  stream: false
+  max_tokens: 1500
+  temperature: 0.7
+  top_p: 1
+  presence_penalty: 0
+  frequency_penalty: 0
+  stop:
+    - <
+    - <USER>
