@@ -1,0 +1,29 @@
+name: codepython
+description: "Turns natural language into Python code like a Python Copilot."
+skill_class: semantic
+skill: |
+  WRITE PYTHON CODE TO SOLVE GIVEN PROBLEM. WRITE A SINGLE FUNCTION. ANY EXPLANATIONS MUST BE A COMMENT. USE CLASSES AND TYPINGS WHERE APPROPRIATE. Emit [done] when done.
+  
+  # Start
+  # Function to print all strings in a list 
+  def appendprefix(values):
+      foreach(val in values):
+          print(val)
+  # Done
+  
+  #{{$input}}
+inputs:
+  - name: input
+    type: text
+    description: "The task the user wants to perform in Python."
+    default: ""
+    required: True
+settings:
+    max_tokens: 256
+    temperature: 0.0
+    top_p: 0.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0
+    stop:
+      - "[done]"
+      - "# Done"

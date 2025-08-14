@@ -1,0 +1,57 @@
+name: basic
+description: "A chat bot that plays a persona or role"
+skill_class: semantic
+skill: |
+  The following is a conversation with {{$person}} with {{$attitude}}.
+  
+  {{$user}}Hello.
+  {{$bot}} {{$question}}
+  {{$history}}
+  {{$user}}{{$input}}
+  {{$bot}}
+inputs:
+  - name: person
+    type: text
+    description: "The name of the person interacting with the AI assistant."
+    default: ""
+    required: True
+  - name: attitude
+    type: text
+    description: "The attitude of the user interacting with the AI assistant."
+    default: ""
+    required: True
+  - name: user
+    type: text
+    description: "The user's tag or name in the conversation."
+    default: ""
+    required: True
+  - name: bot
+    type: text
+    description: "The bots's tag or name in the conversation."
+    default: ""
+    required: True
+  - name: question
+    type: text
+    description: "The question the AI assistant should ask the user."
+    default: ""
+    required: True
+  - name: history
+    type: text
+    description: "The conversation history between the user and the AI assistant."
+    default: ""
+    required: True
+  - name: input
+    type: text
+    description: "The user's response to the AI assistant's question."
+    default: ""
+    required: True
+settings:
+    model: "text-davinci-003"
+    max_tokens: 150
+    temperature: 0.9
+    top_p: 0.0
+    presence_penalty: 0.6
+    frequency_penalty: 0.0
+    stop:
+      - "Human:"
+      - "AI:"

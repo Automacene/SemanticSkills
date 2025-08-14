@@ -1,0 +1,52 @@
+name: novelchapter
+description: "Write a chapter of a novel."
+skill_class: semantic
+skill: |
+  [CONTEXT]
+  
+  THEME OF STORY:
+  {{$theme}}
+  
+  PREVIOUS CHAPTER:
+  {{$previousChapter}}
+  
+  [END CONTEXT]
+  
+  
+  WRITE THIS CHAPTER USING [CONTEXT] AND
+  CHAPTER SYNOPSIS. DO NOT REPEAT SYNOPSIS IN THE OUTPUT
+  
+  Chapter Synopsis:
+  {{$input}}
+  
+  Chapter {{$chapterIndex}}
+  
+  
+inputs:
+  - name: theme
+    type: text
+    description: "The theme of the story."
+    default: ""
+    required: True
+  - name: previousChapter
+    type: text
+    description: "The previous chapter of the story."
+    default: ""
+    required: True
+  - name: input
+    type: text
+    description: "The synopsis of the chapter to be written."
+    default: ""
+    required: True
+  - name: chapterIndex
+    type: text
+    description: "The index of the chapter to be written."
+    default: ""
+    required: True
+settings:
+    model: "text-davinci-003"
+    max_tokens: 2048
+    temperature: 0.3
+    top_p: 0.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0
