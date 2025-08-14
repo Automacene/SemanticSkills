@@ -1,0 +1,210 @@
+name: planning
+description: "Anything"
+skill_class: semantic
+skill: |
+  [instructions]
+  You are an AI planner. Your task is to create a plan based on a user's goal and prompt. Generate a step-by-step plan by breaking down the goal into subtasks using the available skills. Each subtask should be linked to the appropriate skill and include the required inputs and outputs. The steps in the examples are simple, but yours should be very detailed. Feel free to add up to 20 steps.
+  
+  [examples]
+  [example]
+  [skills]
+  - CharacterProfileBuilding
+    Description: Generate character profiles.
+    Inputs:
+    - character_types: The types of characters for the story. (Type: list)
+    Outputs:
+    - character_profiles: Profiles of the characters for the story. (Type: list)
+  
+  - CharacterNarrativeGeneration
+    Description: Generate narratives based on character profiles.
+    Inputs:
+    - character_profiles: The profiles of the characters. (Type: list)
+    Outputs:
+    - narrative: The generated narrative. (Type: string)
+  
+  - ArtGeneration
+    Description: Generate art for a book.
+    Inputs:
+    - narrative: The narrative for the book. (Type: string)
+    Outputs:
+    - art: The generated art. (Type: list)
+  
+  - CharacterTypesSelection
+  Description: Select character types for the story. 
+  Inputs: None 
+  Outputs: 
+  - character_types: A list of character types. (Type: list) 
+  
+  - BookPrinting 
+  Description: Print a book. 
+  Inputs: 
+  - art: The art for the book. (Type: list) 
+  Outputs: 
+  - book: The printed book. (Type: object)
+  
+  [user]
+  prompt ="Please make a childrens book about wizards."
+  goal = "Create a childrens book about wizards that is entertaining and educationally sound."
+  steps = "Here's a step by step plan for the wizard book: 
+  1. Create intriguing character profiles.
+  2. Craft a narrative based on the character profiles.
+  3. Generate art for the book."
+  
+  [plan]
+  [[plan.subtask]]
+  description = "Create intriguing character profiles"
+  function = "CharacterProfileBuilding"
+  inputs = [
+    { name = "character_types", from = "CharacterTypesSelection" }
+  ]
+  outputs = [
+    { name = "character_profiles", to = "CharacterNarrativeGeneration" }
+  ]
+  
+  [[plan.subtask]]
+  description = "Craft a narrative based on the character profiles"
+  function = "CharacterNarrativeGeneration"
+  inputs = [
+    { name = "character_profiles", from = "CharacterProfileBuilding" }
+  ]
+  outputs = [
+    { name = "narrative", to = "ArtGeneration" }
+  ]
+  
+  [[plan.subtask]]
+  description = "Generate art for the book"
+  function = "ArtGeneration"
+  inputs = [
+    { name = "narrative", from = "CharacterNarrativeGeneration" }
+  ]
+  outputs = [
+    { name = "art", to = "BookPrinting" }
+  ]
+  
+  [example]
+  [skills]
+  ResearchKittenTopics:
+     Description: Research kitten topics and resources.
+     Inputs:
+     - keywords: A list of keyword to use for the research. (Type: list)
+     Outputs:
+     - topic_resources: A list of resources available for the topics. (Type: list)
+  
+  DesignCriteriaSet:
+     Description: Set criteria for the design of a website.
+     Inputs: None
+     Outputs:
+     - completion_criteria: The criteria to use for the design. (Type: string)
+  
+  LayoutDesign:
+     Description: Design the overall layout of the website, including colors and fonts.
+     Inputs:
+     - completion_criteria: The criteria to use for the design. (Type: string)
+     Outputs:
+     - design_result: The finalized result of the design. (Type: string)
+  
+  ImageCreation:
+     Description: Create images to be used on the website.
+     Inputs: None
+     Outputs:
+     - image_sources: The sources and details of the images. (Type: list)
+  
+  VideoCreation:
+     Description: Create videos to be used on the website.
+     Inputs: None
+     Outputs:
+     - video_sources: The sources and details of the videos. (Type: list)
+  
+  ContentCompilation:
+     Description: Compile topics, images, and videos into content to be used on the website.
+     Inputs:
+     - topic_resources: A list of resources available for the topics. (Type: list)
+     - image_sources: The sources and details of the images. (Type: list)
+     - video_sources: The sources and details of the videos. (Type: list)
+     Outputs:
+     - text_content: The text content for the website. (Type: string)
+  
+  LayoutIntegration:
+     Description: Integrate the design result into the website layout.
+     Inputs:
+     - design_result: The finalized result of the design. (Type: string)
+     Outputs: None
+  
+  SEOOptimization:
+     Description: Optimize the content of the website to meet SEO requirements.
+     Inputs:
+     - text_content: The text content of the website. (Type: string)
+     - keywords: A list of keywords to be used. (Type: list)
+     Outputs: None
+  
+  [user]
+  prompt ="Please make a website about kittens."
+  steps = "Let's identify step by step what we need to do. 
+  1. Research kitten topics and resources. 
+  2. Design the overall layout of the website, including colors and fonts.
+  3. Develop the website, including the content, images, and videos.
+  4. Perform SEO optimization.
+  
+  [plan]
+  [[plan.subtask]]
+  description = "Research kitten topics and resources"
+  function = "ResearchKittenTopics"
+  inputs = [
+    { name = "keywords", from = "ResearchKeywordGeneration" }
+  ]
+  outputs = [
+    { name = "topic_resources", to = "ContentCompilation" }
+  ]
+  
+  [[plan.subtask]]
+  description = "Design the overall layout of the website"
+  function = "LayoutDesign"
+  inputs = [
+    { name = "completion_criteria", from = "DesignCriteriaSet" }
+  ]
+  outputs = [
+    { name = "design_result", to = "LayoutIntegration" }
+  ]
+  
+  [[plan.subtask]]
+  description = "Develop the website, including the content, images, and videos"
+  function = "WebsiteDevelopment"
+  inputs = [
+    { name = "content_details", from = "ContentCompilation " },
+    { name = "image_sources", from = "ImageCreation" },
+    { name = "video_sources", from = "VideoCreation" }
+  ]
+  
+  [[plan.subtask]]
+  description = "Perform SEO optimization"
+  function = "SEOOptimization"
+  inputs = [
+    { name = "text_content", from = "ContentCompilation" },
+    { name = "keywords", from = "ResearchKeywordGeneration" }
+  ]
+  
+  [scenario]
+  [skills]
+  {{$skills}}
+  
+  [user]
+  prompt = "{{$input}}"
+  steps = 
+inputs:
+  - name: input
+    type: text
+    description: "A user or AI's desired goal, objective, task, or high level idea that needs to be turned into a plan of actions/skills for an to autonomously enact."
+    default: ""
+    required: True
+  - name: skills
+    type: text
+    description: "A list of skills that the AI has access to and descriptions of what they do and how they work."
+    default: ""
+    required: True
+settings:
+    model: "text-davinci-003"
+    max_tokens: 4000
+    temperature: 0.3
+    top_p: 0.5
+    presence_penalty: 0.0
+    frequency_penalty: 0.0

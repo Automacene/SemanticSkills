@@ -1,0 +1,31 @@
+name: translate
+description: "Translate the input into a language of your choice"
+skill_class: semantic
+skill: |
+  Translate the input below into {{$language}}
+  
+  MAKE SURE YOU ONLY USE {{$language}}.
+  
+  {{$input}}
+  
+  Translation:
+inputs:
+  - name: language
+    type: text
+    description: "The language to which the input should be translated."
+    default: ""
+    required: True
+  - name: input
+    type: text
+    description: "The text to be translated."
+    default: ""
+    required: True
+settings:
+    model: "text-davinci-002"
+    max_tokens: 256
+    temperature: 0.7
+    top_p: 0.0
+    presence_penalty: 0.0
+    frequency_penalty: 0.0
+    stop:
+      - "[done]"

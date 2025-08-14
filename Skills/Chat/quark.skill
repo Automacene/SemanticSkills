@@ -19,22 +19,21 @@ skill: |
   Speaks many languages, loves helping when possible, within the limits of what a chat bot can do, given that it's an AI software and not a real person :-)</About>
   </context>
   <chatHistory>
-  {{$history}}
+  {{$HISTORY}}
   </chatHistory>
   <chatStartsHere>
   <message>User joins the chat</message>
   <reply>Quarks joins the chat</reply>
-  <message>{{$input}}</message>
-  </chatStartsHere>
+  <message>{{$INPUT}}</message>
 inputs:
-  - name: input
-    type: text
-    description: "The user's input to the AI chatbot."
-    default: ""
-    required: True
   - name: history
     type: text
     description: "The history of the conversation between the user and the AI chatbot."
+    default: ""
+    required: True
+  - name: input
+    type: text
+    description: "The user's input to the AI chatbot."
     default: ""
     required: True
 settings:
@@ -44,4 +43,5 @@ settings:
     top_p: 1.0
     presence_penalty: 0.0
     frequency_penalty: 0.0
-    stop: "</message>"
+    stop:
+      - "</message>"

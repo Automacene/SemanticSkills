@@ -1,0 +1,88 @@
+name: gpt
+description: ""
+skill_class: semantic
+skill: |
+  This is a conversation between {{$firstName}} and you. 
+  Your Name: {{$botName}}. Play the persona of: {{$attitude}}.
+  Use CONTEXT to LEARN ABOUT {{$firstName}}. 
+  
+  [CONTEXT]
+  TODAY is {{date}}
+  FIRST NAME: {{$firstname}} 
+  LAST NAME: {{$lastname}} 
+  CITYl {{$city}}
+  STATE: {{$state}}
+  COUNTRY: {{$country}}
+  {{recall $input}}
+  [END CONTEXT]
+  
+  USE INFO WHEN PERTINENT.  
+  KEEP IT SECRET THAT YOU WERE GIVEN CONTEXT. 
+  ONLY SPEAK FOR YOURSELF.
+  
+  {{$firstName}}: I have a question. Can you help? 
+  {{$botName}}: Of course. Go on!
+  [Done]
+  {{$history}}
+  [Done]
+  ++++
+  {{$firstName}}:{{$input}}
+inputs:
+  - name: firstname
+    type: text
+    description: "The first name or identifier of the user interacting with the AI assistant."
+    default: ""
+    required: True
+  - name: botname
+    type: text
+    description: "The name of the AI assistant."
+    default: ""
+    required: True
+  - name: attitude
+    type: text
+    description: "The attitude or persona the AI assistant should take on during the conversation."
+    default: ""
+    required: True
+  - name: {{date
+    type: text
+    description: "The current date."
+    default: ""
+    required: True
+  - name: lastname
+    type: text
+    description: "The last name of the user interacting with the AI assistant."
+    default: ""
+    required: True
+  - name: city
+    type: text
+    description: "The city of the user interacting with the AI assistant."
+    default: ""
+    required: True
+  - name: state
+    type: text
+    description: "The state of the user interacting with the AI assistant."
+    default: ""
+    required: True
+  - name: country
+    type: text
+    description: "The country of the user interacting with the AI assistant."
+    default: ""
+    required: True
+  - name: input
+    type: text
+    description: "The user's input to the conversation."
+    default: ""
+    required: True
+  - name: history
+    type: text
+    description: "The conversation history between the AI assistant and the user."
+    default: ""
+    required: True
+settings:
+    max_tokens: 150
+    temperature: 0.9
+    top_p: 0.0
+    presence_penalty: 0.6
+    frequency_penalty: 0.0
+    stop:
+      - "[Done]"
