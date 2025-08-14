@@ -23,12 +23,12 @@ skill: |
   {{$input}}
    
 inputs:
-  - name: input
+  - name: promptName
     type: text
     description: "The user's input that needs to be responded to."
     default: ""
     required: True
-  - name: promptname
+  - name: input
     type: text
     description: "The name of the prompt that is being responded to."
     default: ""

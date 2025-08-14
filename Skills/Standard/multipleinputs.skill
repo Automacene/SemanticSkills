@@ -56,17 +56,17 @@ skill: |
   prompt: {{$input}}
   steps: Let's identify step by step what we need to do.
 inputs:
-  - name: input
+  - name: date
     type: text
     description: "The instructions for the email, including the recipient, purpose, and any relevant information."
     default: ""
     required: True
-  - name: date
+  - name: name
     type: text
     description: "The date the email is being sent."
     default: ""
     required: True
-  - name: name
+  - name: input
     type: text
     description: "The name of the sender of the email."
     default: ""

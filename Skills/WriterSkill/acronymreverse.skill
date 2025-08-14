@@ -27,7 +27,7 @@ skill: |
   # acronym: {{$INPUT}}
   Sentences matching the acronym:
 inputs:
-  - name: input
+  - name: INPUT
     type: text
     description: "The acronym or word to be expanded."
     default: ""

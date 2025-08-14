@@ -11,7 +11,7 @@ skill: |
   Topic: {{$INPUT}}
   Start.
 inputs:
-  - name: input
+  - name: INPUT
     type: text
     description: "The topic or prompt for the list."
     default: ""

@@ -28,7 +28,7 @@ inputs:
     description: "The theme of the story."
     default: ""
     required: True
-  - name: previouschapter
+  - name: previousChapter
     type: text
     description: "The previous chapter of the story."
     default: ""
@@ -38,7 +38,7 @@ inputs:
     description: "The synopsis of the chapter to be written."
     default: ""
     required: True
-  - name: chapterindex
+  - name: chapterIndex
     type: text
     description: "The index of the chapter to be written."
     default: ""

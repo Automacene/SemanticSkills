@@ -92,7 +92,7 @@ skill: |
       {{$undescribed_template}}
     - description_TOML: |
 inputs:
-  - name: undescribed_template
+  - name: input
     type: text
     description: "The template format used for generating tasks and scenarios."
     default: ""

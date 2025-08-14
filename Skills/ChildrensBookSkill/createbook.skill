@@ -7,17 +7,17 @@ skill: |
   each page and a maximum of {{$numPages}} pages.
   Return it in JSON using the following format: [{ "page": 1, "content":"the content of the page" }]
 inputs:
-  - name: input
+  - name: INPUT
     type: text
     description: "The input used to generate the children's book."
     default: ""
     required: True
-  - name: numwordsperpage
+  - name: numWordsPerPage
     type: text
     description: "The maximum number of words allowed per page."
     default: ""
     required: True
-  - name: numpages
+  - name: numPages
     type: text
     description: "The maximum number of pages allowed in the book."
     default: ""

@@ -191,12 +191,12 @@ skill: |
   prompt = "{{$input}}"
   steps = 
 inputs:
-  - name: input
+  - name: skills
     type: text
     description: "A user or AI's desired goal, objective, task, or high level idea that needs to be turned into a plan of actions/skills for an to autonomously enact."
     default: ""
     required: True
-  - name: skills
+  - name: input
     type: text
     description: "A list of skills that the AI has access to and descriptions of what they do and how they work."
     default: ""

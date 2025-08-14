@@ -15,7 +15,7 @@ skill: |
   YOU MUST END EACH SYNOPSIS WITH {{$endMarker}}
   
 inputs:
-  - name: chaptercount
+  - name: chapterCount
     type: text
     description: "The number of chapters the novella should have."
     default: ""
@@ -25,7 +25,7 @@ inputs:
     description: "The description of the novella's plot."
     default: ""
     required: True
-  - name: endmarker
+  - name: endMarker
     type: text
     description: "The marker that should be used to end each synopsis."
     default: ""

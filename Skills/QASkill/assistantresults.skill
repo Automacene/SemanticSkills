@@ -24,7 +24,7 @@ inputs:
     description: "The results from the API call."
     default: ""
     required: True
-  - name: resultscontext
+  - name: resultsContext
     type: text
     description: "The context of the results from the API call."
     default: ""

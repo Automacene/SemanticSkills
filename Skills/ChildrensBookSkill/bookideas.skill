@@ -7,12 +7,12 @@ skill: |
   the book title and a short description,
   represented as a valid json string, as an array of [{ "title": "the title", "description":"the short description" }]
 inputs:
-  - name: input
+  - name: INPUT
     type: text
     description: "The topic to generate ideas for the children's book."
     default: ""
     required: True
-  - name: numideas
+  - name: numIdeas
     type: text
     description: "The number of ideas to generate."
     default: ""

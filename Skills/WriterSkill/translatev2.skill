@@ -14,7 +14,7 @@ skill: |
   
   Translation:
 inputs:
-  - name: input
+  - name: INPUT
     type: text
     description: "The text to be translated and improved."
     default: ""

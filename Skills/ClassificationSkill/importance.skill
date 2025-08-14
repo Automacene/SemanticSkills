@@ -31,12 +31,12 @@ skill: |
   Message: "{{$input}}"
   Importance:
 inputs:
-  - name: hightopics
+  - name: highTopics
     type: text
     description: "A list of topics that are considered high importance."
     default: ""
     required: True
-  - name: lowtopics
+  - name: lowTopics
     type: text
     description: "A list of topics that are considered low importance."
     default: ""

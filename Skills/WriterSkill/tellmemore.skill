@@ -15,12 +15,12 @@ inputs:
     description: "The type of conversation the overview is based on."
     default: ""
     required: True
-  - name: focusarea
+  - name: input
     type: text
     description: "The specific area of the conversation to focus on in the overview."
     default: ""
     required: True
-  - name: input
+  - name: focusarea
     type: text
     description: "The conversation to be summarized."
     default: ""

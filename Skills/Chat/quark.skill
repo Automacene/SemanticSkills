@@ -26,12 +26,12 @@ skill: |
   <reply>Quarks joins the chat</reply>
   <message>{{$INPUT}}</message>
 inputs:
-  - name: history
+  - name: HISTORY
     type: text
     description: "The history of the conversation between the user and the AI chatbot."
     default: ""
     required: True
-  - name: input
+  - name: INPUT
     type: text
     description: "The user's input to the AI chatbot."
     default: ""

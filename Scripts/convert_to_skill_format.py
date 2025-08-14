@@ -78,7 +78,7 @@ def convert_skill(directory, output_dir, base_dir):
     skill_content += "inputs:\n"
     if 'description' in description and 'arguments' in description['description']:
         for arg in description['description']['arguments']:
-            arg_name = arg['argument_identifier'].replace('{{$', '').replace('}}', '').lower()
+            arg_name = arg['argument_identifier'].replace('{{$', '').replace('}}', '')
             skill_content += f"  - name: {arg_name}\n"
             skill_content += f"    type: text\n"
             skill_content += f"    description: \"{arg['argument_description']}\"\n"

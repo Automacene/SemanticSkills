@@ -57,7 +57,7 @@ skill: |
   
   # {{$INPUT}}
 inputs:
-  - name: input
+  - name: INPUT
     type: text
     description: "A theme, high level concept, or idea to generate an acronym from."
     default: ""

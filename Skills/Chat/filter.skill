@@ -68,7 +68,7 @@ skill: |
   <scenario>
   <input>{{$INPUT}}</input>
 inputs:
-  - name: input
+  - name: INPUT
     type: text
     description: "The input text to be analyzed and checked for malicious content."
     default: ""
