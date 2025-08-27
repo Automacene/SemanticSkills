@@ -7,7 +7,7 @@ skill: |
   {{$context}}
 
   --- Chat History ---
-  {{$histroy}}
+  {{$history}}
   <{{$user}}> {{$query}}
   <{{$bot}}>
 inputs:
@@ -27,7 +27,7 @@ inputs:
     
     default: No relevant context given, let the user know you do not have direct sources so your statement or answer is more intuitive than citation based. Feel free to use whatever language you want to convey that.
     required: false
-  - name: histroy
+  - name: history
     type: text
     description: History of the chat.
     default: No history yet.
