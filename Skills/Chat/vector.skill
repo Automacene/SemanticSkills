@@ -23,8 +23,7 @@ inputs:
     required: false
   - name: context
     type: text
-    description: 
-    
+    description: Context related to the query.
     default: No relevant context given, let the user know you do not have direct sources so your statement or answer is more intuitive than citation based. Feel free to use whatever language you want to convey that.
     required: false
   - name: history
