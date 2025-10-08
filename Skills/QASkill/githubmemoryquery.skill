@@ -14,7 +14,7 @@ inputs:
     description: "The question or information to be recalled from the repository."
     default: ""
     required: True
-  - name: {{textmemoryskill.recall $input
+  - name: textmemoryskill.recall $input
     type: text
     description: "Function whose input is the same as this skill's input and grabs a data from github."
     default: ""

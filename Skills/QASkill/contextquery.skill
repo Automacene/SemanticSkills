@@ -51,7 +51,7 @@ skill: |
   
   {{$input}}
 inputs:
-  - name: {{time
+  - name: time
     type: text
     description: "The current date and time."
     default: ""
