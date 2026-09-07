@@ -103,7 +103,7 @@ status:
   locators:
     - type: source_code
       urls:
-        - https://github.com/Automacene/SemanticSkills/blob/main/summarize/deal-summary.skill
+        - https://github.com/Automacene/SemanticSkills/blob/main/Skills/summarize/deal-summary.skill
   tokens: 212
   validated: "2026-09-06T18:04:00Z"
 ```

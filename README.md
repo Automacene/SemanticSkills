@@ -14,12 +14,13 @@ string, a chat message array, or an MCP `prompts/get` response. That is the call
 Skills live in a directory named for their namespace, one file each.
 
 ```
-chat/vector.skill
-summarize/notegen.skill
-writer/twosentencesummary.skill
+Skills/chat/vector.skill
+Skills/summarize/notegen.skill
+Skills/writer/twosentencesummary.skill
 ```
 
-The directory must match `metadata.namespace` and the filename must match `metadata.name`.
+`Skills/` is where the Python loader fetches from, so it stays even though the namespace is
+in the document. The directory under it must match `metadata.namespace` and the filename must match `metadata.name`.
 Both are DNS-1123 labels, so lowercase letters, digits and hyphens, starting with a letter.
 
 | Namespace | | Namespace | |

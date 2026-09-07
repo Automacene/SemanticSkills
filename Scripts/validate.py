@@ -156,7 +156,7 @@ def check(path):
 
 def main():
     quiet = "--quiet" in sys.argv
-    skills = sorted(p for p in ROOT.glob("*/*.skill") if p.parts[-2] != "Scripts")
+    skills = sorted(ROOT.glob("Skills/*/*.skill"))
 
     failed = 0
     total = 0

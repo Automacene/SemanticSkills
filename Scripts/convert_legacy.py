@@ -211,7 +211,7 @@ def main():
             report.append((str(source), f"FAILED {error}", []))
             continue
 
-        target = ROOT / namespace / f"{name}.skill"
+        target = ROOT / "Skills" / namespace / f"{name}.skill"
         text = yaml.dump(doc, Dumper=Dumper, sort_keys=False, allow_unicode=True,
                          width=100, indent=2)
 
