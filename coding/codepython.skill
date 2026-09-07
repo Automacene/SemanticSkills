@@ -1,0 +1,44 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: codepython
+  namespace: coding
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Python Function Writer
+    automacene.org/description: Write a single Python function solving the given problem.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: software_engineering/code_generation/text_to_code
+        id: 60101
+  inputs:
+    - name: input
+      description: The task the user wants to perform in Python.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        WRITE PYTHON CODE TO SOLVE GIVEN PROBLEM. WRITE A SINGLE FUNCTION. ANY EXPLANATIONS MUST BE
+        A COMMENT. USE CLASSES AND TYPINGS WHERE APPROPRIATE. Emit [done] when done.
+    - name: examples
+      kind: examples
+      text: |-
+        # Start
+        # Function to print all strings in a list
+        def appendprefix(values):
+            foreach(val in values):
+                print(val)
+        # Done
+    - name: input
+      kind: input
+      text: |-
+        #{{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 256

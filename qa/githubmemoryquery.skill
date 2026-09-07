@@ -1,0 +1,48 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: githubmemoryquery
+  namespace: qa
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Repository Memory Answering
+    automacene.org/description: Answer a question using only material recalled from a GitHub repository.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: ai_ml_engineering/retrieval_augmented_generation/document_or_database_question_answering
+        id: 70604
+  inputs:
+    - name: recalled
+      description: Material recalled from the repository for this question.
+    - name: input
+      description: The question to answer.
+      required: true
+  sections:
+    - name: recalled
+      kind: context
+      needs:
+        - recalled
+      text: |-
+        {{$recalled}}
+        ---
+      absent: |-
+        Nothing was recalled from the repository. Say that you have no material to answer from.
+    - name: instructions
+      kind: instructions
+      text: |-
+        Considering only the information above, which has been loaded from a GitHub repository,
+        answer the following.
+    - name: input
+      kind: input
+      text: |-
+        Question: {{$input}}
+
+        Answer:
+  settings:
+    temperature: 0.8
+    maxTokens: 1024

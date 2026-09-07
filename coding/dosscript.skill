@@ -1,0 +1,54 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: dosscript
+  namespace: coding
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Safe DOS Script Writer
+    automacene.org/description: Turn an intent into a DOS batch script, refusing destructive commands.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: software_engineering/code_generation/text_to_code
+        id: 60101
+  inputs:
+    - name: firstName
+      description: The first name or identifier of the user interacting with the AI assistant.
+      required: true
+    - name: input
+      description: The description of a task the DOS script must accomplish.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        [BANNED COMMANDS]
+        FORMAT
+        DISKPART
+        PARTITION
+        CREATE PARTITION
+        FSUTIL
+        [END]
+
+        WRITE A DOS SCRIPT. End each script with an exit /b %ERRORLEVEL%
+
+        NEVER USE BANNED COMMANDS. BANNED COMMANDS DO DAMAGE. YOU NEVER WANT TO DO DAMAGE.
+        INSTEAD ECHO "SORRY {{$firstName}}, I CAN'T DO THAT. "
+    - name: examples
+      kind: examples
+      text: |-
+        List all pdf files in current folder
+        dir *.pdf
+        exit /b %ERRORLEVEL%
+    - name: input
+      kind: input
+      text: |-
+        {{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 1000

@@ -1,0 +1,58 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: acronymreverse
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Acronym Backronym Writer
+    automacene.org/description: Expand a word into three funny sentences matching its letters.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/creative_writing_generation
+        id: 10308
+  inputs:
+    - name: INPUT
+      description: The acronym or word to be expanded.
+      required: true
+  sections:
+    - name: examples
+      kind: examples
+      text: |-
+        # acronym: Devis
+        Sentences matching the acronym:
+        1. Dragons Eat Very Interesting Snacks
+        2. Develop Empathy and Vision to Increase Success
+        3. Don't Expect Vampires In Supermarkets
+        #END#
+
+        # acronym: Christmas
+        Sentences matching the acronym:
+        1. Celebrating Harmony and Respect in a Season of Togetherness, Merriment, and True joy
+        2. Children Have Real Interest Since The Mystery And Surprise Thrills
+        3. Christmas Helps Reduce Inner Stress Through Mistletoe And Sleigh excursions
+        #END#
+
+        # acronym: noWare
+        Sentences matching the acronym:
+        1. No One Wants an App that Randomly Erases everything
+        2. Nourishing Oatmeal With Almond, Raisin, and Egg toppings
+        3. Notice Opportunity When Available and React Enthusiastically
+        #END#
+    - name: instructions
+      kind: instructions
+      text: |-
+        Reverse the following acronym back to a funny sentence. Provide 3 examples.
+    - name: input
+      kind: input
+      text: |-
+        # acronym: {{$INPUT}}
+        Sentences matching the acronym:
+  settings:
+    temperature: 0.5
+    maxTokens: 256

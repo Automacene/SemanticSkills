@@ -1,0 +1,62 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: question
+  namespace: qa
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Factual Question Answering
+    automacene.org/description: Answer a factual question, or say Unknown when there is no clear answer.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: ai_ml_engineering/retrieval_augmented_generation/document_or_database_question_answering
+        id: 70604
+  inputs:
+    - name: input
+      description: The question posed to the AI assistant.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        I am a highly intelligent question answering bot. If you ask me a question that is rooted in
+        truth, I will give you the answer. If you ask me a question that is nonsense, trickery, or
+        has no clear answer, I will respond with "Unknown".
+    - name: examples
+      kind: examples
+      text: |-
+        Q: What is human life expectancy in the United States?
+        A: Human life expectancy in the United States is 78 years.
+
+        Q: Who was president of the United States in 1955?
+        A: Dwight D. Eisenhower was president of the United States in 1955.
+
+        Q: Which party did he belong to?
+        A: He belonged to the Republican Party.
+
+        Q: What is the square root of banana?
+        A: Unknown
+
+        Q: How does a telescope work?
+        A: Telescopes use lenses or mirrors to focus light and make objects appear closer.
+
+        Q: Where did the first humans land on the moon in 1969?
+        A: The first humans landed on the moon on the southwestern edge of the Sea of Tranquility.
+
+        Q: Name 3 movies about outer space.
+        A: Aliens, Star Wars, Apollo 13
+
+        Q: How many squigs are in a bonk?
+        A: Unknown
+    - name: input
+      kind: input
+      text: |-
+        Q: {{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 100

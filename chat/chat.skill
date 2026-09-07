@@ -1,0 +1,61 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: chat
+  namespace: chat
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: General Assistant Chat
+    automacene.org/description: Hold a general conversation as a helpful assistant.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/dialogue_generation
+        id: 10304
+  inputs:
+    - name: input
+      description: The input text to be processed.
+      default: This is an empty prompt, the user forgot to prompt you.
+      required: true
+    - name: history
+      description: The history of the conversation.
+      required: true
+    - name: user
+      description: The user's name.
+      default: User
+      required: true
+    - name: bot
+      description: The bot's name.
+      default: Assistant
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        The following is a conversation with an AI assistant. The assistant is helpful, creative,
+        clever, and very friendly.
+        Be sure that you only answer for yourself '{{$bot}}'. Do not generate text for '{{$user}}'.
+    - name: opening
+      kind: examples
+      text: |-
+        <<init>> {{$user}}:I have a question. Can you help?
+        <<start>> {{$bot}}:Of course. I am your AI Copilot. Go on!
+    - name: history
+      kind: history
+      needs:
+        - history
+      text: |-
+        {{$history}}
+      absent: |-
+        This is the start of the conversation.
+    - name: input
+      kind: input
+      text: |-
+        <<latest>> {{$user}}:{{$input}}
+  settings:
+    temperature: 0.9
+    maxTokens: 20000

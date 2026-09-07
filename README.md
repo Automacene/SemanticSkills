@@ -1,80 +1,105 @@
 # SemanticSkills
 
-A comprehensive repository of standardized semantic skills for AI, designed for prompt engineering, LLM integration, and automated planning.
+Prompt templates written as data, so a program can read them, fill them, check them, and
+publish them.
 
-## Overview
+A skill file holds the sections a prompt is made of, the inputs it takes, what it returns, and
+the capabilities it implements. Nothing in it decides whether the result becomes a completion
+string, a chat message array, or an MCP `prompts/get` response. That is the caller's business.
 
-SemanticSkills provides a large, organized collection of prompt templates and skill descriptions for use with language models (LLMs). Each skill is defined by its purpose, inputs, outputs, and a prompt template, enabling consistent and efficient integration into AI systems and planners.
+[STANDARD.md](STANDARD.md) is the specification. Read it before adding a skill.
 
-## Features
+## Layout
 
-- **Standardized Skill Format:** All skills follow a clear, documented format for easy parsing and integration.
-- **Automated Conversion:** Scripts are provided to convert legacy three-file skills (`config.json`, `description.toml`, `skprompt.txt`) into a unified `.skill` format, preserving folder structure and metadata.
-- **Input Correction:** Additional scripts ensure that input variable names in `.skill` files match the exact spelling and capitalization used in prompt templates, guaranteeing reliability for automated planners and LLMs.
-- **Domain Coverage:** Skills span a wide range of domains, including chat, planning, summarization, coding, writing, and more.
-- **Ready for Automation:** The repository is designed for use in agentic workflows, automated planners, and any system that needs to chain or orchestrate LLM-powered skills.
+Skills live in a directory named for their namespace, one file each.
 
-## Skill Format
-
-Each skill is described in a `.skill` file using a YAML-like format:
-
-```yaml
-name: SkillName
-description: "A brief description of the skill."
-skill_class: semantic
-skill: |
-  ...prompt template with {{$InputVars}}...
-inputs:
-  - name: InputVar
-    type: text
-    description: "Description of the input."
-    default: ""
-    required: True
-settings:
-    model: "text-davinci-003"
-    max_tokens: 150
-    temperature: 0.9
-    stop:
-      - "Human:"
-      - "AI:"
+```
+chat/vector.skill
+summarize/notegen.skill
+writer/twosentencesummary.skill
 ```
 
-## Conversion & Correction Workflow
+The directory must match `metadata.namespace` and the filename must match `metadata.name`.
+Both are DNS-1123 labels, so lowercase letters, digits and hyphens, starting with a letter.
 
-1. **Convert legacy skills:**
-   - Use `Scripts/convert_to_skill_format.py` to convert folders containing `config.json`, `description.toml`, and `skprompt.txt` into `.skill` files, preserving the original folder structure.
-2. **Move existing .skill files:**
-   - The converter also moves any `.skill` files found in the input tree to the correct output location.
-3. **Correct input variable names:**
-   - Use `Scripts/fix_skill_vars_from_prompt.py` to scan `.skill` files and update input names to match the exact spelling/capitalization of variables in the prompt template.
+| Namespace | | Namespace | |
+|---|---|---|---|
+| `calendar` | 1 | `intent-detection` | 1 |
+| `chat` | 6 | `misc` | 3 |
+| `childrens-book` | 2 | `qa` | 6 |
+| `classification` | 2 | `standard` | 2 |
+| `coding` | 8 | `summarize` | 3 |
+| `fun` | 3 | `writer` | 16 |
 
-## Example Skill Description
+`standard/` holds two worked examples, one single-input and one multi-input, kept as
+references for anyone writing a new skill.
+
+## A skill
 
 ```yaml
-name: FunSkill.Excuses
-description: "Generates creative and humorous excuses for a given event."
-skill_class: semantic
-skill: |
-  {{$input}} needs an excuse.
-inputs:
-  - name: input
-    type: text
-    description: "The event for which an excuse is needed."
-    default: ""
-    required: True
-settings:
-    model: "text-davinci-003"
-    max_tokens: 50
-    temperature: 0.8
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: twosentencesummary
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Two Sentence Summary
+    automacene.org/description: Summarize text in two sentences or less.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/summarization
+        id: 10302
+  inputs:
+    - name: input
+      description: The text to summarize.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: Summarize the following text in two sentences or less.
+    - name: input
+      kind: input
+      text: |-
+        [BEGIN TEXT]
+        {{$input}}
+        [END TEXT]
+  settings:
+    temperature: 0.0
+    maxTokens: 100
 ```
 
-## Contribution & Community
+`capabilities`, `inputs` and `output` are the public contract, identical across every callable
+kind, so a caller binds to a capability without knowing a prompt answered rather than a
+function. `sections` and `settings` are the implementation and nothing outside the renderer
+reads them.
 
-We welcome contributions of new skills, improvements to conversion scripts, and feedback on standardization. Please submit pull requests or open issues to help expand and refine the repository.
+## Checking
 
-## Acknowledgements
+```
+python3 Scripts/validate.py
+```
 
-Special thanks to Microsoft for their Semantic Kernel Samples, which inspired much of the skill structure and content. The Automacene Team and contributors continue to advance prompt engineering and agentic AI workflows through open collaboration.
+Exits non-zero if anything fails, so it works as a build step. It checks that every `needs`
+names a declared input, every declared input is used, every section with `needs` carries an
+`absent`, section kinds come from the vocabulary, names and namespaces are DNS-1123, versions
+are semver, and no `TODO-CONVERT` placeholder survives.
 
----
-**With Love, Various AI and The Automacene Team**
+## Scripts
+
+`Scripts/validate.py` checks the corpus against the standard.
+
+`Scripts/convert_legacy.py` is the migration that produced this tree from the pre-standard
+format. Kept as a record of how the corpus moved, not as something to run again.
+
+## Where these came from
+
+The corpus began as Microsoft's Semantic Kernel samples and grew from there. It has been
+converted twice: from the three-file layout of `config.json`, `description.toml` and
+`skprompt.txt` into a single `.skill` file, and then from that into the standard described
+here. `STANDARD.md` has a migration table covering the second move.

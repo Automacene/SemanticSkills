@@ -1,0 +1,71 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: emailto
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Bullet Points to Addressed Email
+    automacene.org/description: Rewrite bullet points as an email to a named recipient from a named sender.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: content_writing_marketing/email_marketing/email_campaign_creation
+        id: 110801
+  inputs:
+    - name: to
+      description: The recipient of the email.
+      required: true
+    - name: input
+      description: The bullet points to be rewritten into an email.
+      required: true
+    - name: sender
+      description: The sender of the email.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Rewrite my bullet points into an email featuring complete sentences. Use a polite and
+        inclusive tone.
+    - name: examples
+      kind: examples
+      text: |-
+        [Input]
+        Toby,
+
+        - Macbeth, King Scotland
+        - Married, Wife Lady Macbeth, No Kids
+        - Dog Toby McDuff. Hunter, dead.
+        - Shakespeare play
+
+        Thanks,
+        Dexter
+
+        +++++
+        Hi Toby,
+
+        The story of Macbeth
+        My name is Macbeth. I used to be King of Scotland, but I died. My wife's name is Lady Macbeth and we were married for 15 years. We had no children. Our beloved dog Toby McDuff was a famous hunter of rats in the forest.
+        My story was immortalized by Shakespeare in a play.
+
+        Thanks,
+        Dexter
+        +++++
+    - name: input
+      kind: input
+      text: |-
+        [Input]
+        {{$to}}
+        {{$input}}
+
+        Thanks,
+        {{$sender}}
+        +++++
+  settings:
+    temperature: 0.0
+    maxTokens: 256

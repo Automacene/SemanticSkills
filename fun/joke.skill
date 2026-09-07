@@ -1,0 +1,54 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: joke
+  namespace: fun
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Joke Writer
+    automacene.org/description: Write one clean joke or humorous story about a topic.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/creative_writing_generation
+        id: 10308
+  inputs:
+    - name: style
+      description: The type of joke or humorous story to generate, such as puns, knock-knock jokes, etc.
+      required: true
+    - name: input
+      description: The topic for which the joke or humorous story should be generated.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        WRITE EXACTLY ONE JOKE or HUMOROUS STORY ABOUT THE TOPIC BELOW
+
+        JOKE MUST BE:
+        - G RATED
+        - WORKPLACE/FAMILY SAFE
+        NO SEXISM, RACISM OR OTHER BIAS/BIGOTRY
+
+        BE CREATIVE AND FUNNY. I WANT TO LAUGH.
+    - name: style
+      kind: context
+      needs:
+        - style
+      text: |-
+        Write it in this style: {{$style}}
+      absent: |-
+        No style was asked for. Use your own.
+    - name: input
+      kind: input
+      text: |-
+        +++++
+        {{$input}}
+        +++++
+  settings:
+    temperature: 0.9
+    maxTokens: 1000

@@ -1,0 +1,73 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: emailsearch
+  namespace: coding
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Microsoft Graph Email Query Builder
+    automacene.org/description: Turn a description of an email search into a KQL query for Microsoft Graph.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: research_knowledge_productivity/office_productivity/email_management
+        id: 130604
+  inputs:
+    - name: today
+      description: Today's date, as YYYY-MM-DD.
+    - name: input
+      description: The email search to build a query for.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        SEARCH FOR EMAILS using Microsoft Graph using CONTEXT, and Query criteria below.
+        Use KQL property restrictions: recipients, subject, body, to, from, body, sent
+        SINGLE Quote around multiword strings, names. Don't include $search.
+        ONLY INCLUDE TO, FROM, RECIPIENTS THAT WERE EXPLICITLY PROVIDED
+        USE WILDCARD QUERIES for about, contains, discussing and similar phrases
+        GROUP BOOLEAN CLAUSES
+
+        [CONCEPTS]
+        Think in steps.
+        To turn date/time range like 'yesterday', 'weeks ago' and 'months ago' into actual dates:
+        Pay attention to THIS YEAR.
+        1. totalDaysOffset = number of days from range
+        2. NewDate = TODAY from CONTEXT - totalDaysOffset.
+        [END CONCEPTS]
+
+        USE [CONCEPTS] TO LEARN
+        BECAUSE YOU ARE WORKING WITH CLASSIC TEXT SEARCH ENGINE, ADD SYNONYMS, EXPAND OR USE
+        ACRONYMS, OR ALTERNATIVE FORMS A PHRASE TO IMPROVE QUERY QUALITY
+        NEVER SHOW YOUR REASONING
+    - name: today
+      kind: context
+      needs:
+        - today
+      text: |-
+        [CONTEXT]
+        TODAY IS: {{$today}}
+        [END CONTEXT]
+      absent: |-
+        No date was supplied. Ask for one before resolving any relative date range.
+    - name: examples
+      kind: examples
+      text: |-
+        Query criteria:
+        Email from toby mcduff about LLMs
+
+        from:'toby mduff' AND (subject:'LLM*' or subject:'Large Language Models*' OR body:'LLM*' OR body:'Large Language Models*')
+        [done]
+    - name: input
+      kind: input
+      text: |-
+        Query criteria:
+        {{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 256

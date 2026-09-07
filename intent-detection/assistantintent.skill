@@ -1,0 +1,66 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: assistantintent
+  namespace: intent-detection
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Assistant Intent Detection
+    automacene.org/description: Match a query to one of a fixed list of assistant intents.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/text_classification/intent_classification
+        id: 10204
+  inputs:
+    - name: input
+      description: The query to be identified.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        These are available intents that one might query:
+
+            AutoSummarize,
+            DeleteAlerts,
+            DeleteInsights,
+            DeleteLastAlert,
+            HideEmails,
+            HideTeamsMessages,
+            RefreshInsights,
+            ShowAlerts,
+            ShowAlertRules,
+            ShowContacts,
+            ShowEmails,
+            ShowOnlyEmails,
+            ShowTeamsMessages,
+            ShowOnlyTeamsMessages,
+            ShowCalendarEvents,
+            TellAJoke,
+            AlertForPerson,
+            AlertForTopic,
+            FindContentAboutX,
+            FindSimilarConversations,
+            WhatTimeIsIt,
+            Help,
+            EnableAlerting,
+            DisableAlerting,
+            OnDemandSummary,
+            OnDemandNotes,
+            TellMeMore
+
+        Which intent is this query asking for? If none match, respond with Unknown.
+    - name: input
+      kind: input
+      text: |-
+        {{$input}}
+
+        Intent:
+  settings:
+    temperature: 0.1
+    maxTokens: 100

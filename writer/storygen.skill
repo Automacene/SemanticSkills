@@ -1,0 +1,53 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: storygen
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Story Synopsis Generator
+    automacene.org/description: Generate chapter synopses for a story, as XML.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/story_generation
+        id: 10306
+      - name: ai_ml_engineering/prompt_engineering/structured_output_generation
+        id: 70503
+  inputs:
+    - name: input
+      description: The text to be formatted into XML.
+      required: true
+    - name: xml_tags
+      description: The list of XML tags to be used in the formatting.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        ONLY USE XML TAGS IN THIS LIST:
+        [XML TAG LIST]
+        list: Surround any lists with this tag
+        synopsis: An outline of the chapter to write
+        [END LIST]
+
+        EMIT WELL FORMED XML ALWAYS. Code should be CDATA.
+    - name: tags
+      kind: context
+      needs:
+        - xml_tags
+      text: |-
+        Also use these tags: {{$xml_tags}}
+      absent: |-
+        No extra tags were supplied. Use only the tags listed above.
+    - name: input
+      kind: input
+      text: |-
+        {{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 250

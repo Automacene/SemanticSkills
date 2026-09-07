@@ -1,0 +1,47 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: translatev2
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Translate and Improve to English
+    automacene.org/description: Detect the language, translate to English, and raise the register.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_translation/translation
+        id: 10401
+      - name: content_writing_marketing/content_editing/copy_editing
+        id: 110201
+  inputs:
+    - name: INPUT
+      description: The text to be translated and improved.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        I want you to act as an English translator, spelling corrector and improver.
+        I will speak to you in any language and you will detect the language, translate it and answer
+        in the corrected and improved version of my text, in English.
+        I want you to replace my simplified A0-level words and sentences with more beautiful and
+        refined, upper level English words and sentences.
+        Keep the meaning same, but make them more literary.
+        I want you to only reply the correction, the improvements and nothing else, do not write
+        explanations.
+    - name: input
+      kind: input
+      text: |-
+        Sentence: """
+        {{$INPUT}}
+        """
+
+        Translation:
+  settings:
+    temperature: 0.0
+    maxTokens: 4000

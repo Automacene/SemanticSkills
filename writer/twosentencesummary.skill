@@ -1,0 +1,36 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: twosentencesummary
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Two Sentence Summary
+    automacene.org/description: Summarize text in two sentences or less.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/summarization
+        id: 10302
+  inputs:
+    - name: input
+      description: The text to be summarized.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Summarize the following text in two sentences or less.
+    - name: input
+      kind: input
+      text: |-
+        [BEGIN TEXT]
+        {{$input}}
+        [END TEXT]
+  settings:
+    temperature: 0.0
+    maxTokens: 100

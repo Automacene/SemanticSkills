@@ -1,0 +1,56 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: notegen
+  namespace: summarize
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Compact Note Generator
+    automacene.org/description: Reduce a document extract to brief key points worth remembering.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: research_knowledge_productivity/knowledge_management/note_taking
+        id: 130401
+      - name: language_processing/language_generation/summarization
+        id: 10302
+  inputs:
+    - name: input
+      description: The text or content from which key points should be extracted.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Analyze the following extract taken from a document.
+        - Produce key points for memory.
+        - Give memory a name.
+        - Extract only points worth remembering.
+        - Be brief. Conciseness is very important.
+        - Use broken English.
+        You will use this memory to analyze the rest of this document, and for other relevant tasks.
+    - name: examples
+      kind: examples
+      text: |-
+        [Input]
+        My name is Macbeth. I used to be King of Scotland, but I died. My wife's name is Lady Macbeth and we were married for 15 years. We had no children. Our beloved dog Toby McDuff was a famous hunter of rats in the forest.
+        My story was immortalized by Shakespeare in a play.
+        +++++
+        Family History
+        - Macbeth, King Scotland
+        - Wife Lady Macbeth, No Kids
+        - Dog Toby McDuff. Hunter, dead.
+        - Shakespeare play
+    - name: input
+      kind: input
+      text: |-
+        [Input]
+        [[{{$input}}]]
+        +++++
+  settings:
+    temperature: 0.0
+    maxTokens: 256

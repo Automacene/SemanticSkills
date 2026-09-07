@@ -1,0 +1,41 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: translate
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Translate to a Named Language
+    automacene.org/description: Translate text into a language you name.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_translation/translation
+        id: 10401
+  inputs:
+    - name: language
+      description: The language to which the input should be translated.
+      required: true
+    - name: input
+      description: The text to be translated.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Translate the input below into {{$language}}
+
+        MAKE SURE YOU ONLY USE {{$language}}.
+    - name: input
+      kind: input
+      text: |-
+        {{$input}}
+
+        Translation:
+  settings:
+    temperature: 0.7
+    maxTokens: 256

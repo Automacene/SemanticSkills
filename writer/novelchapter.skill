@@ -1,0 +1,63 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: novelchapter
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Novel Chapter Writer
+    automacene.org/description: Write one chapter of a novel from a synopsis and the chapter before it.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/story_generation
+        id: 10306
+  inputs:
+    - name: theme
+      description: The theme of the story.
+      required: true
+    - name: previousChapter
+      description: The previous chapter of the story.
+      required: true
+    - name: input
+      description: The synopsis of the chapter to be written.
+      required: true
+    - name: chapterIndex
+      description: The index of the chapter to be written.
+      required: true
+  sections:
+    - name: context
+      kind: context
+      needs:
+        - theme
+      text: |-
+        [CONTEXT]
+
+        THEME OF STORY:
+        {{$theme}}
+
+        PREVIOUS CHAPTER:
+        {{$previousChapter}}
+
+        [END CONTEXT]
+      absent: |-
+        No theme or previous chapter was given. Treat this as the opening chapter.
+    - name: instructions
+      kind: instructions
+      text: |-
+        WRITE THIS CHAPTER USING [CONTEXT] AND CHAPTER SYNOPSIS.
+        DO NOT REPEAT SYNOPSIS IN THE OUTPUT.
+    - name: input
+      kind: input
+      text: |-
+        Chapter Synopsis:
+        {{$input}}
+
+        Chapter {{$chapterIndex}}
+  settings:
+    temperature: 0.3
+    maxTokens: 2048

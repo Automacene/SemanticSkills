@@ -1,0 +1,41 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: entity
+  namespace: coding
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Inline Entity Tagger
+    automacene.org/description: Annotate recognized entities in text with XML tags you specify.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_understanding/named_entity_recognition
+        id: 10104
+  inputs:
+    - name: tags
+      description: The xml tags to be injected into the text.
+      required: true
+    - name: input
+      description: The original text to be processed.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Inject xml tags inline into the given text for the following:
+        {{$tags}}
+
+        - If there is nothing to tag, don't insert one.
+        - output [done] when original text was processed
+    - name: input
+      kind: input
+      text: |-
+        {{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 256

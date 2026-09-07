@@ -1,0 +1,41 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: bookideas
+  namespace: childrens-book
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Children's Book Ideas
+    automacene.org/description: Generate a list of children's book ideas from a topic, as JSON.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/creative_writing_generation
+        id: 10308
+      - name: ai_ml_engineering/prompt_engineering/structured_output_generation
+        id: 70503
+  inputs:
+    - name: INPUT
+      description: The topic to generate ideas for the children's book.
+      required: true
+    - name: numIdeas
+      description: The number of ideas to generate.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Create a list of {{$numIdeas}} ideas for a children's book, each with a title and a short
+        description, represented as a valid json string, as an array of
+        [{ "title": "the title", "description":"the short description" }]
+    - name: topic
+      kind: input
+      text: |-
+        Topic: {{$INPUT}}
+  settings:
+    temperature: 0.5
+    maxTokens: 2000
