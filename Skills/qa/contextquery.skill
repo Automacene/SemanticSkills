@@ -11,7 +11,7 @@ metadata:
       up.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -66,22 +66,31 @@ spec:
         Don't give me old information that is out of date.
         Based on calculations from TODAY, if the answer is in the past, emit a fact. Otherwise emit
         a lookup tag.
-    - name: context
+    - name: today
       kind: context
-      needs:
-        - firstname
       text: |-
         [CONTEXT]
         TODAY is {{time.Date}}
+    - name: person
+      kind: context
+      text: |-
         FIRST NAME: {{$firstname}}
         LAST NAME: {{$lastname}}
+      absent: |-
+        The person asking has not been named.
+    - name: place
+      kind: context
+      text: |-
         CITY: {{$city}}
         STATE: {{$state}}
         COUNTRY: {{$country}}
+      absent: |-
+        Their location is not known. Do not assume one.
+    - name: recalled
+      kind: context
+      text: |-
         {{recall $input}}
         [END CONTEXT]
-      absent: |-
-        Nothing is known about the person asking. Do not assume a location or a date.
     - name: examples
       kind: examples
       text: |-

@@ -50,7 +50,7 @@ metadata:
     automacene.org/description: Summarize text in two sentences or less.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -100,7 +100,55 @@ format. Kept as a record of how the corpus moved, not as something to run again.
 
 ## Where these came from
 
-The corpus began as Microsoft's Semantic Kernel samples and grew from there. It has been
+The corpus began as Microsoft's Semantic Kernel samples, imported in May 2023, and grew from
+there. Forty-five of the 53 skills are theirs; the rest were written here. It has been
 converted twice: from the three-file layout of `config.json`, `description.toml` and
-`skprompt.txt` into a single `.skill` file, and then from that into the standard described
-here. `STANDARD.md` has a migration table covering the second move.
+`skprompt.txt` into a single `.skill` file, and then from that into the standard described in
+`STANDARD.md`.
+
+## The format this replaced
+
+The previous format was built for `text-davinci-003`, which took one string and continued it.
+That single assumption is behind everything awkward about it.
+
+A skill was one opaque blob, so the structure that mattered was visible only to a person
+reading the template. Nothing could ask a skill where its context went or what order its parts
+came in. `inputs` restated what the template already said, in a second place that drifted,
+which is why the repository used to carry a `fix_skill_inputs.py` whose whole job was
+repairing that. `default` did two unrelated jobs, holding both a literal value like `USER` and
+a paragraph of instructions for when a slot came back empty. Trailing markers like
+`<{{$bot}}>` and `stop` sequences existed to make a completion model start and stop talking.
+`skill_class` decided whether the `skill` field held a prompt or Python source, which made one
+key mean two unrelated things.
+
+Two files would not parse at all. `chat/gpt` and `coding/emailsearch` declared inputs named
+`{{date` and `{{year`, because the repair script had scraped function placeholders such as
+`{{time.Date}}` as if they were variables, and `{{` opens a flow mapping in YAML.
+
+## What the conversion did
+
+| Old | New |
+|---|---|
+| `name` | `metadata.name`, lowercased and hyphenated |
+| folder | `metadata.namespace`, lowercased |
+| `description` | `metadata.annotations[automacene.org/description]` |
+| `skill_class` | Gone. `kind` dispatches; functional skills become `kind: NuclioFunction`. |
+| `skill` | Decomposed into `spec.sections` |
+| `inputs[].default` holding a value | `spec.inputs[].default` |
+| `inputs[].default` holding instructions | The owning section's `absent` |
+| `inputs[].type` | Gone. Every one in the corpus was `text`. |
+| `output` | `spec.output.fields`, as a typed list |
+| `settings.temperature`, `max_tokens` | `spec.settings.temperature`, `maxTokens` |
+| `settings.model`, `project`, `location` | Gone |
+| `settings.top_p`, penalties, `stop` | Gone |
+
+The sampling parameters went because they carried no intent. Every one of the 53 files set all
+five, and 39 set `top_p` to `0.0`, 49 set `presence_penalty` to zero, 51 set
+`frequency_penalty` to zero. Those were converter defaults nobody chose, and `top_p: 0.0` does
+not mean what the files carrying it intended. Temperature and token count were the two that
+varied, so they are the two that remain.
+
+`Scripts/convert_legacy.py` is the script that did the mechanical half, kept as a record. It
+converts a skill into a single section of `kind: input` holding the whole blob, which renders
+identically to the old format and is a valid document. Real sections were written by hand
+afterwards.

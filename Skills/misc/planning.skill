@@ -218,8 +218,6 @@ spec:
         ]
     - name: skills
       kind: context
-      needs:
-        - skills
       text: |-
         [skills]
         {{$skills}}

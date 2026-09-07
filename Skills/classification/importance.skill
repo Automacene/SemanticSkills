@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: Rate how urgent a message is, from its tone, content and time sensitivity.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -38,15 +38,18 @@ spec:
 
         Use one of the following importance levels. Only emit levels, nothing else:
         Importance Levels: urgent, high, medium, low
-    - name: topics
+    - name: high-topics
       kind: context
-      needs:
-        - highTopics
       text: |-
         Topics of high importance: {{$highTopics}}
+      absent: |-
+        No high-importance topics were given.
+    - name: low-topics
+      kind: context
+      text: |-
         Topics of low importance: {{$lowTopics}}
       absent: |-
-        No topic weighting was given. Judge importance from the message alone.
+        No low-importance topics were given.
     - name: examples
       kind: examples
       text: |-

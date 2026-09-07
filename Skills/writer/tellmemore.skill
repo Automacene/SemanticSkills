@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: Write a detailed overview of a conversation, focused on one area.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -37,8 +37,6 @@ spec:
         {{$input}}
     - name: previous
       kind: context
-      needs:
-        - previousresults
       text: |-
         >>>>>The following is an overview of a previous part of the {{$conversationtype}}, focusing on "{{$focusarea}}".
         {{$previousresults}}

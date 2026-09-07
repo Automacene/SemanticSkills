@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: Turn a description of an email search into a KQL query for Microsoft Graph.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -47,8 +47,6 @@ spec:
         NEVER SHOW YOUR REASONING
     - name: today
       kind: context
-      needs:
-        - today
       text: |-
         [CONTEXT]
         TODAY IS: {{$today}}

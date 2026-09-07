@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: Answer a question using only material recalled from a GitHub repository.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -25,8 +25,6 @@ spec:
   sections:
     - name: recalled
       kind: context
-      needs:
-        - recalled
       text: |-
         {{$recalled}}
         ---
