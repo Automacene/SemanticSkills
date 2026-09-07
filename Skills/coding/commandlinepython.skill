@@ -1,0 +1,55 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: commandlinepython
+  namespace: coding
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Python CLI Script Writer
+    automacene.org/description: Write a Python command line script that reads args and stdin.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: software_engineering/code_generation/text_to_code
+        id: 60101
+  inputs:
+    - name: input
+      description: The instructions for the Python script to accomplish.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        WRITE PYTHON 3.x command line scripts. WRITE A SINGLE FUNCTION.
+        USE sys.argv, sys.stdin.
+        HANDLE ERRORS. EXPLANATIONS MUST BE A COMMENT.
+    - name: examples
+      kind: examples
+      text: |-
+        # Start
+        # command line script. Read filename from args, open file, copy stdin to file
+        import sys
+
+        if len(sys.argv) != 2:
+          print("not_handled")
+          sys.exit()
+
+        filename = sys.argv[1]
+        file = open(filename, 'w')
+        file.write(sys.stdin.read())
+        file.close()
+
+        # Done
+    - name: input
+      kind: input
+      text: |-
+        # Start
+        #{{$input}}
+        # Read input from stdin. print all output
+  settings:
+    temperature: 0.0
+    maxTokens: 256

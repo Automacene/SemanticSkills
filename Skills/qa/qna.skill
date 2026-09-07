@@ -1,0 +1,58 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: qna
+  namespace: qa
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Question and Answer Extraction
+    automacene.org/description: Build a question and answer list from a transcript, as JSON.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/question_generation
+        id: 10305
+      - name: ai_ml_engineering/prompt_engineering/structured_output_generation
+        id: 70503
+  inputs:
+    - name: input
+      description: The conversation or transcript to generate questions and answers from.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        ONLY USE JSON PROPERTIES IN THIS LIST:
+        [JSON PROPERTY LIST]
+        question
+        answer
+        [END LIST]
+
+        EMIT WELL FORMED JSON ALWAYS.
+        BE BRIEF AND TO THE POINT.
+
+        Generate a Question and Answer list (results) based on the meeting chat and transcript in
+        CONTENT. Return well-formed json list.
+        Example: { "results": [{"question": "What time is it?", "answer": "2:15pm"}]}
+        If you cannot find any, return an empty list.
+        Do not include questions with empty answers.
+        Questions should be focused on the context of the content, not metadata or statistics.
+        Questions should be timeless.
+        Questions should use proper nouns when possible.
+        Questions should be about key ideas or concepts discussed.
+        Questions should be concise and to the point.
+        Ignore small talk.
+        List at most 4 questions.
+    - name: input
+      kind: input
+      text: |-
+        [CONTENT]
+        {{$input}}
+        [END CONTENT]
+  settings:
+    temperature: 0.0
+    maxTokens: 1000

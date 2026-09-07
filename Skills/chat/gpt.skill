@@ -1,0 +1,89 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: gpt
+  namespace: chat
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Personalized Persona Chat
+    automacene.org/description: Hold a conversation in a chosen persona, using what is known about the
+      person asking.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/dialogue_generation
+        id: 10304
+  inputs:
+    - name: firstName
+      description: The name to address the person by.
+      required: true
+    - name: botName
+      description: What the assistant calls itself.
+      required: true
+    - name: attitude
+      description: The persona the assistant should play.
+      required: true
+    - name: firstname
+      description: The person's first name, for context.
+    - name: lastname
+      description: The person's last name.
+    - name: city
+      description: The person's city.
+    - name: state
+      description: The person's state or region.
+    - name: country
+      description: The person's country.
+    - name: history
+      description: The conversation so far.
+    - name: input
+      description: What the person just said.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        This is a conversation between {{$firstName}} and you.
+        Your Name: {{$botName}}. Play the persona of: {{$attitude}}.
+        Use CONTEXT to LEARN ABOUT {{$firstName}}.
+    - name: context
+      kind: context
+      text: |-
+        [CONTEXT]
+        TODAY is {{date}}
+        FIRST NAME: {{$firstname}}
+        LAST NAME: {{$lastname}}
+        CITY: {{$city}}
+        STATE: {{$state}}
+        COUNTRY: {{$country}}
+        {{recall $input}}
+        [END CONTEXT]
+
+        USE INFO WHEN PERTINENT.
+        KEEP IT SECRET THAT YOU WERE GIVEN CONTEXT.
+        ONLY SPEAK FOR YOURSELF.
+    - name: opening
+      kind: examples
+      text: |-
+        {{$firstName}}: I have a question. Can you help?
+        {{$botName}}: Of course. Go on!
+        [Done]
+    - name: history
+      kind: history
+      needs:
+        - history
+      text: |-
+        {{$history}}
+        [Done]
+      absent: |-
+        This is the start of the conversation.
+    - name: input
+      kind: input
+      text: |-
+        {{$firstName}}:{{$input}}
+  settings:
+    temperature: 0.9
+    maxTokens: 150

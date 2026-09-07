@@ -1,0 +1,69 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: novelchapterwithnotes
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Novel Chapter Writer with Notes
+    automacene.org/description: Write one chapter of a novel using running notes as well as the previous
+      chapter.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/story_generation
+        id: 10306
+  inputs:
+    - name: theme
+      description: The theme of the story.
+      required: true
+    - name: notes
+      description: Notes about the story so far.
+      required: true
+    - name: previousChapter
+      description: The previous chapter of the story.
+      required: true
+    - name: input
+      description: The description of the chapter to be written.
+      required: true
+    - name: chapterIndex
+      description: The index of the chapter to be written.
+      required: true
+  sections:
+    - name: context
+      kind: context
+      needs:
+        - theme
+      text: |-
+        [CONTEXT]
+
+        THEME OF STORY:
+        {{$theme}}
+
+        NOTES OF STORY SO FAR - USE AS REFERENCE
+        {{$notes}}
+
+        PREVIOUS CHAPTER, USE AS REFERENCE:
+        {{$previousChapter}}
+
+        [END CONTEXT]
+      absent: |-
+        No theme, notes or previous chapter were given. Treat this as the opening chapter.
+    - name: instructions
+      kind: instructions
+      text: |-
+        WRITE THIS CHAPTER CONTINUING STORY, USING [CONTEXT] AND CHAPTER SYNOPSIS BELOW.
+        DO NOT REPEAT SYNOPSIS IN THE CHAPTER. DON'T REPEAT PREVIOUS CHAPTER.
+    - name: input
+      kind: input
+      text: |-
+        {{$input}}
+
+        Chapter {{$chapterIndex}}
+  settings:
+    temperature: 0.5
+    maxTokens: 1024

@@ -1,0 +1,40 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: brainstorm
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Idea Brainstorm
+    automacene.org/description: Generate a numbered list of ideas for a goal or topic.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: research_knowledge_productivity/research/research_ideation
+        id: 130106
+  inputs:
+    - name: INPUT
+      description: The topic or prompt for the list.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Must: brainstorm ideas and create a list.
+        Must: use a numbered list.
+        Must: only one list.
+        Must: end list with ##END##
+        Should: no more than 10 items.
+        Should: at least 3 items.
+    - name: input
+      kind: input
+      text: |-
+        Topic: {{$INPUT}}
+        Start.
+  settings:
+    temperature: 0.5
+    maxTokens: 2000

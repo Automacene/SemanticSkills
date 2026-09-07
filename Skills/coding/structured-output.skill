@@ -1,0 +1,50 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: structured-output
+  namespace: coding
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Profile Data Extraction
+    automacene.org/description: Extract structured profile details from a resume or LinkedIn text.
+spec:
+  authors:
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_understanding/entity_recognition
+        id: 10103
+      - name: ai_ml_engineering/prompt_engineering/structured_output_generation
+        id: 70503
+  inputs:
+    - name: profile_text
+      description: The LinkedIn or resume text to extract profile data from
+      required: true
+  output:
+    fields:
+      - name: name
+        type: string
+      - name: job_title
+        type: string
+      - name: company
+        type: string
+      - name: skills
+        type: string
+        repeated: true
+      - name: years_experience
+        type: integer
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Extract important profile information from the following text. Focus on extracting the
+        person's name, job title, company, skills, and years of experience. Ensure you ONLY output
+        JSON. Also, if you are unsure about a value, use null for strings and -1 for integers.
+    - name: input
+      kind: input
+      text: |-
+        Text: {{$profile_text}}
+  settings:
+    temperature: 0.7
+    maxTokens: 1500

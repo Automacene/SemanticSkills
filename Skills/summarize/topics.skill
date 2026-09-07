@@ -1,0 +1,60 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: topics
+  namespace: summarize
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Key Topic Extraction
+    automacene.org/description: Pull the key topics out of a document extract, as XML.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/text_classification/topic_labeling
+        id: 10202
+  inputs:
+    - name: input
+      description: The text or content from which topics should be extracted.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Analyze the following extract taken from a document and extract key topics.
+        - Topics only worth remembering.
+        - Be brief. Short phrases.
+        - Can use broken English.
+        - Conciseness is very important.
+        - Topics can include names of memories you want to recall.
+        - NO LONG SENTENCES. SHORT PHRASES.
+        - Return in XML
+    - name: examples
+      kind: examples
+      text: |-
+        [Input]
+        My name is Macbeth. I used to be King of Scotland, but I died. My wife's name is Lady Macbeth and we were married for 15 years. We had no children. Our beloved dog Toby McDuff was a famous hunter of rats in the forest.
+        My tragic story was immortalized by Shakespeare in a play.
+        [Output]
+        <topics>
+          <item>Macbeth</item>
+          <item>King of Scotland</item>
+          <item>Lady Macbeth</item>
+          <item>Dog</item>
+          <item>Toby McDuff</item>
+          <item>Shakespeare</item>
+          <item>Play</item>
+          <item>Tragedy</item>
+        </topics>
+    - name: input
+      kind: input
+      text: |-
+        [Input]
+        {{$input}}
+        [Output]
+  settings:
+    temperature: 0.0
+    maxTokens: 128

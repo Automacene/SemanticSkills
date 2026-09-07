@@ -1,0 +1,65 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: basic
+  namespace: chat
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Persona Chat
+    automacene.org/description: Hold a conversation in the voice of a named person with a given attitude.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/dialogue_generation
+        id: 10304
+  inputs:
+    - name: person
+      description: The name of the person interacting with the AI assistant.
+      required: true
+    - name: attitude
+      description: The attitude of the user interacting with the AI assistant.
+      required: true
+    - name: user
+      description: The user's tag or name in the conversation.
+      required: true
+    - name: bot
+      description: The bots's tag or name in the conversation.
+      required: true
+    - name: question
+      description: The question the AI assistant should ask the user.
+      required: true
+    - name: history
+      description: The conversation history between the user and the AI assistant.
+      required: true
+    - name: input
+      description: The user's response to the AI assistant's question.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        The following is a conversation with {{$person}} with {{$attitude}}.
+    - name: opening
+      kind: examples
+      text: |-
+        {{$user}}Hello.
+        {{$bot}} {{$question}}
+    - name: history
+      kind: history
+      needs:
+        - history
+      text: |-
+        {{$history}}
+      absent: |-
+        This is the start of the conversation.
+    - name: input
+      kind: input
+      text: |-
+        {{$user}}{{$input}}
+  settings:
+    temperature: 0.9
+    maxTokens: 150

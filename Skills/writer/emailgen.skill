@@ -1,0 +1,49 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: emailgen
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Bullet Points to Email
+    automacene.org/description: Rewrite bullet points as complete sentences in a polite tone.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: content_writing_marketing/email_marketing/email_campaign_creation
+        id: 110801
+  inputs:
+    - name: input
+      description: The list of topics and concepts to be rewritten into complete sentences.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Rewrite my bullet points into complete sentences. Use a polite and inclusive tone.
+    - name: examples
+      kind: examples
+      text: |-
+        [Input]
+        - Macbeth, King Scotland
+        - Married, Wife Lady Macbeth, No Kids
+        - Dog Toby McDuff. Hunter, dead.
+        - Shakespeare play
+        +++++
+        The story of Macbeth
+        My name is Macbeth. I used to be King of Scotland, but I died. My wife's name is Lady Macbeth and we were married for 15 years. We had no children. Our beloved dog Toby McDuff was a famous hunter of rats in the forest.
+        My story was immortalized by Shakespeare in a play.
+        +++++
+    - name: input
+      kind: input
+      text: |-
+        [Input]
+        {{$input}}
+        +++++
+  settings:
+    temperature: 0.0
+    maxTokens: 256

@@ -1,0 +1,48 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: noveloutline
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Novel Outline Writer
+    automacene.org/description: Generate a chapter-by-chapter synopsis for a novella.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/story_generation
+        id: 10306
+  inputs:
+    - name: chapterCount
+      description: The number of chapters the novella should have.
+      required: true
+    - name: input
+      description: The description of the novella's plot.
+      required: true
+    - name: endMarker
+      description: The marker that should be used to end each synopsis.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        There MUST BE {{$chapterCount}} CHAPTERS.
+
+        INVENT CHARACTERS AS YOU SEE FIT. BE HIGHLY CREATIVE AND/OR FUNNY.
+        WRITE SYNOPSIS FOR EACH CHAPTER. INCLUDE INFORMATION ABOUT CHARACTERS ETC. SINCE EACH
+        CHAPTER WILL BE WRITTEN BY A DIFFERENT WRITER, YOU MUST INCLUDE ALL PERTINENT INFORMATION
+        IN EACH SYNOPSIS.
+
+        YOU MUST END EACH SYNOPSIS WITH {{$endMarker}}
+    - name: input
+      kind: input
+      text: |-
+        I want to write a {{$chapterCount}} chapter novella about:
+        {{$input}}
+  settings:
+    temperature: 0.1
+    maxTokens: 2048

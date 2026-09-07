@@ -1,0 +1,35 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: code
+  namespace: coding
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Natural Language to Code
+    automacene.org/description: Turn a description of desired behaviour into code.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: software_engineering/code_generation/text_to_code
+        id: 60101
+  inputs:
+    - name: input
+      description: The natural language description of the desired functionality.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Generate code from the description below. It helps if the description names a programming
+        language; if it does not, choose one and say which.
+    - name: input
+      kind: input
+      text: |-
+        Description: {{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 256

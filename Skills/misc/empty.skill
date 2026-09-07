@@ -1,0 +1,30 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: empty
+  namespace: misc
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Passthrough
+    automacene.org/description: Send the input to the model unchanged. For testing and raw prompts.
+spec:
+  authors:
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: ai_ml_engineering/prompt_engineering/prompt_design
+        id: 70501
+  inputs:
+    - name: input
+      description: The input text to be processed.
+      default: This is an empty prompt, the user forgot to prompt you.
+      required: true
+  sections:
+    - name: input
+      kind: input
+      text: |-
+        {{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 1500

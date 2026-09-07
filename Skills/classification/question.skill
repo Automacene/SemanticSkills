@@ -1,0 +1,55 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: question
+  namespace: classification
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Question or Statement Classifier
+    automacene.org/description: Decide whether a sentence is a question or a statement.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/text_classification/intent_classification
+        id: 10204
+  inputs:
+    - name: input
+      description: The sentence to be identified.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Please decide a sentence type based on whether it is a interrogative sentence.
+
+        Interrogative sentences are typically marked by inversion of the subject and predicate; that
+        is, the first verb in a verb phrase appears before the subject.
+
+        Use one of the following sentence types. Only emit types, nothing else:
+        Sentence Types: question, statement
+    - name: examples
+      kind: examples
+      text: |-
+        Message: Did Nina sleep well
+        Type: Question
+
+        Message: Nina slept well
+        Type: Statement
+
+        Message: James was sitting in the dark
+        Type: Statement
+
+        Message: Was James sitting in the dark
+        Type: Question
+    - name: input
+      kind: input
+      text: |-
+        Message: "{{$input}}"
+        Type:
+  settings:
+    temperature: 0.0
+    maxTokens: 64

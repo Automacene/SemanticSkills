@@ -1,0 +1,54 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: tellmemore
+  namespace: writer
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Focused Conversation Overview
+    automacene.org/description: Write a detailed overview of a conversation, focused on one area.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/summarization
+        id: 10302
+  inputs:
+    - name: conversationtype
+      description: The type of conversation the overview is based on.
+      required: true
+    - name: input
+      description: The specific area of the conversation to focus on in the overview.
+      required: true
+    - name: focusarea
+      description: The conversation to be summarized.
+      required: true
+    - name: previousresults
+      description: The overview of the previous part of the conversation, focusing on the specified area.
+      required: true
+  sections:
+    - name: input
+      kind: input
+      text: |-
+        >>>>>The following is part of a {{$conversationtype}}.
+        {{$input}}
+    - name: previous
+      kind: context
+      needs:
+        - previousresults
+      text: |-
+        >>>>>The following is an overview of a previous part of the {{$conversationtype}}, focusing on "{{$focusarea}}".
+        {{$previousresults}}
+      absent: |-
+        This is the first part being summarized. There is no previous overview.
+    - name: instructions
+      kind: instructions
+      text: |-
+        >>>>>In 250 words or less, write a verbose and detailed overview of the
+        {{$conversationtype}} focusing solely on "{{$focusarea}}".
+  settings:
+    temperature: 0.0
+    maxTokens: 500

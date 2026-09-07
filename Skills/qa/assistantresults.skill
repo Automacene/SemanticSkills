@@ -1,0 +1,54 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: assistantresults
+  namespace: qa
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: API Result Answering
+    automacene.org/description: Answer a question from the results of an API call.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: ai_ml_engineering/retrieval_augmented_generation/document_or_database_question_answering
+        id: 70604
+  inputs:
+    - name: api
+      description: The name of the API that was called.
+    - name: results
+      description: What the API returned.
+    - name: resultsContext
+      description: Anything else worth knowing about the results.
+    - name: input
+      description: The question to answer.
+      required: true
+  sections:
+    - name: results
+      kind: context
+      needs:
+        - results
+      text: |-
+        These are the results from the API call "{{$api}}"
+        ===RESULTS
+        {{$results}}
+        ===END RESULTS
+
+        {{$resultsContext}}
+      absent: |-
+        The API returned no results. Say so rather than answering from anything else.
+    - name: instructions
+      kind: instructions
+      text: |-
+        Use the Results to answer the following query.
+    - name: input
+      kind: input
+      text: |-
+        Query: {{$input}}
+        Answer:
+  settings:
+    temperature: 0.1
+    maxTokens: 1000

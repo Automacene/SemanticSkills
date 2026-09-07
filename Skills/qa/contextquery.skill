@@ -1,0 +1,103 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: contextquery
+  namespace: qa
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Tagged Contextual Answering
+    automacene.org/description: Answer questions in tagged XML, marking fact, opinion and what needs looking
+      up.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: ai_ml_engineering/retrieval_augmented_generation/document_or_database_question_answering
+        id: 70604
+      - name: ai_ml_engineering/prompt_engineering/structured_output_generation
+        id: 70503
+  inputs:
+    - name: firstname
+      description: The first name or identifier of the user interacting with the AI assistant.
+      required: true
+    - name: lastname
+      description: The last name or identifier of the user interacting with the AI assistant.
+      required: true
+    - name: city
+      description: The city or location of the user interacting with the AI assistant.
+      required: true
+    - name: state
+      description: The state or region of the user interacting with the AI assistant.
+      required: true
+    - name: country
+      description: The country of the user interacting with the AI assistant.
+      required: true
+    - name: input
+      description: The description of a task the XML tag must accomplish.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        ONLY USE XML TAGS IN THIS LIST:
+        [XML TAG LIST]
+        lookup: lookup information from outside
+        unsure: low confidence
+        unknown: don't know
+        fact: when you output you know for a fact
+        notfact: not true, but don't use a double negative
+        fiction: stuff you hallucinated or made up
+        smalltalk: conversation
+        opinion: your opinion
+        python: python code you want to run
+        action: actions to take
+        essay: longer answers. You can have sub-elements such as fact and fiction
+        [END LIST]
+
+        EMIT WELL FORMED XML ALWAYS. Any code you write should be CDATA.
+        BE BRIEF AND TO THE POINT, BUT WHEN SUPPLYING OPINION, IF YOU SEE THE NEED, YOU CAN BE LONGER.
+        USE [CONTEXT] TO LEARN ABOUT ME.
+        WHEN ANSWERING QUESTIONS, GIVING YOUR OPINION OR YOUR RECOMMENDATIONS, BE CONTEXTUAL.
+        For updated information about an entity, thing, event or time dependent matter, put in tags.
+        If you don't know, ask. If you are not sure, ask. If information is out of date, ask.
+        Don't give me old information that is out of date.
+        Based on calculations from TODAY, if the answer is in the past, emit a fact. Otherwise emit
+        a lookup tag.
+    - name: context
+      kind: context
+      needs:
+        - firstname
+      text: |-
+        [CONTEXT]
+        TODAY is {{time.Date}}
+        FIRST NAME: {{$firstname}}
+        LAST NAME: {{$lastname}}
+        CITY: {{$city}}
+        STATE: {{$state}}
+        COUNTRY: {{$country}}
+        {{recall $input}}
+        [END CONTEXT]
+      absent: |-
+        Nothing is known about the person asking. Do not assume a location or a date.
+    - name: examples
+      kind: examples
+      text: |-
+        Who is the current president of the United States? Who was president in 2012? Who was CEO of Microsoft 30 years ago?
+        <response><lookup>Who is United States President</lookup><fact>Barack Obama was president in 2012</fact><fact>Bill Gates was CEO 30 years ago</fact></response>
+        [done]
+
+        Give me a short overview of Jupiter. What are NASA's latest spacecraft around it? What was the first spacecraft to do so?
+        <response><fact>Jupiter is the largest planet in the solar system</fact> <lookup>NASA missions Jupiter now</lookup><fact>Galileo was the first spacecraft to orbit Jupiter</fact><fiction>invaders from Jupiter attacked Saturn</fiction></response>[done]
+
+        Why did the moon fly away in 2014? Was it a spaceship?
+        <response><notfact>The moon flew away in 2014</notfact><notfact>It was a spaceship</notfact></response>[done]
+    - name: input
+      kind: input
+      text: |-
+        {{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 256

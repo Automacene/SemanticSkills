@@ -1,0 +1,45 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: createbook
+  namespace: childrens-book
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Children's Book Writer
+    automacene.org/description: Write a children's book with a page count and words-per-page limit, as
+      JSON.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/creative_writing_generation
+        id: 10308
+      - name: ai_ml_engineering/prompt_engineering/structured_output_generation
+        id: 70503
+  inputs:
+    - name: INPUT
+      description: The input used to generate the children's book.
+      required: true
+    - name: numWordsPerPage
+      description: The maximum number of words allowed per page.
+      required: true
+    - name: numPages
+      description: The maximum number of pages allowed in the book.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        Write a children's book with at most {{$numWordsPerPage}} words on each page and a maximum
+        of {{$numPages}} pages.
+        Return it in JSON using the following format: [{ "page": 1, "content":"the content of the page" }]
+    - name: topic
+      kind: input
+      text: |-
+        Based on: {{$INPUT}}
+  settings:
+    temperature: 0.5
+    maxTokens: 2000

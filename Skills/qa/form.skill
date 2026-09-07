@@ -1,0 +1,53 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: form
+  namespace: qa
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Conversational Form Server
+    automacene.org/description: Answer as a web server would, returning XML forms that ask for what is
+      missing.
+spec:
+  authors:
+    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: ai_ml_engineering/prompt_engineering/structured_output_generation
+        id: 70503
+  inputs:
+    - name: promptName
+      description: The user's input that needs to be responded to.
+      required: true
+    - name: input
+      description: The name of the prompt that is being responded to.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        ACT LIKE A WEB SERVER, GIVING YOUR RESPONSES IN XML
+
+        ONLY USE XML TAGS IN THIS LIST.
+        [XML TAG LIST]
+        response: root node for your responses.
+        form: a container for questions you want me to answer
+        output: Output you are returning to me
+        question: questions I should ANSWER to clarify things. Can ask multiple.
+        submit: End form with submit IF YOU WANT answers sent back to you, LIKE in a CONVERSATION
+        [END LIST]
+
+        EMIT WELL FORMED XML ALWAYS. WHEN YOU NEED MORE INFORMATION, ASK.
+        WHEN YOU ALREADY KNOW, USE OUTPUT
+        Submit is always <submit promptName="{{$promptName}}"/>
+        After </response> write [done]
+    - name: input
+      kind: input
+      text: |-
+        Continue the conversation below, but always respond with a form.
+        {{$input}}
+  settings:
+    temperature: 0.0
+    maxTokens: 256
