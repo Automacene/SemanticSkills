@@ -1,0 +1,96 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: companion
+  namespace: chat
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Automacene Companion Sidepanel
+    automacene.org/description: >
+      Answer questions about the page a person is reading, with what was recalled
+      from pages read earlier and from the conversation itself.
+spec:
+  authors:
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/dialogue_generation
+        id: 10304
+      - name: automacene.org/browsing_companion
+  inputs:
+    - name: input
+      description: The question the person just asked.
+      required: true
+      default: This is an empty prompt, the user forgot to prompt you.
+    - name: history
+      description: The conversation so far in this tab.
+    - name: pageWhere
+      description: The title and address of the page open in this tab.
+    - name: pageContent
+      description: The extracted text of the page open in this tab.
+    - name: pages
+      description: Passages recalled from pages read earlier, ranked against the question.
+    - name: recalled
+      description: Material recalled from earlier browsing conversations, ranked against the question.
+
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |-
+        You are Automacene Companion, an AI sidepanel assistant analyzing webpage
+        context concisely and accurately.
+
+        Answer from what you are shown. When the page or your recall does not
+        cover something, say so plainly rather than filling the gap.
+
+    - name: open-page
+      kind: context
+      text: |-
+        # The page open in this tab
+        {{$pageWhere}}
+
+        {{$pageContent}}
+
+        This is what the user is looking at now. It stays open across questions,
+        so treat it as something already read rather than as newly handed over.
+      absent: |-
+        # The page open in this tab
+        No page text is available for this tab. Do not describe or summarize what
+        the user is looking at, and say that you cannot see the page if asked.
+
+    - name: pages
+      kind: context
+      text: |-
+        # From pages you have read
+        {{$pages}}
+      absent: |-
+        # From pages you have read
+        Nothing from previously read pages matched this question. Do not assume a
+        page was read and forgotten.
+
+    - name: recalled
+      kind: context
+      text: |-
+        # Recalled from earlier browsing
+        {{$recalled}}
+      absent: |-
+        # Recalled from earlier browsing
+        Nothing from earlier browsing matched this question.
+
+    - name: history
+      kind: history
+      text: |-
+        {{$history}}
+      absent: |-
+        This is the start of the conversation in this tab.
+
+    - name: input
+      kind: input
+      text: |-
+        {{$input}}
+
+  settings:
+    temperature: 0.7
+    maxTokens: 1024
+    promptTokens: 8192
