@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: Write one chapter of a novel from a synopsis and the chapter before it.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -30,22 +30,24 @@ spec:
       description: The index of the chapter to be written.
       required: true
   sections:
-    - name: context
+    - name: theme
       kind: context
-      needs:
-        - theme
       text: |-
         [CONTEXT]
 
         THEME OF STORY:
         {{$theme}}
-
+      absent: |-
+        No theme was given. Establish one from the synopsis.
+    - name: previous
+      kind: context
+      text: |-
         PREVIOUS CHAPTER:
         {{$previousChapter}}
 
         [END CONTEXT]
       absent: |-
-        No theme or previous chapter was given. Treat this as the opening chapter.
+        There is no previous chapter. Treat this as the opening.
     - name: instructions
       kind: instructions
       text: |-

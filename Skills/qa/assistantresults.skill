@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: Answer a question from the results of an API call.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -27,19 +27,24 @@ spec:
       description: The question to answer.
       required: true
   sections:
-    - name: results
+    - name: api
       kind: context
-      needs:
-        - results
       text: |-
         These are the results from the API call "{{$api}}"
+      absent: |-
+        The call this answers from was not named.
+    - name: results
+      kind: context
+      text: |-
         ===RESULTS
         {{$results}}
         ===END RESULTS
-
-        {{$resultsContext}}
       absent: |-
         The API returned no results. Say so rather than answering from anything else.
+    - name: note
+      kind: context
+      text: |-
+        {{$resultsContext}}
     - name: instructions
       kind: instructions
       text: |-

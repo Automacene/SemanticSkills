@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: Hold a conversation in the voice of a named person with a given attitude.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -50,8 +50,6 @@ spec:
         {{$bot}} {{$question}}
     - name: history
       kind: history
-      needs:
-        - history
       text: |-
         {{$history}}
       absent: |-

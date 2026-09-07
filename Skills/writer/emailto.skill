@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: Rewrite bullet points as an email to a named recipient from a named sender.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:

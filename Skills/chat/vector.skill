@@ -38,8 +38,6 @@ spec:
         and provide {{$user}} with the most relevant answer:
     - name: context
       kind: context
-      needs:
-        - context
       text: |-
         CONTEXT:
         {{$context}}
@@ -49,8 +47,6 @@ spec:
         that.
     - name: history
       kind: history
-      needs:
-        - history
       text: |-
         --- Chat History ---
         {{$history}}

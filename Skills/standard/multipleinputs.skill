@@ -32,16 +32,19 @@ spec:
         emails with:
         Hello "recipient's name",
             Today is "the date".
-    - name: context
+    - name: date
       kind: context
-      needs:
-        - date
       text: |-
         [context]
         date: {{$date}}
+      absent: |-
+        No date was given. Leave the date line out of the email.
+    - name: sender
+      kind: context
+      text: |-
         name: "{{$name}}"
       absent: |-
-        No date or sender was given. Leave the date line out and sign off generically.
+        No sender was given. Sign off generically.
     - name: examples
       kind: examples
       text: |-

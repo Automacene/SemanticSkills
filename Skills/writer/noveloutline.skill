@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: Generate a chapter-by-chapter synopsis for a novella.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:

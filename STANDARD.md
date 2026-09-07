@@ -7,24 +7,6 @@ prompt is made of, the inputs it takes, what it returns, and the capabilities it
 implements. Something else decides whether that becomes a completion string, a
 message array, or whatever comes after those.
 
-## Why the old format is being replaced
-
-The previous format was built for `text-davinci-003`, which took one string and
-continued it. That single assumption is the source of everything awkward about
-it.
-
-A skill was one opaque blob, so the structure that mattered was visible only to a
-person reading the template. Nothing could ask a skill where its context went or
-what order its parts came in. `inputs` restated what the template already said,
-in a second place that drifted, which is why `Scripts/fix_skill_inputs.py` exists
-at all. `default` did two unrelated jobs, holding both a literal value like `USER`
-and a paragraph of instructions for when a slot came back empty. Trailing markers
-like `<{{$bot}}>` and `stop` sequences existed to make a completion model start
-and stop talking. `skill_class` decided whether the `skill` field held a prompt or
-Python source, which made one key mean two unrelated things.
-
-Sections fix the first of those and most of the rest follow.
-
 ## The document
 
 ```yaml
@@ -83,7 +65,6 @@ spec:
 
     - name: counterparty
       kind: context
-      needs: [company]
       text: |
         The counterparty is {{$company}}.
       absent: |
@@ -98,14 +79,6 @@ spec:
     temperature: 0.1
     maxTokens: 1500
 
-status:
-  createdAt: "2026-09-06T18:04:00Z"
-  locators:
-    - type: source_code
-      urls:
-        - https://github.com/Automacene/SemanticSkills/blob/main/Skills/summarize/deal-summary.skill
-  tokens: 212
-  validated: "2026-09-06T18:04:00Z"
 ```
 
 ## The contract, and the implementation
@@ -154,7 +127,7 @@ to hang a fifth.
 | Field | | |
 |---|---|---|
 | `name` | required | DNS-1123 label: `[a-z0-9-]`, begins with a letter, ends alphanumeric, 63 characters at most. |
-| `namespace` | required | Flat. Replaces the folder a skill used to live in. |
+| `namespace` | required | DNS-1123 label, same rule as `name`. Flat, and replaces the folder a skill used to live in. |
 | `labels` | optional | Queryable. Keys take an `automacene.org/` prefix; values are 63 characters at most and hold no slashes or spaces. |
 | `annotations` | required | Not queryable, no practical size limit. |
 
@@ -166,8 +139,8 @@ Namespaces do not nest. A second dimension of classification belongs in a label.
 
 Two annotations carry weight:
 
-- `automacene.org/description` — prose, used as the record description on export.
-- `automacene.org/oasf-name` — the human title for a directory listing, since
+- `automacene.org/description` is prose, used as the record description on export.
+- `automacene.org/oasf-name` is the human title for a directory listing, since
   `metadata.name` is an identifier and reads badly as one.
 
 `automacene.org/version` is a label rather than a field, matching how Kubernetes
@@ -175,24 +148,47 @@ handles versions, and it is semantic versioning.
 
 ### spec.authors
 
-Required. `Name <email>`, the form OASF expects, so the export needs no
-conversion.
+Required, and at least one entry. Each is npm's author string: a name, then an
+optional email in angle brackets, then an optional URL in parentheses.
+
+```
+Codie Petersen <codie@asteres-technologies.com>
+Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
+Jane Doe <jane@example.com> (https://example.com)
+Some Working Group
+```
+
+Only the name is required. Attribution to a project rather than a person is
+ordinary, and such a project has a repository and no address. A format that
+demanded an address would be asking authors to invent one.
+
+OASF's `authors` is a string array and nothing validates its contents, so an
+entry carrying a URL rather than an address exports unchanged.
 
 ### spec.capabilities
 
-What this skill implements, in taxonomy terms. This is not decoration — it is how
+What this skill implements, in taxonomy terms. This is not decoration: it is how
 a workflow finds the skill when binding late, so it is load-bearing.
 
-`skills` and `domains` both hold entries of `name` and `id`. A public node cites
-both. A private node cites `name` only.
+`skills` and `domains` hold entries carrying a `name` and, optionally, an `id`.
+The base skill definition constrains a reference to `at_least_one: [id, name]`,
+so a name alone is a complete citation. Cite an id when the taxonomy has assigned
+one; a private node has none and needs none.
 
 Private nodes carry no id on purpose. Numeric ids are AGNTCY's to assign, and
 minting your own guarantees a collision the first time they assign the same
-number. The base skill definition constrains a reference to `at_least_one: [id,
-name]`, so a name-only citation is valid, and prefixing the name with your domain
-makes it unambiguous.
+number. Prefix a private name with your domain and it cannot be mistaken for
+anyone else's.
+
+Nothing here asks a reader to work out whether a citation is public or private.
+The id is optional either way, and deciding whether a name resolves needs the
+taxonomy, which is a fetch rather than something a single file can settle.
 
 ### spec.inputs
+
+Input names, section names and output field names are each unique within a
+skill. Two of anything sharing a name is a validation failure, not a rule about
+which one wins.
 
 | Field | | |
 |---|---|---|
@@ -227,61 +223,100 @@ Required, ordered. The list order is the order.
 | `name` | required | Unique within the skill. |
 | `kind` | required | `instructions`, `examples`, `context`, `history`, `input` |
 | `text` | required | The template. |
-| `needs` | optional | Inputs that must be non-empty for `text` to be used. |
-| `absent` | optional | Used instead of `text` when any of `needs` is empty. |
+| `absent` | optional | Used instead of `text` when the section has nothing to say. |
 
-`kind` says what a section is, never where it goes. An adapter targeting a chat
-API turns `history` into real turns and `instructions` into a system message; an
-adapter targeting a completion concatenates in order. A skill that is a one-shot
-transformation declares two sections and never thinks about any of it.
+A section falls back to `absent` when any input its `text` uses came back empty.
+Nothing declares that. A section written around `{{$context}}` needs `context`
+because it says so, and writing it down a second time gives two places to hold
+one fact, which is two places to disagree.
 
-A section with `needs` and no `absent` is a validation failure. Omitting a
-section when its slot is empty leaves a model unable to tell "nothing was found"
-from "nothing was looked for", and that silence is the most common way a skill
-answers confidently from nothing.
+A section wanting some other gate is a section doing two jobs. One that prints an
+API name, its results, and a note about them, but should only vanish when the
+results are missing, is three things wearing one name. Split it and each part
+gates on what it actually says.
+
+`absent` is why any of this matters. A section that simply disappears when its
+slot is empty leaves a model unable to tell "nothing was found" from "nothing was
+looked for", and that silence is the most common way a skill answers confidently
+from nothing.
+
+### Placement is not the skill's business
+
+`kind` says what a section is. It never says where the section goes, and this
+standard does not either.
+
+Pinning placement means pinning it for every arrangement a skill can take, which
+is a rule per skill, which is no rule at all. A document that named two of them
+would be generalizing from whichever skill it happened to be looking at.
+
+So an adapter decides, completely. One targeting a chat API chooses which kinds
+become system material and which become the current message; one targeting a
+completion concatenates in order; one targeting MCP folds everything into the
+roles MCP has. Two conforming adapters may send different prompts from the same
+file, and that is the intended arrangement rather than a gap in this document.
 
 ### spec.settings
 
-Optional. Two keys.
+Optional.
 
 | Field | | |
 |---|---|---|
 | `temperature` | optional | |
-| `maxTokens` | optional | |
+| `maxTokens` | optional | Caps what the model writes. |
+| `promptTokens` | optional | Caps what the rendered skill costs to send. |
 
-The old format carried `top_p`, `presence_penalty` and `frequency_penalty` in
-every file, and across 53 skills 39 of them set `top_p` to `0.0`, 49 set
-`presence_penalty` to zero and 51 set `frequency_penalty` to zero. Those were
-converter defaults nobody chose, and `top_p: 0.0` does not mean what the files
-that carry it intended. Temperature and token count are the two that vary with
-intent, and they are the two that remain.
+Every value here is the author's suggestion, measured in whatever environment
+they wrote the skill in. A caller overrides any of them at call time and needs no
+permission from the file. A skill that could pin a temperature would be a skill
+that decides how somebody else's model behaves.
 
-`model`, `project` and `location` are gone. Deployment coordinates in a prompt
-template are why a skill written for one provider could not run on another
-without editing the skill. Model configuration has a standardized home in an OASF
-module.
+`promptTokens` and `maxTokens` are easy to confuse and cap opposite ends. The
+first is the size of what you send; the second is the size of what comes back.
 
-`stop` is gone with them. Every occurrence was scaffolding tied to the template's
-own markup, and structured output covers what it was doing.
+There is nothing else. Sampling parameters beyond temperature rarely carry
+intent, and a file full of them is a file full of values nobody chose.
+
+A model name and its deployment coordinates are not settings. A skill naming
+them is a skill that runs in one place, and model configuration has a
+standardized home in an OASF module.
+
+There are no stop sequences. A stop sequence is tied to the template's own
+markup, which makes it a property of a completion rather than of a skill, and
+`output` covers what it was doing.
 
 Field names are camelCase, matching Kubernetes API convention throughout `spec`.
 
-### status
+### There is no status
 
-Generated, never authored. Anything written here by hand is overwritten.
+Kubernetes gives a resource a `status` because a controller reports what is
+actually true of a running thing against what `spec` asked for. A prompt template
+runs nothing and reconciles nothing, so there is no gap for a status to report.
+Taking the envelope without asking what its fourth key is for would leave one
+here.
 
-| Field | | |
-|---|---|---|
-| `createdAt` | RFC 3339. Becomes the record's `created_at`. |
-| `locators` | Generated from git. Becomes the record's `locators`. |
-| `tokens` | Rendered size with defaults applied. |
-| `validated` | When the checks below last passed. |
+The four values that would go in it have better homes. `createdAt` and
+`locators` are read from git when a record is published. `tokens` is computed
+from `spec` whenever something asks. `validated` is a CI result and belongs in
+CI output.
+
+Storing any of them in the file makes a second copy that goes stale the moment
+somebody edits a section, and writing `validated` back would produce a commit on
+every CI run.
 
 ## Placeholders
 
 `{{$name}}` takes the value of an input. Anything else inside `{{ }}` is left
 exactly as written, so an unrecognised placeholder appears in the output rather
 than vanishing.
+
+There is no escape, and there will not be one. A skill cannot write `{{$name}}`
+literally, which means a skill cannot quote another skill's template. That costs
+one real use, and it buys a format where a placeholder always means a
+substitution and never means a quoted string a reader has to decide about.
+
+An undeclared placeholder is a validation failure. It still renders unsubstituted
+rather than becoming empty, so text arriving from somewhere it should not have
+shows up where a person can see it instead of quietly disappearing.
 
 Values are resolved before sections render. An input with no supplied value falls
 back to its `default`.
@@ -321,14 +356,16 @@ assignment, no request to anyone. A worker who solves something new commits a
 Every one of these is checkable without running a model, and all of them are
 build failures.
 
-- Each name in `needs` is a declared input.
 - Each declared input is used by at least one section.
-- Each section carrying `needs` also carries `absent`.
+- No two inputs, sections or output fields share a name.
 - Each `kind` is drawn from the vocabulary, and exactly one section is `input`.
-- `metadata.name` satisfies DNS-1123 and `automacene.org/version` is semver.
-- Each public capability citation resolves against the OASF taxonomy.
-- Each private capability citation resolves against a `Capability` in the repo.
-- The rendered token count with defaults applied is within budget.
+- `metadata.name` and `metadata.namespace` satisfy DNS-1123, and
+  `automacene.org/version` is semver.
+- Each author reads as npm's author string.
+- Every placeholder used names a declared input.
+- Each capability citation resolves, against the OASF taxonomy or against a
+  `Capability` document in the repository.
+- The rendered token count with defaults applied is within `promptTokens`.
 
 Golden renders are worth more than all of them together. Check in a fixture input
 set and the expected assembled output for each skill, and a pull request that
@@ -378,10 +415,10 @@ total.
 | `schema_version` | Constant, supplied by the tooling |
 | `description` | `metadata.annotations[automacene.org/description]` |
 | `authors` | `spec.authors` |
-| `created_at` | `status.createdAt` |
+| `created_at` | Read from git at publish time |
 | `skills` | `spec.capabilities.skills` |
 | `domains` | `spec.capabilities.domains` |
-| `locators` | `status.locators` |
+| `locators` | Read from git at publish time |
 | `annotations` | `metadata.annotations`, plus `namespace` |
 | `modules` | Built from `spec.sections` |
 
@@ -398,23 +435,3 @@ OASF is an export target, not a foundation. It models a catalog entry describing
 one agent. It has no edges between records, no representation of composition, and
 a centrally governed taxonomy. Publishing to it makes work findable, and that
 value does not depend on it modeling how anything is built.
-
-## Migrating from the old format
-
-| Old | New |
-|---|---|
-| `name` | `metadata.name`, lowercased and hyphenated |
-| folder | `metadata.namespace`, lowercased |
-| `description` | `metadata.annotations[automacene.org/description]` |
-| `skill_class` | Gone. `kind` dispatches; functional skills become `kind: NuclioFunction`. |
-| `skill` | Decomposed into `spec.sections` |
-| `inputs[].default` holding a value | `spec.inputs[].default` |
-| `inputs[].default` holding instructions | The owning section's `absent` |
-| `output` | `spec.output.fields`, as a typed list |
-| `settings.temperature`, `max_tokens` | `spec.settings.temperature`, `maxTokens` |
-| `settings.model`, `project`, `location` | Gone |
-| `settings.top_p`, penalties, `stop` | Gone |
-
-A skill converts mechanically to one section of `kind: input` holding the whole
-blob. That renders identically to the old format and is a valid document, so the
-corpus can move in one pass and gain real sections one skill at a time.

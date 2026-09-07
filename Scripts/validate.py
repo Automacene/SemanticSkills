@@ -18,7 +18,10 @@ SECTION_KINDS = {"instructions", "examples", "context", "history", "input"}
 OUTPUT_TYPES = {"string", "integer", "number", "boolean"}
 
 DNS_LABEL = re.compile(r"^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$")
-SEMVER = re.compile(r"^\d+\.\d+\.\d+$")
+SEMVER = re.compile(r"^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$")
+
+# npm's author string: a name, an optional <email>, an optional (url). Only the name is required.
+AUTHOR = re.compile(r"^[^<>()]+?(?:\s+<[^<>]+>)?(?:\s+\([^()]+\))?$")
 VARIABLE = re.compile(r"\{\{\s*\$([A-Za-z_][A-Za-z0-9_]*)\s*\}\}")
 
 FILLER = "TODO-CONVERT"
@@ -70,8 +73,12 @@ def check(path):
         if not annotations.get(key):
             problems.append(f"missing annotation {key}")
 
-    if not spec.get("authors"):
+    authors = spec.get("authors") or []
+    if not authors:
         problems.append("spec.authors is empty")
+    for author in authors:
+        if not AUTHOR.match(str(author).strip()):
+            problems.append(f"author {author!r} is not \"Name <email> (url)\"")
 
     capabilities = (spec.get("capabilities") or {}).get("skills") or []
     if not capabilities:
@@ -92,6 +99,14 @@ def check(path):
     sections = spec.get("sections") or []
     if not sections:
         problems.append("spec.sections is empty")
+
+    for label, names in (
+        ("input", [i.get("name") for i in spec.get("inputs") or []]),
+        ("section", [x.get("name") for x in sections]),
+        ("output field", [x.get("name") for x in (spec.get("output") or {}).get("fields") or []]),
+    ):
+        for name in {n for n in names if n and names.count(n) > 1}:
+            problems.append(f"duplicate {label} name {name!r}")
 
     used = set()
     inputs_seen = 0
@@ -118,12 +133,9 @@ def check(path):
         used |= variables_in(section.get("text"))
         used |= variables_in(section.get("absent"))
 
-        needs = section.get("needs") or []
-        for need in needs:
-            if need not in declared:
-                problems.append(f"section {label!r} needs {need!r}, which is not a declared input")
-        if needs and not section.get("absent"):
-            problems.append(f"section {label!r} has needs but no absent")
+        # Gating is derived from the text. Declaring it was a second copy that drifted.
+        if "needs" in section:
+            problems.append(f"section {label!r} declares needs, which the format no longer has")
 
     if inputs_seen != 1:
         problems.append(f"{inputs_seen} sections of kind 'input', expected exactly 1")
@@ -150,6 +162,9 @@ def check(path):
 
     if labels.get("automacene.org/conversion") == "mechanical":
         problems.append("still marked conversion: mechanical")
+
+    if "status" in doc:
+        problems.append("has a status block, which the format no longer has")
 
     return problems
 

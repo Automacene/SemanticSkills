@@ -10,7 +10,7 @@ metadata:
     automacene.org/description: A friendly chat bot that declines sensitive topics.
 spec:
   authors:
-    - Microsoft Semantic Kernel <https://github.com/microsoft/semantic-kernel>
+    - Microsoft Semantic Kernel (https://github.com/microsoft/semantic-kernel)
     - Codie Petersen <codie@asteres-technologies.com>
   capabilities:
     skills:
@@ -48,8 +48,6 @@ spec:
         </examples>
     - name: history
       kind: history
-      needs:
-        - HISTORY
       text: |-
         <chatHistory>
         {{$HISTORY}}
