@@ -98,6 +98,16 @@ are semver, and no `TODO-CONVERT` placeholder survives.
 `Scripts/convert_legacy.py` is the migration that produced this tree from the pre-standard
 format. Kept as a record of how the corpus moved, not as something to run again.
 
+`Scripts/skill-designer.html` composes a skill from fields rather than by hand. Open it in a
+browser; it needs no server and no build. It shows three views of what you are writing: the
+document, the prompt with its placeholders left in, and the prompt with values substituted.
+The second and third are the point, since a section's `absent` text only proves itself when
+you empty a slot and watch the fallback appear.
+
+Each input carries a test value alongside its `default`. The test value never reaches the
+document; it is what the filled prompt uses, which keeps "what a caller gets when they supply
+nothing" separate from "what I am trying right now".
+
 ## Where these came from
 
 The corpus began as Microsoft's Semantic Kernel samples, imported in May 2023, and grew from

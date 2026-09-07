@@ -1,0 +1,1165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skill Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+:root {
+  --paper:      #f2f4f7;
+  --surface:    #ffffff;
+  --sunken:     #e9ecf1;
+  --ink:        #141922;
+  --ink-soft:   #3d4757;
+  --muted:      #6b7688;
+  --line:       #d9dee6;
+  --line-soft:  #e6eaf0;
+  --slot:       #9a6510;
+  --slot-bg:    #fdf3e0;
+  --slot-line:  #e8c98a;
+  --ok:         #1f6b4f;
+  --bad:        #a32f2f;
+  --bad-bg:     #fdf0ef;
+  --focus:      #2f5fd0;
+
+  --sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --step: 0.25rem;
+  --radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:     #12161d;
+    --surface:   #191e27;
+    --sunken:    #0e1218;
+    --ink:       #e6eaf1;
+    --ink-soft:  #b3bcca;
+    --muted:     #7d8899;
+    --line:      #2b323e;
+    --line-soft: #222834;
+    --slot:      #e8b562;
+    --slot-bg:   #2a2110;
+    --slot-line: #6b5320;
+    --ok:        #5fbf95;
+    --bad:       #e88a84;
+    --bad-bg:    #2a1616;
+    --focus:     #7ea2f0;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:     #12161d;
+  --surface:   #191e27;
+  --sunken:    #0e1218;
+  --ink:       #e6eaf1;
+  --ink-soft:  #b3bcca;
+  --muted:     #7d8899;
+  --line:      #2b323e;
+  --line-soft: #222834;
+  --slot:      #e8b562;
+  --slot-bg:   #2a2110;
+  --slot-line: #6b5320;
+  --ok:        #5fbf95;
+  --bad:       #e88a84;
+  --bad-bg:    #2a1616;
+  --focus:     #7ea2f0;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+/* ── Frame ──────────────────────────────────────────────────────── */
+
+.masthead {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--step) * 3);
+  flex-wrap: wrap;
+  padding: calc(var(--step) * 4) calc(var(--step) * 5);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.masthead h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.masthead .api {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.masthead .spacer { flex: 1; }
+
+.shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1px;
+  background: var(--line);
+  min-height: calc(100vh - 53px);
+}
+
+.pane { background: var(--paper); min-width: 0; }
+
+.pane--out {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: calc(100vh - 53px);
+  display: flex;
+  flex-direction: column;
+  background: var(--sunken);
+}
+
+@media (max-width: 900px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .pane--out { position: static; height: auto; min-height: 60vh; }
+}
+
+/* ── Form ───────────────────────────────────────────────────────── */
+
+.form { padding: calc(var(--step) * 5); display: flex; flex-direction: column; gap: calc(var(--step) * 7); }
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--step) * 3);
+}
+
+legend {
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hint { margin: 0; color: var(--muted); font-size: 12px; max-width: 62ch; }
+
+.grid { display: grid; gap: calc(var(--step) * 3); }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+
+label { display: flex; flex-direction: column; gap: calc(var(--step) * 1.5); min-width: 0; }
+
+.lbl {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+input, textarea, select {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: calc(var(--step) * 2) calc(var(--step) * 2.5);
+  width: 100%;
+  min-width: 0;
+}
+
+textarea { resize: vertical; line-height: 1.55; min-height: 5.5em; }
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.7; }
+
+input[type="checkbox"] { width: auto; accent-color: var(--focus); }
+
+.check { flex-direction: row; align-items: center; gap: calc(var(--step) * 2); }
+.check .lbl { text-transform: none; letter-spacing: 0; font-size: 12px; }
+
+/* ── Repeatable rows ────────────────────────────────────────────── */
+
+.rows { display: flex; flex-direction: column; gap: calc(var(--step) * 2); }
+
+.row {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: calc(var(--step) * 3);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--step) * 2.5);
+}
+
+.row__top { display: flex; align-items: center; gap: calc(var(--step) * 2); }
+.row__top .grow { flex: 1; min-width: 0; }
+
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+button {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: calc(var(--step) * 1.5) calc(var(--step) * 3);
+  cursor: pointer;
+}
+
+button:hover { border-color: var(--muted); color: var(--ink); }
+
+.btn-x {
+  padding: calc(var(--step) * 1) calc(var(--step) * 2);
+  font-family: var(--mono);
+  line-height: 1;
+  color: var(--muted);
+}
+.btn-x:hover { color: var(--bad); border-color: var(--bad); }
+
+.btn-add { align-self: flex-start; }
+
+.mover { display: flex; gap: 2px; }
+.mover button { padding: calc(var(--step) * 1) calc(var(--step) * 1.5); font-family: var(--mono); line-height: 1; }
+
+/* ── Output pane ────────────────────────────────────────────────── */
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--step) * 1);
+  padding: calc(var(--step) * 2) calc(var(--step) * 3);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+
+.tab {
+  border: 1px solid transparent;
+  background: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: calc(var(--step) * 1.5) calc(var(--step) * 2.5);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--ink);
+  background: var(--sunken);
+  border-color: var(--line);
+}
+
+.tabs .spacer { flex: 1; }
+
+.out {
+  flex: 1;
+  overflow: auto;
+  padding: calc(var(--step) * 4);
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--ink-soft);
+  tab-size: 2;
+}
+
+.out[hidden] { display: none; }
+
+.slot {
+  color: var(--slot);
+  background: var(--slot-bg);
+  border: 1px solid var(--slot-line);
+  border-radius: 3px;
+  padding: 0 3px;
+  font-weight: 500;
+}
+
+.filled { color: var(--ink); background: var(--slot-bg); border-radius: 3px; padding: 0 3px; }
+
+.gone {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.sec-head {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 1.4em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--line-soft);
+}
+.sec-head:first-child { margin-top: 0; }
+
+/* ── Report ─────────────────────────────────────────────────────── */
+
+.report {
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+  max-height: 32%;
+  overflow: auto;
+  padding: calc(var(--step) * 3) calc(var(--step) * 4);
+  font-size: 12px;
+}
+
+.report__ok { color: var(--ok); font-family: var(--mono); font-size: 11.5px; }
+
+.report ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: calc(var(--step) * 1.5); }
+.report li { color: var(--bad); font-family: var(--mono); font-size: 11.5px; line-height: 1.45; }
+.report li::before { content: "·"; margin-right: 0.6em; }
+
+.count {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 calc(var(--step) * 2);
+}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <h1>Skill Designer</h1>
+  <span class="api">skills.automacene.org/v1alpha1</span>
+  <span class="spacer"></span>
+  <button type="button" id="theme">Theme</button>
+  <button type="button" id="load-example">Load example</button>
+  <button type="button" id="reset">Clear</button>
+</header>
+
+<div class="shell">
+  <div class="pane">
+    <form class="form" id="form" autocomplete="off">
+
+      <fieldset>
+        <legend>Identity</legend>
+        <div class="grid grid--2">
+          <label>
+            <span class="lbl">name</span>
+            <input id="m-name" placeholder="deal-summary">
+          </label>
+          <label>
+            <span class="lbl">namespace</span>
+            <input id="m-namespace" placeholder="summarize">
+          </label>
+        </div>
+        <div class="grid grid--2">
+          <label>
+            <span class="lbl">title</span>
+            <input id="m-title" placeholder="Commercial Deal Summarization">
+          </label>
+          <label>
+            <span class="lbl">version</span>
+            <input id="m-version" placeholder="1.0.0">
+          </label>
+        </div>
+        <label>
+          <span class="lbl">description</span>
+          <textarea id="m-description" rows="2" placeholder="Condense a commercial agreement into its material terms."></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Authors</legend>
+        <p class="hint">npm's form. A name, an optional &lt;email&gt;, an optional (url). Only the name is required.</p>
+        <div class="rows" id="authors"></div>
+        <button type="button" class="btn-add" data-add="author">Add author</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Capabilities</legend>
+        <p class="hint">What this implements, in taxonomy terms. A public node cites its id; a private one is prefixed with your domain and has none.</p>
+        <div class="rows" id="capabilities"></div>
+        <button type="button" class="btn-add" data-add="capability">Add capability</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Inputs</legend>
+        <p class="hint">Test value is not part of the document. It is what the filled prompt uses.</p>
+        <div class="rows" id="inputs"></div>
+        <button type="button" class="btn-add" data-add="input">Add input</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Sections</legend>
+        <p class="hint">Ordered. A section falls back to its absent text when any input it uses comes back empty. Exactly one section is the input.</p>
+        <div class="rows" id="sections"></div>
+        <button type="button" class="btn-add" data-add="section">Add section</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Output</legend>
+        <p class="hint">Optional. With none, the skill returns a single implicit text field.</p>
+        <div class="rows" id="output"></div>
+        <button type="button" class="btn-add" data-add="field">Add field</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Settings</legend>
+        <p class="hint">The author's suggestion, measured where the skill was written. A caller overrides any of it.</p>
+        <div class="grid grid--3">
+          <label>
+            <span class="lbl">temperature</span>
+            <input id="s-temperature" type="number" step="0.1" min="0" max="2" placeholder="0.1">
+          </label>
+          <label>
+            <span class="lbl">maxTokens</span>
+            <input id="s-maxTokens" type="number" min="1" placeholder="1500">
+          </label>
+          <label>
+            <span class="lbl">promptTokens</span>
+            <input id="s-promptTokens" type="number" min="1" placeholder="4000">
+          </label>
+        </div>
+      </fieldset>
+
+    </form>
+  </div>
+
+  <div class="pane pane--out">
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab" role="tab" id="tab-yaml" aria-selected="true">Document</button>
+      <button type="button" class="tab" role="tab" id="tab-template" aria-selected="false">Template</button>
+      <button type="button" class="tab" role="tab" id="tab-filled" aria-selected="false">Filled</button>
+      <span class="spacer"></span>
+      <button type="button" id="copy">Copy</button>
+    </div>
+
+    <pre class="out" id="out-yaml"></pre>
+    <pre class="out" id="out-template" hidden></pre>
+    <pre class="out" id="out-filled" hidden></pre>
+
+    <div class="report" id="report"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const KINDS = ["instructions", "examples", "context", "history", "input"];
+const TYPES = ["string", "integer", "number", "boolean"];
+/** Built fresh at each use. A shared global regex carries `lastIndex` between calls. */
+const VAR_SOURCE = "\\{\\{\\s*\\$([A-Za-z_][A-Za-z0-9_]*)\\s*\\}\\}";
+const slots = () => new RegExp(VAR_SOURCE, "g");
+const DNS = /^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$/;
+const SEMVER = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
+const AUTHOR = /^[^<>()]+?(?:\s+<[^<>]+>)?(?:\s+\([^()]+\))?$/;
+const STORE = "skill-designer";
+
+/** Everything the page is holding. Rendering reads this and nothing else. */
+let doc = blank();
+
+function blank() {
+  return {
+    name: "", namespace: "", title: "", version: "1.0.0", description: "",
+    authors: [{ text: "" }],
+    capabilities: [{ name: "", id: "" }],
+    inputs: [],
+    sections: [],
+    output: [],
+    settings: { temperature: "", maxTokens: "", promptTokens: "" },
+  };
+}
+
+/* ── Reading the form ─────────────────────────────────────────────── */
+
+const $ = (id) => document.getElementById(id);
+
+/** The variable names one piece of text uses. */
+function varsIn(text) {
+  const found = new Set();
+  for (const [, name] of String(text || "").matchAll(slots())) found.add(name);
+  return [...found];
+}
+
+/** A section falls back to `absent` when any variable its text uses is empty. */
+function resolves(section, values) {
+  const needed = varsIn(section.text);
+  if (needed.length === 0) return true;
+  return needed.every((name) => String(values[name] ?? "").trim() !== "");
+}
+
+/** Test value, then declared default, then nothing. */
+function testValues() {
+  const out = {};
+  for (const input of doc.inputs) {
+    if (!input.name) continue;
+    const test = String(input.test ?? "").trim();
+    out[input.name] = test !== "" ? test : String(input.default ?? "");
+  }
+  return out;
+}
+
+/* ── YAML ─────────────────────────────────────────────────────────── */
+
+function block(text, indent) {
+  const pad = " ".repeat(indent);
+  const body = String(text).replace(/\r\n/g, "\n").split("\n").map((l) => l.replace(/\s+$/, ""));
+  while (body.length && body[body.length - 1] === "") body.pop();
+  return "|\n" + body.map((l) => (l ? pad + l : "")).join("\n");
+}
+
+/** A scalar that YAML would misread gets quoted. */
+function scalar(value) {
+  const text = String(value);
+  if (text === "") return '""';
+  if (/^[-?:,\[\]{}#&*!|>'"%@`]/.test(text)) return JSON.stringify(text);
+  if (/:\s|\s#/.test(text)) return JSON.stringify(text);
+  if (/^(true|false|null|yes|no|on|off|~)$/i.test(text)) return JSON.stringify(text);
+  if (/^-?\d+(\.\d+)?$/.test(text)) return JSON.stringify(text);
+  return text;
+}
+
+function toYaml() {
+  const L = [];
+  const push = (line) => L.push(line);
+
+  push("apiVersion: skills.automacene.org/v1alpha1");
+  push("kind: SemanticSkill");
+  push("");
+  push("metadata:");
+  push(`  name: ${scalar(doc.name)}`);
+  push(`  namespace: ${scalar(doc.namespace)}`);
+  push("  labels:");
+  push(`    automacene.org/version: "${doc.version || ""}"`);
+  push("  annotations:");
+  push(`    automacene.org/oasf-name: ${scalar(doc.title)}`);
+
+  const description = String(doc.description || "").trim();
+  if (description.includes("\n") || description.length > 72) {
+    push("    automacene.org/description: >");
+    for (const line of wrap(description, 74)) push(`      ${line}`);
+  } else {
+    push(`    automacene.org/description: ${scalar(description)}`);
+  }
+
+  push("");
+  push("spec:");
+
+  push("  authors:");
+  for (const a of doc.authors) if (a.text.trim()) push(`    - ${scalar(a.text.trim())}`);
+
+  push("  capabilities:");
+  push("    skills:");
+  for (const c of doc.capabilities) {
+    if (!c.name.trim()) continue;
+    push(`      - name: ${scalar(c.name.trim())}`);
+    if (String(c.id).trim() !== "") push(`        id: ${String(c.id).trim()}`);
+  }
+
+  const inputs = doc.inputs.filter((i) => i.name.trim());
+  if (inputs.length) {
+    push("  inputs:");
+    for (const i of inputs) {
+      push(`    - name: ${scalar(i.name.trim())}`);
+      push(`      description: ${scalar(String(i.description || "").trim())}`);
+      if (String(i.default || "").trim() !== "") {
+        const d = String(i.default).trim();
+        if (d.length > 66) {
+          push("      default: >");
+          for (const line of wrap(d, 72)) push(`        ${line}`);
+        } else {
+          push(`      default: ${scalar(d)}`);
+        }
+      }
+      if (i.required) push("      required: true");
+    }
+  }
+
+  const fields = doc.output.filter((f) => f.name.trim());
+  if (fields.length) {
+    push("  output:");
+    push("    fields:");
+    for (const f of fields) {
+      push(`      - name: ${scalar(f.name.trim())}`);
+      push(`        type: ${f.type}`);
+      if (f.required) push("        required: true");
+      if (f.repeated) push("        repeated: true");
+    }
+  }
+
+  const sections = doc.sections.filter((s) => s.name.trim());
+  if (sections.length) {
+    push("  sections:");
+    for (const s of sections) {
+      push(`    - name: ${scalar(s.name.trim())}`);
+      push(`      kind: ${s.kind}`);
+      push(`      text: ${block(s.text || "", 8)}`);
+      if (String(s.absent || "").trim()) push(`      absent: ${block(s.absent, 8)}`);
+    }
+  }
+
+  const set = doc.settings;
+  const kept = ["temperature", "maxTokens", "promptTokens"].filter((k) => String(set[k]).trim() !== "");
+  if (kept.length) {
+    push("  settings:");
+    for (const k of kept) push(`    ${k}: ${String(set[k]).trim()}`);
+  }
+
+  return L.join("\n") + "\n";
+}
+
+function wrap(text, width) {
+  const out = [];
+  for (const para of String(text).split(/\n/)) {
+    let line = "";
+    for (const word of para.split(/\s+/).filter(Boolean)) {
+      if (line && (line + " " + word).length > width) { out.push(line); line = word; }
+      else line = line ? line + " " + word : word;
+    }
+    out.push(line);
+  }
+  return out;
+}
+
+/* ── The prompt, both ways ────────────────────────────────────────── */
+
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+function promptHtml(mode) {
+  const values = testValues();
+  const parts = [];
+
+  for (const section of doc.sections) {
+    if (!section.name.trim()) continue;
+
+    const met = mode === "template" ? true : resolves(section, values);
+    const source = met ? section.text : section.absent;
+    const label = `<span class="sec-head">${esc(section.name)} · ${esc(section.kind)}${
+      met ? "" : " · absent"
+    }</span>`;
+
+    if (!String(source || "").trim()) {
+      if (!met) parts.push(label + `<span class="gone">(nothing to say, and no absent text)</span>`);
+      continue;
+    }
+
+    let body = esc(String(source).trim());
+
+    if (mode === "template") {
+      body = body.replace(slots(), (m, n) => `<span class="slot">{{$${n}}}</span>`);
+    } else {
+      body = body.replace(slots(), (m, n) =>
+        n in values
+          ? `<span class="filled">${esc(values[n])}</span>`
+          : `<span class="slot">${esc(m)}</span>`);
+    }
+
+    parts.push(label + body);
+  }
+
+  if (parts.length === 0) return `<span class="gone">No sections yet.</span>`;
+  return parts.join("\n\n");
+}
+
+/* ── Checking ─────────────────────────────────────────────────────── */
+
+function problems() {
+  const out = [];
+  const d = doc;
+
+  if (!DNS.test(d.name)) out.push(`name "${d.name}" is not a DNS-1123 label`);
+  if (!DNS.test(d.namespace)) out.push(`namespace "${d.namespace}" is not a DNS-1123 label`);
+  if (!SEMVER.test(d.version)) out.push(`version "${d.version}" is not semver`);
+  if (!d.title.trim()) out.push("title is empty");
+  if (!d.description.trim()) out.push("description is empty");
+
+  const authors = d.authors.map((a) => a.text.trim()).filter(Boolean);
+  if (!authors.length) out.push("no authors");
+  for (const a of authors) if (!AUTHOR.test(a)) out.push(`author "${a}" is not "Name <email> (url)"`);
+
+  const caps = d.capabilities.filter((c) => c.name.trim());
+  if (!caps.length) out.push("no capability cited");
+
+  const declared = d.inputs.map((i) => i.name.trim()).filter(Boolean);
+  for (const i of d.inputs) {
+    if (!i.name.trim()) out.push("an input has no name");
+    else if (!String(i.description || "").trim()) out.push(`input "${i.name}" has no description`);
+  }
+
+  const sections = d.sections.filter((s) => s.name.trim());
+  if (!sections.length) out.push("no sections");
+
+  dupes(declared, "input", out);
+  dupes(sections.map((s) => s.name.trim()), "section", out);
+  dupes(d.output.map((f) => f.name.trim()).filter(Boolean), "output field", out);
+
+  const used = new Set();
+  let inputSections = 0;
+
+  for (const s of sections) {
+    if (!String(s.text || "").trim()) out.push(`section "${s.name}" has no text`);
+    if (s.kind === "input") inputSections += 1;
+    for (const v of varsIn(s.text)) used.add(v);
+    for (const v of varsIn(s.absent)) used.add(v);
+  }
+
+  if (sections.length && inputSections !== 1) {
+    out.push(`${inputSections} sections of kind input, expected exactly 1`);
+  }
+
+  for (const v of [...used].sort()) {
+    if (!declared.includes(v)) out.push(`{{$${v}}} is used but not declared`);
+  }
+  for (const name of declared) {
+    if (!used.has(name)) out.push(`input "${name}" is declared but never used`);
+  }
+
+  for (const f of d.output) {
+    if (!f.name.trim()) out.push("an output field has no name");
+    else if (!TYPES.includes(f.type)) out.push(`output field "${f.name}" has no type`);
+  }
+
+  const budget = Number(d.settings.promptTokens);
+  if (budget > 0) {
+    const cost = Math.ceil(plainPrompt().length / 4);
+    if (cost > budget) out.push(`renders to about ${cost} tokens, over the ${budget} budget`);
+  }
+
+  return out;
+}
+
+function dupes(names, label, out) {
+  const seen = new Set();
+  for (const n of names) {
+    if (seen.has(n)) out.push(`duplicate ${label} name "${n}"`);
+    seen.add(n);
+  }
+}
+
+function plainPrompt() {
+  const values = testValues();
+  return doc.sections
+    .filter((s) => s.name.trim())
+    .map((s) => {
+      const met = resolves(s, values);
+      const src = met ? s.text : s.absent;
+      return String(src || "").trim().replace(slots(), (m, n) => values[n] ?? m);
+    })
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+/* ── Rows ─────────────────────────────────────────────────────────── */
+
+function rowShell(onRemove, extra) {
+  const row = document.createElement("div");
+  row.className = "row";
+  const top = document.createElement("div");
+  top.className = "row__top";
+  row.appendChild(top);
+  if (extra) extra(top);
+  const x = document.createElement("button");
+  x.type = "button";
+  x.className = "btn-x";
+  x.textContent = "×";
+  x.title = "Remove";
+  x.addEventListener("click", onRemove);
+  top.appendChild(x);
+  return row;
+}
+
+function field(labelText, value, onInput, opts = {}) {
+  const label = document.createElement("label");
+  const span = document.createElement("span");
+  span.className = "lbl";
+  span.textContent = labelText;
+  const el = document.createElement(opts.multiline ? "textarea" : "input");
+  if (opts.multiline) el.rows = opts.rows || 4;
+  if (opts.placeholder) el.placeholder = opts.placeholder;
+  el.value = value ?? "";
+  el.addEventListener("input", () => { onInput(el.value); paint(); });
+  label.append(span, el);
+  return label;
+}
+
+function drawAuthors() {
+  const host = $("authors");
+  host.textContent = "";
+  doc.authors.forEach((a, i) => {
+    const row = rowShell(() => { doc.authors.splice(i, 1); draw(); }, (top) => {
+      const wrapEl = document.createElement("div");
+      wrapEl.className = "grow";
+      wrapEl.appendChild(field("author", a.text, (v) => { a.text = v; },
+        { placeholder: "Codie Petersen <codie@asteres-technologies.com>" }));
+      top.appendChild(wrapEl);
+    });
+    host.appendChild(row);
+  });
+}
+
+function drawCapabilities() {
+  const host = $("capabilities");
+  host.textContent = "";
+  doc.capabilities.forEach((c, i) => {
+    const row = rowShell(() => { doc.capabilities.splice(i, 1); draw(); }, (top) => {
+      const grow = document.createElement("div");
+      grow.className = "grow grid grid--2";
+      grow.appendChild(field("name", c.name, (v) => { c.name = v; },
+        { placeholder: "language_processing/language_generation/summarization" }));
+      grow.appendChild(field("id (public only)", c.id, (v) => { c.id = v; },
+        { placeholder: "10302" }));
+      top.appendChild(grow);
+    });
+    host.appendChild(row);
+  });
+}
+
+function drawInputs() {
+  const host = $("inputs");
+  host.textContent = "";
+  doc.inputs.forEach((input, i) => {
+    const row = rowShell(() => { doc.inputs.splice(i, 1); draw(); }, (top) => {
+      const grow = document.createElement("div");
+      grow.className = "grow";
+      grow.appendChild(field("name", input.name, (v) => { input.name = v; }, { placeholder: "document" }));
+      top.appendChild(grow);
+
+      const req = document.createElement("label");
+      req.className = "check";
+      const box = document.createElement("input");
+      box.type = "checkbox";
+      box.checked = !!input.required;
+      box.addEventListener("change", () => { input.required = box.checked; paint(); });
+      const t = document.createElement("span");
+      t.className = "lbl";
+      t.textContent = "required";
+      req.append(box, t);
+      top.appendChild(req);
+    });
+
+    row.appendChild(field("description", input.description, (v) => { input.description = v; },
+      { placeholder: "The agreement text to summarize." }));
+
+    const pair = document.createElement("div");
+    pair.className = "grid grid--2";
+    pair.appendChild(field("default", input.default, (v) => { input.default = v; },
+      { multiline: true, rows: 2, placeholder: "used when nothing is supplied" }));
+    pair.appendChild(field("test value", input.test, (v) => { input.test = v; },
+      { multiline: true, rows: 2, placeholder: "not saved to the document" }));
+    row.appendChild(pair);
+
+    host.appendChild(row);
+  });
+}
+
+function drawSections() {
+  const host = $("sections");
+  host.textContent = "";
+
+  doc.sections.forEach((section, i) => {
+    const row = rowShell(() => { doc.sections.splice(i, 1); draw(); }, (top) => {
+      const grow = document.createElement("div");
+      grow.className = "grow grid grid--2";
+      grow.appendChild(field("name", section.name, (v) => { section.name = v; },
+        { placeholder: "instructions" }));
+
+      const kindLabel = document.createElement("label");
+      const kspan = document.createElement("span");
+      kspan.className = "lbl";
+      kspan.textContent = "kind";
+      const select = document.createElement("select");
+      for (const k of KINDS) {
+        const o = document.createElement("option");
+        o.value = k; o.textContent = k;
+        if (section.kind === k) o.selected = true;
+        select.appendChild(o);
+      }
+      select.addEventListener("change", () => { section.kind = select.value; paint(); });
+      kindLabel.append(kspan, select);
+      grow.appendChild(kindLabel);
+      top.appendChild(grow);
+
+      const mover = document.createElement("div");
+      mover.className = "mover";
+      const up = document.createElement("button");
+      up.type = "button"; up.textContent = "↑"; up.title = "Move up";
+      up.disabled = i === 0;
+      up.addEventListener("click", () => { swap(i, i - 1); });
+      const down = document.createElement("button");
+      down.type = "button"; down.textContent = "↓"; down.title = "Move down";
+      down.disabled = i === doc.sections.length - 1;
+      down.addEventListener("click", () => { swap(i, i + 1); });
+      mover.append(up, down);
+      top.appendChild(mover);
+    });
+
+    row.appendChild(field("text", section.text, (v) => { section.text = v; },
+      { multiline: true, rows: 4, placeholder: "Summarize the agreement below. Concentrate on {{$focus}}." }));
+
+    const uses = varsIn(section.text);
+    const note = document.createElement("p");
+    note.className = "hint";
+    note.textContent = uses.length
+      ? `Falls back to absent when any of ${uses.join(", ")} is empty.`
+      : "Uses no inputs, so it always renders.";
+    row.appendChild(note);
+
+    if (uses.length) {
+      row.appendChild(field("absent", section.absent, (v) => { section.absent = v; },
+        { multiline: true, rows: 2, placeholder: "What to say instead when a slot is empty." }));
+    }
+
+    host.appendChild(row);
+  });
+}
+
+function swap(a, b) {
+  const list = doc.sections;
+  [list[a], list[b]] = [list[b], list[a]];
+  draw();
+}
+
+function drawOutput() {
+  const host = $("output");
+  host.textContent = "";
+  doc.output.forEach((f, i) => {
+    const row = rowShell(() => { doc.output.splice(i, 1); draw(); }, (top) => {
+      const grow = document.createElement("div");
+      grow.className = "grow grid grid--2";
+      grow.appendChild(field("name", f.name, (v) => { f.name = v; }, { placeholder: "summary" }));
+
+      const tl = document.createElement("label");
+      const ts = document.createElement("span");
+      ts.className = "lbl";
+      ts.textContent = "type";
+      const select = document.createElement("select");
+      for (const t of TYPES) {
+        const o = document.createElement("option");
+        o.value = t; o.textContent = t;
+        if (f.type === t) o.selected = true;
+        select.appendChild(o);
+      }
+      select.addEventListener("change", () => { f.type = select.value; paint(); });
+      tl.append(ts, select);
+      grow.appendChild(tl);
+      top.appendChild(grow);
+
+      for (const [key, text] of [["required", "required"], ["repeated", "repeated"]]) {
+        const l = document.createElement("label");
+        l.className = "check";
+        const box = document.createElement("input");
+        box.type = "checkbox";
+        box.checked = !!f[key];
+        box.addEventListener("change", () => { f[key] = box.checked; paint(); });
+        const s = document.createElement("span");
+        s.className = "lbl";
+        s.textContent = text;
+        l.append(box, s);
+        top.appendChild(l);
+      }
+    });
+    host.appendChild(row);
+  });
+}
+
+/* ── Painting ─────────────────────────────────────────────────────── */
+
+function paint() {
+  $("out-yaml").textContent = toYaml();
+  $("out-template").innerHTML = promptHtml("template");
+  $("out-filled").innerHTML = promptHtml("filled");
+
+  const found = problems();
+  const report = $("report");
+  report.textContent = "";
+
+  const count = document.createElement("p");
+  count.className = "count";
+  count.textContent = found.length
+    ? `${found.length} problem${found.length > 1 ? "s" : ""}`
+    : "Checks";
+  report.appendChild(count);
+
+  if (!found.length) {
+    const ok = document.createElement("p");
+    ok.className = "report__ok";
+    ok.textContent = "Valid against the standard.";
+    report.appendChild(ok);
+  } else {
+    const ul = document.createElement("ul");
+    for (const p of found) {
+      const li = document.createElement("li");
+      li.textContent = p;
+      ul.appendChild(li);
+    }
+    report.appendChild(ul);
+  }
+
+  save();
+}
+
+function draw() {
+  drawAuthors();
+  drawCapabilities();
+  drawInputs();
+  drawSections();
+  drawOutput();
+  paint();
+}
+
+function bindTop() {
+  const map = {
+    "m-name": "name", "m-namespace": "namespace", "m-title": "title",
+    "m-version": "version", "m-description": "description",
+  };
+  for (const [id, key] of Object.entries(map)) {
+    const el = $(id);
+    el.value = doc[key];
+    el.addEventListener("input", () => { doc[key] = el.value; paint(); });
+  }
+  for (const key of ["temperature", "maxTokens", "promptTokens"]) {
+    const el = $("s-" + key);
+    el.value = doc.settings[key];
+    el.addEventListener("input", () => { doc.settings[key] = el.value; paint(); });
+  }
+}
+
+/* ── Wiring ───────────────────────────────────────────────────────── */
+
+document.querySelectorAll("[data-add]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const what = button.dataset.add;
+    if (what === "author") doc.authors.push({ text: "" });
+    if (what === "capability") doc.capabilities.push({ name: "", id: "" });
+    if (what === "input") doc.inputs.push({ name: "", description: "", default: "", test: "", required: false });
+    if (what === "section") doc.sections.push({ name: "", kind: "instructions", text: "", absent: "" });
+    if (what === "field") doc.output.push({ name: "", type: "string", required: false, repeated: false });
+    draw();
+  });
+});
+
+const TABS = [["tab-yaml", "out-yaml"], ["tab-template", "out-template"], ["tab-filled", "out-filled"]];
+for (const [tabId, outId] of TABS) {
+  $(tabId).addEventListener("click", () => {
+    for (const [t, o] of TABS) {
+      const on = t === tabId;
+      $(t).setAttribute("aria-selected", String(on));
+      $(o).hidden = !on;
+    }
+  });
+}
+
+$("copy").addEventListener("click", async () => {
+  const shown = TABS.find(([t]) => $(t).getAttribute("aria-selected") === "true");
+  const text = shown[1] === "out-yaml" ? toYaml() : plainPrompt();
+  const button = $("copy");
+  try {
+    await navigator.clipboard.writeText(text);
+    button.textContent = "Copied";
+  } catch {
+    button.textContent = "Select and copy";
+  }
+  setTimeout(() => { button.textContent = "Copy"; }, 1400);
+});
+
+$("theme").addEventListener("click", () => {
+  const root = document.documentElement;
+  const now = root.getAttribute("data-theme");
+  const next = now === "dark" ? "light" : now === "light" ? "dark" : "dark";
+  root.setAttribute("data-theme", next);
+  try { localStorage.setItem(STORE + ":theme", next); } catch {}
+});
+
+$("reset").addEventListener("click", () => {
+  doc = blank();
+  bindTop();
+  draw();
+});
+
+$("load-example").addEventListener("click", () => { doc = example(); bindTop(); draw(); });
+
+function example() {
+  return {
+    name: "deal-summary",
+    namespace: "summarize",
+    title: "Commercial Deal Summarization",
+    version: "1.0.0",
+    description: "Condense a commercial agreement into its material terms.",
+    authors: [{ text: "Codie Petersen <codie@asteres-technologies.com>" }],
+    capabilities: [
+      { name: "language_processing/language_generation/summarization", id: "10302" },
+      { name: "automacene.org/deal_summarization", id: "" },
+    ],
+    inputs: [
+      { name: "document", description: "The agreement text to summarize.", default: "",
+        test: "This Agreement is made between Northwind Ltd and Contoso GmbH...", required: true },
+      { name: "company", description: "The counterparty, when already known.", default: "",
+        test: "Contoso GmbH", required: false },
+      { name: "focus", description: "What the reader cares about most.",
+        default: "payment terms, termination, and liability", test: "", required: false },
+    ],
+    sections: [
+      { name: "instructions", kind: "instructions",
+        text: "Summarize the agreement below. Concentrate on {{$focus}}.", absent: "" },
+      { name: "counterparty", kind: "context",
+        text: "The counterparty is {{$company}}.",
+        absent: "The counterparty is not given. Identify it from the document, and say so if the document does not name one." },
+      { name: "document", kind: "input", text: "{{$document}}", absent: "" },
+    ],
+    output: [
+      { name: "summary", type: "string", required: true, repeated: false },
+      { name: "counterparty", type: "string", required: false, repeated: false },
+      { name: "risks", type: "string", required: false, repeated: true },
+    ],
+    settings: { temperature: "0.1", maxTokens: "1500", promptTokens: "" },
+  };
+}
+
+function save() {
+  try { localStorage.setItem(STORE, JSON.stringify(doc)); } catch {}
+}
+
+function load() {
+  try {
+    const theme = localStorage.getItem(STORE + ":theme");
+    if (theme) document.documentElement.setAttribute("data-theme", theme);
+    const raw = localStorage.getItem(STORE);
+    if (!raw) return false;
+    const saved = JSON.parse(raw);
+    if (saved && typeof saved === "object") { doc = Object.assign(blank(), saved); return true; }
+  } catch {}
+  return false;
+}
+
+if (!load()) doc = example();
+bindTop();
+draw();
+</script>
+
+</body>
+</html>
