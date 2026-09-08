@@ -40,7 +40,7 @@ spec:
     - name: tools
       description: The tools that matched this query, from the tools pool, each under the id to reply with.
       default: <You have no tools for this>
-    - name: context
+    - name: attached
       description: Material the user attached to this message, carried on the open turn rather than held in a pool.
       default: <Nothing was attached to this message>
     - name: query
@@ -81,6 +81,6 @@ spec:
       kind: input
       text: |
         [{{$bot}}:Attached To This Message]
-        {{$context}}
+        {{$attached}}
 
         <{{$user}}> {{$query}}
