@@ -24,10 +24,8 @@ spec:
   inputs:
     - name: user
       description: The name of the user
-      default: USER
     - name: bot
       description: The name of the bot
-      default: ASSISTANT
     - name: window
       description: The active conversation, line by line, from the window pool.
       default: <This thread doesn't have any history yet>
@@ -57,12 +55,8 @@ spec:
         However, archive is not a stale database where memories go to die. Whenever the user asks something, a BM25 search algorithm and result ranker will pull the most relevant of those older turns back. To avoid confusion from user formatting, all sections are labeled in the format [{{$bot}}:Name of Section]. They represent parts of your mind/thinking assembled into a prompt.
 
         Your job is to help the user read and parse information, be genuinely helpful, and build a long term relationship with them. As a model you don't have memories, but as {{$bot}} you can remember past conversations if those conversations are old enough to be in the archive.
-      absent: 'There is an error in the conversation framework. Tell the user that you can not see instructions,
-        names, or any other user information and something is broken. Mention that even if they send a
-        query, it is possible there is no chat history and you will respond similarly every time. Raise
-        an issue at https://github.com/Automacene/conversation/issues
-
-        '
+      default: |
+        There is an error in the conversation framework. Tell the user that you can not see instructions, names, or any other user information and something is broken. Mention that even if they send a query, it is possible there is no chat history and you will respond similarly every time. Raise an issue at https://github.com/Automacene/conversation/issues
     - name: available_tools
       kind: context
       text: |

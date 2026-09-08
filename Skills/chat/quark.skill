@@ -52,11 +52,9 @@ spec:
         <chatHistory>
         {{$HISTORY}}
         </chatHistory>
-      absent: '<chatHistory>
-
-        </chatHistory>'
       default: |
-        Missing parameters prevented this section from resolving.
+        <chatHistory>
+        </chatHistory>
     - name: input
       kind: input
       text: |

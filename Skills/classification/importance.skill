@@ -42,16 +42,14 @@ spec:
       kind: context
       text: |
         Topics of high importance: {{$highTopics}}
-      absent: No high-importance topics were given.
       default: |
-        Missing parameters prevented this section from resolving.
+        No high-importance topics were given.
     - name: low-topics
       kind: context
       text: |
         Topics of low importance: {{$lowTopics}}
-      absent: No low-importance topics were given.
       default: |
-        Missing parameters prevented this section from resolving.
+        No low-importance topics were given.
     - name: examples
       kind: examples
       text: |

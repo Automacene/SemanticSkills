@@ -221,11 +221,9 @@ spec:
       text: |
         [skills]
         {{$skills}}
-      absent: 'No skills were supplied. Say so, and describe the plan in terms of the capabilities it
-
-        would need rather than naming functions.'
       default: |
-        Missing parameters prevented this section from resolving.
+        No skills were supplied. Say so, and describe the plan in terms of the capabilities it
+        would need rather than naming functions.
     - name: input
       kind: input
       text: |

@@ -31,18 +31,16 @@ spec:
       kind: context
       text: |
         These are the results from the API call "{{$api}}"
-      absent: The call this answers from was not named.
       default: |
-        Missing parameters prevented this section from resolving.
+        The call this answers from was not named.
     - name: results
       kind: context
       text: |
         ===RESULTS
         {{$results}}
         ===END RESULTS
-      absent: The API returned no results. Say so rather than answering from anything else.
       default: |
-        Missing parameters prevented this section from resolving.
+        The API returned no results. Say so rather than answering from anything else.
     - name: note
       kind: context
       text: |

@@ -39,9 +39,8 @@ spec:
       kind: context
       text: |
         Write it in this style: {{$style}}
-      absent: No style was asked for. Use your own.
       default: |
-        Missing parameters prevented this section from resolving.
+        No style was asked for. Use your own.
     - name: input
       kind: input
       text: |

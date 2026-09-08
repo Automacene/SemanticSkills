@@ -42,9 +42,8 @@ spec:
       text: |
         >>>>>The following is an overview of a previous part of the {{$conversationtype}}, focusing on "{{$focusarea}}".
         {{$previousresults}}
-      absent: This is the first part being summarized. There is no previous overview.
       default: |
-        Missing parameters prevented this section from resolving.
+        This is the first part being summarized. There is no previous overview.
     - name: instructions
       kind: instructions
       text: |

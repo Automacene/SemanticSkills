@@ -41,21 +41,17 @@ spec:
       text: |
         CONTEXT:
         {{$context}}
-      absent: 'No relevant context was retrieved. Let the user know you do not have direct sources, so
-
-        your answer is intuition rather than citation. Use whatever language you want to convey
-
-        that.'
       default: |
-        Missing parameters prevented this section from resolving.
+        No relevant context was retrieved. Let the user know you do not have direct sources, so
+        your answer is intuition rather than citation. Use whatever language you want to convey
+        that.
     - name: history
       kind: history
       text: |
         --- Chat History ---
         {{$history}}
-      absent: This is the start of the conversation.
       default: |
-        Missing parameters prevented this section from resolving.
+        This is the start of the conversation.
     - name: input
       kind: input
       text: |

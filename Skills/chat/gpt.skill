@@ -82,9 +82,8 @@ spec:
       text: |
         {{$history}}
         [Done]
-      absent: This is the start of the conversation.
       default: |
-        Missing parameters prevented this section from resolving.
+        This is the start of the conversation.
     - name: input
       kind: input
       text: |
