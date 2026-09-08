@@ -32,21 +32,26 @@ spec:
   sections:
     - name: input
       kind: input
-      text: |-
+      text: |
         >>>>>The following is part of a {{$conversationtype}}.
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: previous
       kind: context
-      text: |-
+      text: |
         >>>>>The following is an overview of a previous part of the {{$conversationtype}}, focusing on "{{$focusarea}}".
         {{$previousresults}}
-      absent: |-
-        This is the first part being summarized. There is no previous overview.
+      absent: This is the first part being summarized. There is no previous overview.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         >>>>>In 250 words or less, write a verbose and detailed overview of the
         {{$conversationtype}} focusing solely on "{{$focusarea}}".
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 500

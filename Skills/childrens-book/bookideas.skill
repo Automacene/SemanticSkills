@@ -28,14 +28,18 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Create a list of {{$numIdeas}} ideas for a children's book, each with a title and a short
         description, represented as a valid json string, as an array of
         [{ "title": "the title", "description":"the short description" }]
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: topic
       kind: input
-      text: |-
+      text: |
         Topic: {{$INPUT}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.5
     maxTokens: 2000

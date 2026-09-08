@@ -29,12 +29,12 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Rewrite my bullet points into an email featuring complete sentences. Use a polite and
         inclusive tone.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         [Input]
         Toby,
 
@@ -58,7 +58,7 @@ spec:
         +++++
     - name: input
       kind: input
-      text: |-
+      text: |
         [Input]
         {{$to}}
         {{$input}}
@@ -66,6 +66,8 @@ spec:
         Thanks,
         {{$sender}}
         +++++
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

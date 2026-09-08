@@ -23,7 +23,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         You are a data entry assistant creating descriptions for prompt templates. The descriptions
         go into a vector database that pulls related skills into an AI for use.
 
@@ -47,7 +47,7 @@ spec:
         skill, and for a vector search to match it against a task.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         prompt:
           Explain what you would like to happen in natural language. This will generate the
           corresponding code. It helps to provide a programming language.
@@ -82,12 +82,14 @@ spec:
           output_type = "text/string"
     - name: input
       kind: input
-      text: |-
+      text: |
         Describe this template:
 
         {{$undescribed_template}}
 
         description_TOML:
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.9
     maxTokens: 1000

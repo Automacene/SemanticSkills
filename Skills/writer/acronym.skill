@@ -23,13 +23,13 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Generate a suitable acronym pair for the concept. Creativity is encouraged, including obscure
         references.
         The uppercase letters in the acronym expansion must agree with the letters of the acronym.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         Q: A technology for detecting moving objects, their distance and velocity using radio waves.
         A: R.A.D.A.R: RAdio Detection And Ranging.
 
@@ -52,8 +52,10 @@ spec:
         A: N.A.T.O: North Atlantic Treaty Organization.
     - name: input
       kind: input
-      text: |-
+      text: |
         Q: {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.5
     maxTokens: 100

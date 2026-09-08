@@ -26,11 +26,9 @@ spec:
   inputs:
     - name: user
       description: The name of the user
-      default: USER
       required: true
     - name: bot
       description: The name of the bot
-      default: COMPANION
       required: true
     - name: history
       description: The chat history as a plain line by line conversational history between the user and the companion.
@@ -46,45 +44,57 @@ spec:
       default: <There doesn't seem to be relevant page fragments>
     - name: query
       description: This is the user's query.
-      default: <The user hasn't said anything>
       required: true
   sections:
     - name: instructions
       kind: instructions
       text: |
-        You are {{$bot}}, a friendly browser companion running locally on {{$user}}'s machine. There are several pieces of information below you should be aware of.
+        You are {{$bot}}, a friendly browser companion running locally on {{$user}}'s machine. There are several pieces of information below you should be aware of
 
         The scraped section is a page {{$user}} has manually added. They could be on a page that is not necessarily the one that is in the scraped context. When a user scrapes a new page, it goes into an archive. There is also a chat history. What you see in that chat history may not be everything that you have talked about. Like the scraped pages, the chat history that is too big for your memory limits are pushed into archive.
 
         However, archive is not a stale database where memories go to die. Whenever the user asks something, a BM25 search algorithm and result ranker will pull the most relevant chat history and the most relevant page scrape fragments. To avoid confusion from user formatting and web scrape formatting, all sections are labeled in the format [{{$bot}}:Name of Section]. They represent parts of your mind/thinking assembled into a prompt.
 
         Your job is to help the user read and parse information, be genuinely helpful, and build a long term relationship with them. As a model you don't have memories, but as {{$bot}} you can remember past conversations and even conversations from different tabs if those conversations are old enough to be in the archive.
-      absent: |
-        There is an error in the companion framework. Tell the user that you can not see instructions, names, or any other user information and something is broken. Mention that even if they send a query, it is possible there is no chat history and you will respond similarly every time. Raise an issue at https://github.com/Automacene/companion/issues
+      default: |
+        <The bot or user's name can not be determined>
     - name: scrape_context
       kind: context
       text: |
         [{{$bot}}:Web Scrape Context]
         {{$user}} has shared the following with you:
         {{$scraped}}
+      default: |
+        [UNKNOWN:Web Scrape Context]
+        <The bot or user's name can not be determined>
     - name: recalled_scrape_context
       kind: context
       text: |
         [{{$bot}}:Recalled Web Scrape Context]
         These are the most relevant fragments previously shared by {{$user}}:
         {{$scrape_recall}}
+      default: |
+        [UNKNOWN:Recalled Web Scrape Context]
+        <The bot or user's name can not be determined>
     - name: recalled_chat_context
       kind: context
       text: |
         [{{$bot}}:Recalled Conversation Context]
         These are messages your remember from your conversations with {{$user}}:
         {{$chat_recall}}
+      default: |
+        [UNKNOWN:Recalled Conversation Context]
+        <The bot or user's name can not be determined>
     - name: chat_history
       kind: history
       text: |
         [{{$bot}}:Current History]
         {{$history}}
+      default: |
+        <The bot's name can not be determined>
     - name: latest_query
       kind: input
       text: |
         <{{$user}}> {{$query}}
+      default: |
+        <The user has said nothing or can not be identified>

@@ -23,13 +23,15 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Generate code from the description below. It helps if the description names a programming
         language; if it does not, choose one and say which.
     - name: input
       kind: input
-      text: |-
+      text: |
         Description: {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

@@ -25,7 +25,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         I want you to act as an English translator, spelling corrector and improver.
         I will speak to you in any language and you will detect the language, translate it and answer
         in the corrected and improved version of my text, in English.
@@ -36,12 +36,14 @@ spec:
         explanations.
     - name: input
       kind: input
-      text: |-
+      text: |
         Sentence: """
         {{$INPUT}}
         """
 
         Translation:
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 4000

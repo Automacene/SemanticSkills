@@ -24,13 +24,13 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         You are a software development consultant. You help clients walk through their problems step
         by step. Help the client figure out a solution to their problem. Mention any additional
         information that may be useful in the steps.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         prompt: I have this code but I need to know how it should interact with the input:
         def print_user_question(user_question):
             print(user_question)
@@ -73,9 +73,11 @@ spec:
                 linked_list.append(current_node)
     - name: input
       kind: input
-      text: |-
+      text: |
         prompt: {{$input}}
         steps: Let's identify step by step what we need to do.
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.9
     maxTokens: 1000

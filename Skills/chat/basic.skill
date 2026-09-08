@@ -41,23 +41,30 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         The following is a conversation with {{$person}} with {{$attitude}}.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: opening
       kind: examples
-      text: |-
+      text: |
         {{$user}}Hello.
         {{$bot}} {{$question}}
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: history
       kind: history
-      text: |-
+      text: |
         {{$history}}
-      absent: |-
-        This is the start of the conversation.
+      absent: This is the start of the conversation.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$user}}{{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.9
     maxTokens: 150

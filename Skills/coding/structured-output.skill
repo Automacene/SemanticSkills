@@ -37,14 +37,16 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Extract important profile information from the following text. Focus on extracting the
         person's name, job title, company, skills, and years of experience. Ensure you ONLY output
         JSON. Also, if you are unsure about a value, use null for strings and -1 for integers.
     - name: input
       kind: input
-      text: |-
+      text: |
         Text: {{$profile_text}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.7
     maxTokens: 1500

@@ -23,12 +23,12 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         WRITE PYTHON CODE TO SOLVE GIVEN PROBLEM. WRITE A SINGLE FUNCTION. ANY EXPLANATIONS MUST BE
         A COMMENT. USE CLASSES AND TYPINGS WHERE APPROPRIATE. Emit [done] when done.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         # Start
         # Function to print all strings in a list
         def appendprefix(values):
@@ -37,8 +37,10 @@ spec:
         # Done
     - name: input
       kind: input
-      text: |-
+      text: |
         #{{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

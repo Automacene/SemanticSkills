@@ -23,7 +23,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Must: brainstorm ideas and create a list.
         Must: use a numbered list.
         Must: only one list.
@@ -32,9 +32,11 @@ spec:
         Should: at least 3 items.
     - name: input
       kind: input
-      text: |-
+      text: |
         Topic: {{$INPUT}}
         Start.
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.5
     maxTokens: 2000

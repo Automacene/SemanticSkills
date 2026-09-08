@@ -41,7 +41,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         ONLY USE XML TAGS IN THIS LIST:
         [XML TAG LIST]
         lookup: lookup information from outside
@@ -68,32 +68,34 @@ spec:
         a lookup tag.
     - name: today
       kind: context
-      text: |-
+      text: |
         [CONTEXT]
         TODAY is {{time.Date}}
     - name: person
       kind: context
-      text: |-
+      text: |
         FIRST NAME: {{$firstname}}
         LAST NAME: {{$lastname}}
-      absent: |-
-        The person asking has not been named.
+      absent: The person asking has not been named.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: place
       kind: context
-      text: |-
+      text: |
         CITY: {{$city}}
         STATE: {{$state}}
         COUNTRY: {{$country}}
-      absent: |-
-        Their location is not known. Do not assume one.
+      absent: Their location is not known. Do not assume one.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: recalled
       kind: context
-      text: |-
+      text: |
         {{recall $input}}
         [END CONTEXT]
     - name: examples
       kind: examples
-      text: |-
+      text: |
         Who is the current president of the United States? Who was president in 2012? Who was CEO of Microsoft 30 years ago?
         <response><lookup>Who is United States President</lookup><fact>Barack Obama was president in 2012</fact><fact>Bill Gates was CEO 30 years ago</fact></response>
         [done]
@@ -105,8 +107,10 @@ spec:
         <response><notfact>The moon flew away in 2014</notfact><notfact>It was a spaceship</notfact></response>[done]
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

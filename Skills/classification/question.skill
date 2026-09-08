@@ -23,7 +23,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Please decide a sentence type based on whether it is a interrogative sentence.
 
         Interrogative sentences are typically marked by inversion of the subject and predicate; that
@@ -33,7 +33,7 @@ spec:
         Sentence Types: question, statement
     - name: examples
       kind: examples
-      text: |-
+      text: |
         Message: Did Nina sleep well
         Type: Question
 
@@ -47,9 +47,11 @@ spec:
         Type: Question
     - name: input
       kind: input
-      text: |-
+      text: |
         Message: "{{$input}}"
         Type:
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 64

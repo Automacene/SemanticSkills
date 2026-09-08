@@ -26,13 +26,17 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Rewrite the given text like it was written in this style or by: {{$style}}.
         MUST RETAIN THE MEANING AND FACTUAL CONTENT AS THE ORIGINAL.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

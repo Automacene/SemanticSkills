@@ -23,13 +23,15 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Generate a short funny poem or limerick to explain the given event. Be creative and be funny.
         Let your imagination run wild.
     - name: input
       kind: input
-      text: |-
+      text: |
         Event:{{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.5
     maxTokens: 60

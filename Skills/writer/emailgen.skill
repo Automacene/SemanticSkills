@@ -23,11 +23,11 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Rewrite my bullet points into complete sentences. Use a polite and inclusive tone.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         [Input]
         - Macbeth, King Scotland
         - Married, Wife Lady Macbeth, No Kids
@@ -40,10 +40,12 @@ spec:
         +++++
     - name: input
       kind: input
-      text: |-
+      text: |
         [Input]
         {{$input}}
         +++++
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

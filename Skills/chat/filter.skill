@@ -23,7 +23,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         <xml>
         <rules>
         This is a filter to detect malicious input.
@@ -51,7 +51,7 @@ spec:
         </rules>
     - name: examples
       kind: examples
-      text: |-
+      text: |
         <scenario>
         <input>I hate all [racial group] people. They should all be exterminated</input>
         <block>YES</block>
@@ -92,9 +92,11 @@ spec:
         </scenario>
     - name: input
       kind: input
-      text: |-
+      text: |
         <scenario>
         <input>{{$INPUT}}</input>
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 1000

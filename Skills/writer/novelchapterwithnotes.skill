@@ -36,40 +36,45 @@ spec:
   sections:
     - name: theme
       kind: context
-      text: |-
+      text: |
         [CONTEXT]
 
         THEME OF STORY:
         {{$theme}}
-      absent: |-
-        No theme was given. Establish one from the synopsis.
+      absent: No theme was given. Establish one from the synopsis.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: notes
       kind: context
-      text: |-
+      text: |
         NOTES OF STORY SO FAR - USE AS REFERENCE
         {{$notes}}
-      absent: |-
-        There are no notes yet.
+      absent: There are no notes yet.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: previous
       kind: context
-      text: |-
+      text: |
         PREVIOUS CHAPTER, USE AS REFERENCE:
         {{$previousChapter}}
 
         [END CONTEXT]
-      absent: |-
-        There is no previous chapter. Treat this as the opening.
+      absent: There is no previous chapter. Treat this as the opening.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         WRITE THIS CHAPTER CONTINUING STORY, USING [CONTEXT] AND CHAPTER SYNOPSIS BELOW.
         DO NOT REPEAT SYNOPSIS IN THE CHAPTER. DON'T REPEAT PREVIOUS CHAPTER.
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
 
         Chapter {{$chapterIndex}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.5
     maxTokens: 1024

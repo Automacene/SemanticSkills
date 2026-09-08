@@ -23,7 +23,7 @@ spec:
   sections:
     - name: examples
       kind: examples
-      text: |-
+      text: |
         # acronym: Devis
         Sentences matching the acronym:
         1. Dragons Eat Very Interesting Snacks
@@ -46,13 +46,15 @@ spec:
         #END#
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Reverse the following acronym back to a funny sentence. Provide 3 examples.
     - name: input
       kind: input
-      text: |-
+      text: |
         # acronym: {{$INPUT}}
         Sentences matching the acronym:
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.5
     maxTokens: 256

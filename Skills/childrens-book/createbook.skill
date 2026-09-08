@@ -32,14 +32,18 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Write a children's book with at most {{$numWordsPerPage}} words on each page and a maximum
         of {{$numPages}} pages.
         Return it in JSON using the following format: [{ "page": 1, "content":"the content of the page" }]
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: topic
       kind: input
-      text: |-
+      text: |
         Based on: {{$INPUT}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.5
     maxTokens: 2000

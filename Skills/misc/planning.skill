@@ -31,7 +31,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         You are an AI planner. Your task is to create a plan based on a user's goal and prompt.
         Generate a step-by-step plan by breaking down the goal into subtasks using the available
         skills. Each subtask should be linked to the appropriate skill and include the required
@@ -39,7 +39,7 @@ spec:
         Feel free to add up to 20 steps.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         [example]
         [skills]
         - CharacterProfileBuilding
@@ -218,18 +218,22 @@ spec:
         ]
     - name: skills
       kind: context
-      text: |-
+      text: |
         [skills]
         {{$skills}}
-      absent: |-
-        No skills were supplied. Say so, and describe the plan in terms of the capabilities it
-        would need rather than naming functions.
+      absent: 'No skills were supplied. Say so, and describe the plan in terms of the capabilities it
+
+        would need rather than naming functions.'
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         [user]
         prompt = "{{$input}}"
         steps =
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.3
     maxTokens: 4000

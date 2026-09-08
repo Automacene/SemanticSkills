@@ -25,7 +25,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         SEARCH FOR EMAILS using Microsoft Graph using CONTEXT, and Query criteria below.
         Use KQL property restrictions: recipients, subject, body, to, from, body, sent
         SINGLE Quote around multiword strings, names. Don't include $search.
@@ -47,15 +47,16 @@ spec:
         NEVER SHOW YOUR REASONING
     - name: today
       kind: context
-      text: |-
+      text: |
         [CONTEXT]
         TODAY IS: {{$today}}
         [END CONTEXT]
-      absent: |-
-        No date was supplied. Ask for one before resolving any relative date range.
+      absent: No date was supplied. Ask for one before resolving any relative date range.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         Query criteria:
         Email from toby mcduff about LLMs
 
@@ -63,9 +64,11 @@ spec:
         [done]
     - name: input
       kind: input
-      text: |-
+      text: |
         Query criteria:
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

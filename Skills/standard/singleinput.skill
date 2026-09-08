@@ -22,7 +22,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         WRITE EXACTLY ONE JOKE or HUMOROUS STORY ABOUT THE TOPIC BELOW
 
         JOKE MUST BE:
@@ -33,7 +33,7 @@ spec:
         BE CREATIVE AND FUNNY. I WANT TO LAUGH.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         prompt: Please make a joke in the style of yoda about a chicken.
         steps: Let's identify step by step what we need to do.
         1. Choose a humorous scenario or action involving a chicken.
@@ -61,9 +61,11 @@ spec:
         Have you ever noticed how politicians always talk without actually listenin'? Just sounds like they're rambling until they get to those poll numbers!
     - name: input
       kind: input
-      text: |-
+      text: |
         prompt: {{$input}}
         steps: Let's identify step by step what we need to do.
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.9
     maxTokens: 1000

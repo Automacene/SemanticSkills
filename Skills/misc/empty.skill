@@ -19,11 +19,10 @@ spec:
     - name: input
       description: The input text to be processed.
       default: This is an empty prompt, the user forgot to prompt you.
-      required: true
   sections:
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
   settings:
     temperature: 0.0
