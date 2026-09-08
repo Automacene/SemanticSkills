@@ -29,31 +29,37 @@ spec:
   sections:
     - name: api
       kind: context
-      text: |-
+      text: |
         These are the results from the API call "{{$api}}"
-      absent: |-
-        The call this answers from was not named.
+      absent: The call this answers from was not named.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: results
       kind: context
-      text: |-
+      text: |
         ===RESULTS
         {{$results}}
         ===END RESULTS
-      absent: |-
-        The API returned no results. Say so rather than answering from anything else.
+      absent: The API returned no results. Say so rather than answering from anything else.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: note
       kind: context
-      text: |-
+      text: |
         {{$resultsContext}}
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Use the Results to answer the following query.
     - name: input
       kind: input
-      text: |-
+      text: |
         Query: {{$input}}
         Answer:
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.1
     maxTokens: 1000

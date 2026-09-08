@@ -23,13 +23,13 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         WRITE PYTHON 3.x command line scripts. WRITE A SINGLE FUNCTION.
         USE sys.argv, sys.stdin.
         HANDLE ERRORS. EXPLANATIONS MUST BE A COMMENT.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         # Start
         # command line script. Read filename from args, open file, copy stdin to file
         import sys
@@ -46,10 +46,12 @@ spec:
         # Done
     - name: input
       kind: input
-      text: |-
+      text: |
         # Start
         #{{$input}}
         # Read input from stdin. print all output
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

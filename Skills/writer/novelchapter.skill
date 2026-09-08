@@ -32,34 +32,38 @@ spec:
   sections:
     - name: theme
       kind: context
-      text: |-
+      text: |
         [CONTEXT]
 
         THEME OF STORY:
         {{$theme}}
-      absent: |-
-        No theme was given. Establish one from the synopsis.
+      absent: No theme was given. Establish one from the synopsis.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: previous
       kind: context
-      text: |-
+      text: |
         PREVIOUS CHAPTER:
         {{$previousChapter}}
 
         [END CONTEXT]
-      absent: |-
-        There is no previous chapter. Treat this as the opening.
+      absent: There is no previous chapter. Treat this as the opening.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         WRITE THIS CHAPTER USING [CONTEXT] AND CHAPTER SYNOPSIS.
         DO NOT REPEAT SYNOPSIS IN THE OUTPUT.
     - name: input
       kind: input
-      text: |-
+      text: |
         Chapter Synopsis:
         {{$input}}
 
         Chapter {{$chapterIndex}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.3
     maxTokens: 2048

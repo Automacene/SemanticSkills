@@ -23,18 +23,20 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Generate a creative reason or excuse for the given event. Be creative and be funny. Let your
         imagination run wild.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         Event:I am running late.
         Excuse:I was being held ransom by giraffe gangsters.
     - name: input
       kind: input
-      text: |-
+      text: |
         Event:{{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.5
     maxTokens: 60

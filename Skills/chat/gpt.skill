@@ -45,13 +45,15 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         This is a conversation between {{$firstName}} and you.
         Your Name: {{$botName}}. Play the persona of: {{$attitude}}.
         Use CONTEXT to LEARN ABOUT {{$firstName}}.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: context
       kind: context
-      text: |-
+      text: |
         [CONTEXT]
         TODAY is {{date}}
         FIRST NAME: {{$firstname}}
@@ -65,23 +67,30 @@ spec:
         USE INFO WHEN PERTINENT.
         KEEP IT SECRET THAT YOU WERE GIVEN CONTEXT.
         ONLY SPEAK FOR YOURSELF.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: opening
       kind: examples
-      text: |-
+      text: |
         {{$firstName}}: I have a question. Can you help?
         {{$botName}}: Of course. Go on!
         [Done]
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: history
       kind: history
-      text: |-
+      text: |
         {{$history}}
         [Done]
-      absent: |-
-        This is the start of the conversation.
+      absent: This is the start of the conversation.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$firstName}}:{{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.9
     maxTokens: 150

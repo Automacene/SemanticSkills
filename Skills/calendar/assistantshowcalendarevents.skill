@@ -26,7 +26,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         API for listing CalendarEvents
         +++API
         CalendarEvents
@@ -40,16 +40,19 @@ spec:
         If asking when the next holiday is, fetch events for a month or two out.
     - name: context
       kind: context
-      text: |-
+      text: |
         {{$context}}
-      absent: |-
-        No calendar context was supplied. Work from the question alone.
+      absent: No calendar context was supplied. Work from the question alone.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: question
       kind: input
-      text: |-
+      text: |
         {{$input}}
 
         API Call:
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.2
     maxTokens: 100

@@ -26,16 +26,20 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Inject xml tags inline into the given text for the following:
         {{$tags}}
 
         - If there is nothing to tag, don't insert one.
         - output [done] when original text was processed
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

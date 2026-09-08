@@ -25,22 +25,25 @@ spec:
   sections:
     - name: recalled
       kind: context
-      text: |-
+      text: |
         {{$recalled}}
         ---
-      absent: |-
-        Nothing was recalled from the repository. Say that you have no material to answer from.
+      absent: Nothing was recalled from the repository. Say that you have no material to answer from.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Considering only the information above, which has been loaded from a GitHub repository,
         answer the following.
     - name: input
       kind: input
-      text: |-
+      text: |
         Question: {{$input}}
 
         Answer:
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.8
     maxTokens: 1024

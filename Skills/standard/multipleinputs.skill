@@ -27,27 +27,29 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Generate an email to the best of your abilities according to the user's prompt. Start all
         emails with:
         Hello "recipient's name",
             Today is "the date".
     - name: date
       kind: context
-      text: |-
+      text: |
         [context]
         date: {{$date}}
-      absent: |-
-        No date was given. Leave the date line out of the email.
+      absent: No date was given. Leave the date line out of the email.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: sender
       kind: context
-      text: |-
+      text: |
         name: "{{$name}}"
-      absent: |-
-        No sender was given. Sign off generically.
+      absent: No sender was given. Sign off generically.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         [example context]
         date: 6-7-23
         name: Codie Petersen
@@ -89,9 +91,11 @@ spec:
         Babe
     - name: input
       kind: input
-      text: |-
+      text: |
         prompt: {{$input}}
         steps: Let's identify step by step what we need to do.
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.9
     maxTokens: 1000

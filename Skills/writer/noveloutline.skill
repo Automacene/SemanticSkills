@@ -29,7 +29,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         There MUST BE {{$chapterCount}} CHAPTERS.
 
         INVENT CHARACTERS AS YOU SEE FIT. BE HIGHLY CREATIVE AND/OR FUNNY.
@@ -38,11 +38,15 @@ spec:
         IN EACH SYNOPSIS.
 
         YOU MUST END EACH SYNOPSIS WITH {{$endMarker}}
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         I want to write a {{$chapterCount}} chapter novella about:
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.1
     maxTokens: 2048

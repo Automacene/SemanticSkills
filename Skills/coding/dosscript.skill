@@ -26,7 +26,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         [BANNED COMMANDS]
         FORMAT
         DISKPART
@@ -39,16 +39,20 @@ spec:
 
         NEVER USE BANNED COMMANDS. BANNED COMMANDS DO DAMAGE. YOU NEVER WANT TO DO DAMAGE.
         INSTEAD ECHO "SORRY {{$firstName}}, I CAN'T DO THAT. "
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         List all pdf files in current folder
         dir *.pdf
         exit /b %ERRORLEVEL%
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 1000

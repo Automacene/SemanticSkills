@@ -29,7 +29,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Please decide a message's typical importance level from its tone, context, content and time
         sensitivity.
 
@@ -40,19 +40,21 @@ spec:
         Importance Levels: urgent, high, medium, low
     - name: high-topics
       kind: context
-      text: |-
+      text: |
         Topics of high importance: {{$highTopics}}
-      absent: |-
-        No high-importance topics were given.
+      absent: No high-importance topics were given.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: low-topics
       kind: context
-      text: |-
+      text: |
         Topics of low importance: {{$lowTopics}}
-      absent: |-
-        No low-importance topics were given.
+      absent: No low-importance topics were given.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         Message: Your flight is going to be delayed! Please check your Delta app for updated schedules
         Importance: Urgent
 
@@ -69,9 +71,11 @@ spec:
         Importance: Medium
     - name: input
       kind: input
-      text: |-
+      text: |
         Message: "{{$input}}"
         Importance:
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 64

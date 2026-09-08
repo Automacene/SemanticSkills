@@ -23,7 +23,7 @@ spec:
   sections:
     - name: examples
       kind: examples
-      text: |-
+      text: |
         # Name of a super artificial intelligence
         J.A.R.V.I.S. = Just A Really Very Intelligent System.
         # Name for a new young beautiful assistant
@@ -78,8 +78,10 @@ spec:
         C.A.L.C.U.L.U.S. = Cognitively Advanced Logic and Computation Unit for Learning and Understanding Systems.
     - name: input
       kind: input
-      text: |-
+      text: |
         # {{$INPUT}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.7
     maxTokens: 256

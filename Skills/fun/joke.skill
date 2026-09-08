@@ -26,7 +26,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         WRITE EXACTLY ONE JOKE or HUMOROUS STORY ABOUT THE TOPIC BELOW
 
         JOKE MUST BE:
@@ -37,16 +37,19 @@ spec:
         BE CREATIVE AND FUNNY. I WANT TO LAUGH.
     - name: style
       kind: context
-      text: |-
+      text: |
         Write it in this style: {{$style}}
-      absent: |-
-        No style was asked for. Use your own.
+      absent: No style was asked for. Use your own.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         +++++
         {{$input}}
         +++++
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.9
     maxTokens: 1000

@@ -25,7 +25,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Analyze the following extract taken from a document.
         - Produce key points for memory.
         - Give memory a name.
@@ -35,7 +35,7 @@ spec:
         You will use this memory to analyze the rest of this document, and for other relevant tasks.
     - name: examples
       kind: examples
-      text: |-
+      text: |
         [Input]
         My name is Macbeth. I used to be King of Scotland, but I died. My wife's name is Lady Macbeth and we were married for 15 years. We had no children. Our beloved dog Toby McDuff was a famous hunter of rats in the forest.
         My story was immortalized by Shakespeare in a play.
@@ -47,10 +47,12 @@ spec:
         - Shakespeare play
     - name: input
       kind: input
-      text: |-
+      text: |
         [Input]
         [[{{$input}}]]
         +++++
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

@@ -26,7 +26,7 @@ spec:
   sections:
     - name: examples
       kind: examples
-      text: |-
+      text: |
         There was a young woman named Bright,
         Whose speed was much faster than light.
         She set out one day,
@@ -52,13 +52,17 @@ spec:
         that weird little boy named Dan.
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Now write a very funny limerick about {{$name}}.
         Invent new facts about their life. Must be funny.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.7
     maxTokens: 100

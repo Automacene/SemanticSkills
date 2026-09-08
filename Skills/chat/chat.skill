@@ -20,39 +20,37 @@ spec:
     - name: input
       description: The input text to be processed.
       default: This is an empty prompt, the user forgot to prompt you.
-      required: true
     - name: history
       description: The history of the conversation.
       required: true
     - name: user
       description: The user's name.
       default: User
-      required: true
     - name: bot
       description: The bot's name.
       default: Assistant
-      required: true
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         The following is a conversation with an AI assistant. The assistant is helpful, creative,
         clever, and very friendly.
         Be sure that you only answer for yourself '{{$bot}}'. Do not generate text for '{{$user}}'.
     - name: opening
       kind: examples
-      text: |-
+      text: |
         <<init>> {{$user}}:I have a question. Can you help?
         <<start>> {{$bot}}:Of course. I am your AI Copilot. Go on!
     - name: history
       kind: history
-      text: |-
+      text: |
         {{$history}}
-      absent: |-
-        This is the start of the conversation.
+      absent: This is the start of the conversation.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         <<latest>> {{$user}}:{{$input}}
   settings:
     temperature: 0.9

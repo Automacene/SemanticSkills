@@ -23,7 +23,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         These are available intents that one might query:
 
             AutoSummarize,
@@ -57,10 +57,12 @@ spec:
         Which intent is this query asking for? If none match, respond with Unknown.
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
 
         Intent:
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.1
     maxTokens: 100

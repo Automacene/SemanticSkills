@@ -27,7 +27,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         ACT LIKE A WEB SERVER, GIVING YOUR RESPONSES IN XML
 
         ONLY USE XML TAGS IN THIS LIST.
@@ -43,11 +43,15 @@ spec:
         WHEN YOU ALREADY KNOW, USE OUTPUT
         Submit is always <submit promptName="{{$promptName}}"/>
         After </response> write [done]
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         Continue the conversation below, but always respond with a form.
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 256

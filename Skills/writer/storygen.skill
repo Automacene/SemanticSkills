@@ -28,7 +28,7 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         ONLY USE XML TAGS IN THIS LIST:
         [XML TAG LIST]
         list: Surround any lists with this tag
@@ -38,14 +38,17 @@ spec:
         EMIT WELL FORMED XML ALWAYS. Code should be CDATA.
     - name: tags
       kind: context
-      text: |-
+      text: |
         Also use these tags: {{$xml_tags}}
-      absent: |-
-        No extra tags were supplied. Use only the tags listed above.
+      absent: No extra tags were supplied. Use only the tags listed above.
+      default: |
+        Missing parameters prevented this section from resolving.
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 250

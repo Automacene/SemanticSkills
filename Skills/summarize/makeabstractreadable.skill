@@ -25,13 +25,15 @@ spec:
   sections:
     - name: instructions
       kind: instructions
-      text: |-
+      text: |
         Summarize the text below in a user friendly way, using simple grammar. Don't use subjects
         like "we", "our", "us" or "your".
     - name: input
       kind: input
-      text: |-
+      text: |
         {{$input}}
+      default: |
+        Missing parameters prevented this section from resolving.
   settings:
     temperature: 0.0
     maxTokens: 4000
