@@ -42,9 +42,8 @@ spec:
       kind: context
       text: |
         {{$context}}
-      absent: No calendar context was supplied. Work from the question alone.
       default: |
-        Missing parameters prevented this section from resolving.
+        No calendar context was supplied. Work from the question alone.
     - name: question
       kind: input
       text: |

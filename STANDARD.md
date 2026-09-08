@@ -67,7 +67,7 @@ spec:
       kind: context
       text: |
         The counterparty is {{$company}}.
-      absent: |
+      default: |
         The counterparty is not given. Identify it from the document, and say so
         if the document does not name one.
 
@@ -194,12 +194,17 @@ which one wins.
 |---|---|---|
 | `name` | required | |
 | `description` | required | |
-| `default` | optional | A value, never instructions. Instructions for an empty slot are a section's `absent`. |
-| `required` | optional | Defaults to false. |
+| `default` | optional | A value substituted for the input. Never instructions. |
+| `required` | optional | Defaults to false. Cannot be set alongside a `default`. |
+
+An input carrying a `default` always resolves, so it can never be missing and
+`required` would say nothing. An input carrying both is a validation failure, and
+the `default` is the half to keep: it holds text somebody wrote, while `required`
+is one bit that can be restated.
 
 ### spec.output
 
-Optional. When absent, the skill returns a single implicit `text` field, so a
+Optional. With none, the skill returns a single implicit `text` field, so a
 caller binding one field always works.
 
 | Field | | |
@@ -223,22 +228,31 @@ Required, ordered. The list order is the order.
 | `name` | required | Unique within the skill. |
 | `kind` | required | `instructions`, `examples`, `context`, `history`, `input` |
 | `text` | required | The template. |
-| `absent` | optional | Used instead of `text` when the section has nothing to say. |
+| `default` | optional | Used instead of `text` when the section has nothing to say. |
 
-A section falls back to `absent` when any input its `text` uses came back empty.
-Nothing declares that. A section written around `{{$context}}` needs `context`
-because it says so, and writing it down a second time gives two places to hold
-one fact, which is two places to disagree.
+A section falls back to its `default` when any input its `text` uses came back
+empty. Nothing declares that. A section written around `{{$context}}` needs
+`context` because it says so, and writing it down a second time gives two places
+to hold one fact, which is two places to disagree.
+
+A `default` belongs on a section only when one of its inputs can actually go
+missing, which is any input that carries no `default` of its own. An input that
+has one always resolves, so a section using nothing else can never fall back and
+anything written there would be unreachable.
+
+The word does two jobs at two levels, and they are not the same job. An input's
+`default` substitutes one value inside the text. A section's replaces the whole
+section.
 
 A section wanting some other gate is a section doing two jobs. One that prints an
 API name, its results, and a note about them, but should only vanish when the
 results are missing, is three things wearing one name. Split it and each part
 gates on what it actually says.
 
-`absent` is why any of this matters. A section that simply disappears when its
-slot is empty leaves a model unable to tell "nothing was found" from "nothing was
-looked for", and that silence is the most common way a skill answers confidently
-from nothing.
+This is why any of it matters. A section that simply disappears when its slot is
+empty leaves a model unable to tell "nothing was found" from "nothing was looked
+for", and that silence is the most common way a skill answers confidently from
+nothing.
 
 ### Placement is not the skill's business
 

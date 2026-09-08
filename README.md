@@ -88,7 +88,7 @@ python3 Scripts/validate.py
 
 Exits non-zero if anything fails, so it works as a build step. It checks that every `needs`
 names a declared input, every declared input is used, every section with `needs` carries an
-`absent`, section kinds come from the vocabulary, names and namespaces are DNS-1123, versions
+`default`, section kinds come from the vocabulary, names and namespaces are DNS-1123, versions
 are semver, and no `TODO-CONVERT` placeholder survives.
 
 ## Scripts
@@ -101,7 +101,7 @@ format. Kept as a record of how the corpus moved, not as something to run again.
 `Scripts/skill-designer.html` composes a skill from fields rather than by hand. Open it in a
 browser; it needs no server and no build. It shows three views of what you are writing: the
 document, the prompt with its placeholders left in, and the prompt with values substituted.
-The second and third are the point, since a section's `absent` text only proves itself when
+The second and third are the point, since a section's `default` text only proves itself when
 you empty a slot and watch the fallback appear.
 
 Each input carries a test value alongside its `default`. The test value never reaches the
@@ -145,7 +145,7 @@ Two files would not parse at all. `chat/gpt` and `coding/emailsearch` declared i
 | `skill_class` | Gone. `kind` dispatches; functional skills become `kind: NuclioFunction`. |
 | `skill` | Decomposed into `spec.sections` |
 | `inputs[].default` holding a value | `spec.inputs[].default` |
-| `inputs[].default` holding instructions | The owning section's `absent` |
+| `inputs[].default` holding instructions | The owning section's `default` |
 | `inputs[].type` | Gone. Every one in the corpus was `text`. |
 | `output` | `spec.output.fields`, as a typed list |
 | `settings.temperature`, `max_tokens` | `spec.settings.temperature`, `maxTokens` |

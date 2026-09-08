@@ -76,18 +76,16 @@ spec:
       text: |
         FIRST NAME: {{$firstname}}
         LAST NAME: {{$lastname}}
-      absent: The person asking has not been named.
       default: |
-        Missing parameters prevented this section from resolving.
+        The person asking has not been named.
     - name: place
       kind: context
       text: |
         CITY: {{$city}}
         STATE: {{$state}}
         COUNTRY: {{$country}}
-      absent: Their location is not known. Do not assume one.
       default: |
-        Missing parameters prevented this section from resolving.
+        Their location is not known. Do not assume one.
     - name: recalled
       kind: context
       text: |

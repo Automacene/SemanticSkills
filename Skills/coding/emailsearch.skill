@@ -51,9 +51,8 @@ spec:
         [CONTEXT]
         TODAY IS: {{$today}}
         [END CONTEXT]
-      absent: No date was supplied. Ask for one before resolving any relative date range.
       default: |
-        Missing parameters prevented this section from resolving.
+        No date was supplied. Ask for one before resolving any relative date range.
     - name: examples
       kind: examples
       text: |

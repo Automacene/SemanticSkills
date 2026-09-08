@@ -40,9 +40,8 @@ spec:
       kind: context
       text: |
         Also use these tags: {{$xml_tags}}
-      absent: No extra tags were supplied. Use only the tags listed above.
       default: |
-        Missing parameters prevented this section from resolving.
+        No extra tags were supplied. Use only the tags listed above.
     - name: input
       kind: input
       text: |

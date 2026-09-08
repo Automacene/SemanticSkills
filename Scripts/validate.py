@@ -95,6 +95,8 @@ def check(path):
         declared[item["name"]] = item
         if not item.get("description"):
             problems.append(f"input {item['name']!r} has no description")
+        if item.get("required") and str(item.get("default", "")).strip():
+            problems.append(f"input {item['name']!r} is required and has a default, which cannot both hold")
 
     sections = spec.get("sections") or []
     if not sections:
@@ -131,11 +133,24 @@ def check(path):
             problems.append(f"section {label!r} has no text")
 
         used |= variables_in(section.get("text"))
-        used |= variables_in(section.get("absent"))
+        used |= variables_in(section.get("default"))
 
         # Gating is derived from the text. Declaring it was a second copy that drifted.
         if "needs" in section:
             problems.append(f"section {label!r} declares needs, which the format no longer has")
+        if "absent" in section:
+            problems.append(f"section {label!r} uses absent, which the format now calls default")
+
+        # A fallback nothing can reach is text nobody will read.
+        reachable = [
+            name for name in variables_in(section.get("text"))
+            if not str((declared.get(name) or {}).get("default", "")).strip()
+        ]
+        if str(section.get("default", "")).strip() and not reachable:
+            problems.append(
+                f"section {label!r} has a default nothing can trigger, "
+                "because every input it uses carries one"
+            )
 
     if inputs_seen != 1:
         problems.append(f"{inputs_seen} sections of kind 'input', expected exactly 1")

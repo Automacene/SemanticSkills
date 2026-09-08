@@ -28,9 +28,8 @@ spec:
       text: |
         {{$recalled}}
         ---
-      absent: Nothing was recalled from the repository. Say that you have no material to answer from.
       default: |
-        Missing parameters prevented this section from resolving.
+        Nothing was recalled from the repository. Say that you have no material to answer from.
     - name: instructions
       kind: instructions
       text: |

@@ -37,16 +37,14 @@ spec:
       text: |
         [context]
         date: {{$date}}
-      absent: No date was given. Leave the date line out of the email.
       default: |
-        Missing parameters prevented this section from resolving.
+        No date was given. Leave the date line out of the email.
     - name: sender
       kind: context
       text: |
         name: "{{$name}}"
-      absent: No sender was given. Sign off generically.
       default: |
-        Missing parameters prevented this section from resolving.
+        No sender was given. Sign off generically.
     - name: examples
       kind: examples
       text: |

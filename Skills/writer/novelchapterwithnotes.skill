@@ -41,17 +41,15 @@ spec:
 
         THEME OF STORY:
         {{$theme}}
-      absent: No theme was given. Establish one from the synopsis.
       default: |
-        Missing parameters prevented this section from resolving.
+        No theme was given. Establish one from the synopsis.
     - name: notes
       kind: context
       text: |
         NOTES OF STORY SO FAR - USE AS REFERENCE
         {{$notes}}
-      absent: There are no notes yet.
       default: |
-        Missing parameters prevented this section from resolving.
+        There are no notes yet.
     - name: previous
       kind: context
       text: |
@@ -59,9 +57,8 @@ spec:
         {{$previousChapter}}
 
         [END CONTEXT]
-      absent: There is no previous chapter. Treat this as the opening.
       default: |
-        Missing parameters prevented this section from resolving.
+        There is no previous chapter. Treat this as the opening.
     - name: instructions
       kind: instructions
       text: |
