@@ -73,6 +73,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Any author `display` beats the browser default for [hidden], and `label` sets one. */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   background: var(--paper);
@@ -192,6 +195,14 @@ textarea { resize: vertical; line-height: 1.55; min-height: 5.5em; }
 input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.7; }
 
 input[type="checkbox"] { width: auto; accent-color: var(--focus); }
+
+input:disabled, textarea:disabled {
+  background: var(--sunken);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.check:has(input:disabled) .lbl { color: var(--muted); opacity: 0.55; }
 
 .check { flex-direction: row; align-items: center; gap: calc(var(--step) * 2); }
 .check .lbl { text-transform: none; letter-spacing: 0; font-size: 12px; }
@@ -409,6 +420,9 @@ button:hover { border-color: var(--muted); color: var(--ink); }
 
       <fieldset>
         <legend>Inputs</legend>
+        <p class="hint">A default is a value substituted for the input. It is a different thing from a
+          section's default, which replaces the section entirely. An input with a default can never
+          be missing, so it cannot also be required.</p>
         <p class="hint">Test value is not part of the document. It is what the filled prompt uses.</p>
         <div class="rows" id="inputs"></div>
         <button type="button" class="btn-add" data-add="input">Add input</button>
@@ -416,7 +430,7 @@ button:hover { border-color: var(--muted); color: var(--ink); }
 
       <fieldset>
         <legend>Sections</legend>
-        <p class="hint">Ordered. A section falls back to its absent text when any input it uses comes back empty. Exactly one section is the input.</p>
+        <p class="hint">Ordered. A section falls back to its default text when any input it uses comes back empty. Exactly one section is the input.</p>
         <div class="rows" id="sections"></div>
         <button type="button" class="btn-add" data-add="section">Add section</button>
       </fieldset>
@@ -506,7 +520,25 @@ function varsIn(text) {
   return [...found];
 }
 
-/** A section falls back to `absent` when any variable its text uses is empty. */
+/**
+ * The inputs a text uses that might come back with nothing.
+ *
+ * An input carrying a default always resolves, and that is the only case that does. Required is a
+ * declaration rather than a guarantee: it says a caller must supply the value, not that one will
+ * arrive, and a section needs something to say for exactly the moment it does not. A name nothing
+ * declares counts too, so the field does not vanish while somebody is still typing it.
+ */
+function unresolvable(text) {
+  const declared = new Map(doc.inputs.filter((i) => i.name.trim()).map((i) => [i.name.trim(), i]));
+
+  return varsIn(text).filter((name) => {
+    const input = declared.get(name);
+    if (!input) return true;
+    return String(input.default || "").trim() === "";
+  });
+}
+
+/** A section falls back to `default` when any variable its text uses is empty. */
 function resolves(section, values) {
   const needed = varsIn(section.text);
   if (needed.length === 0) return true;
@@ -619,7 +651,7 @@ function toYaml() {
       push(`    - name: ${scalar(s.name.trim())}`);
       push(`      kind: ${s.kind}`);
       push(`      text: ${block(s.text || "", 8)}`);
-      if (String(s.absent || "").trim()) push(`      absent: ${block(s.absent, 8)}`);
+      if (String(s.default || "").trim()) push(`      default: ${block(s.default, 8)}`);
     }
   }
 
@@ -658,13 +690,13 @@ function promptHtml(mode) {
     if (!section.name.trim()) continue;
 
     const met = mode === "template" ? true : resolves(section, values);
-    const source = met ? section.text : section.absent;
+    const source = met ? section.text : section.default;
     const label = `<span class="sec-head">${esc(section.name)} · ${esc(section.kind)}${
-      met ? "" : " · absent"
+      met ? "" : " · default"
     }</span>`;
 
     if (!String(source || "").trim()) {
-      if (!met) parts.push(label + `<span class="gone">(nothing to say, and no absent text)</span>`);
+      if (!met) parts.push(label + `<span class="gone">(nothing to say, and no default text)</span>`);
       continue;
     }
 
@@ -709,6 +741,9 @@ function problems() {
   for (const i of d.inputs) {
     if (!i.name.trim()) out.push("an input has no name");
     else if (!String(i.description || "").trim()) out.push(`input "${i.name}" has no description`);
+    if (i.required && String(i.default || "").trim()) {
+      out.push(`input "${i.name}" is required and has a default, which cannot both hold`);
+    }
   }
 
   const sections = d.sections.filter((s) => s.name.trim());
@@ -723,9 +758,12 @@ function problems() {
 
   for (const s of sections) {
     if (!String(s.text || "").trim()) out.push(`section "${s.name}" has no text`);
+    if (String(s.default || "").trim() && !unresolvable(s.text).length) {
+      out.push(`section "${s.name}" has a default nothing can trigger, because every input it uses always resolves`);
+    }
     if (s.kind === "input") inputSections += 1;
     for (const v of varsIn(s.text)) used.add(v);
-    for (const v of varsIn(s.absent)) used.add(v);
+    for (const v of varsIn(s.default)) used.add(v);
   }
 
   if (sections.length && inputSections !== 1) {
@@ -767,7 +805,7 @@ function plainPrompt() {
     .filter((s) => s.name.trim())
     .map((s) => {
       const met = resolves(s, values);
-      const src = met ? s.text : s.absent;
+      const src = met ? s.text : s.default;
       return String(src || "").trim().replace(slots(), (m, n) => values[n] ?? m);
     })
     .filter(Boolean)
@@ -843,6 +881,33 @@ function drawInputs() {
   const host = $("inputs");
   host.textContent = "";
   doc.inputs.forEach((input, i) => {
+    let box, defaultBox;
+
+    /*
+     * An input with a default can never be missing, so it cannot also be required.
+     *
+     * Each one locks the other, but only while the other is the single thing set. A document
+     * loaded with both already set would otherwise deadlock: the box disabled for having a
+     * default, the default disabled for being required, and no way to clear either.
+     */
+    const sync = () => {
+      const hasDefault = String(input.default || "").trim() !== "";
+      const isRequired = !!input.required;
+      const conflicted = hasDefault && isRequired;
+
+      box.disabled = hasDefault && !conflicted;
+      box.parentElement.title = conflicted
+        ? "Both are set, which cannot hold. Clear one."
+        : hasDefault
+          ? "An input with a default is never missing, so it cannot be required."
+          : "";
+
+      defaultBox.disabled = isRequired && !conflicted;
+      defaultBox.placeholder = defaultBox.disabled
+        ? "a required input has no default"
+        : "used when the caller supplies nothing";
+    };
+
     const row = rowShell(() => { doc.inputs.splice(i, 1); draw(); }, (top) => {
       const grow = document.createElement("div");
       grow.className = "grow";
@@ -851,10 +916,17 @@ function drawInputs() {
 
       const req = document.createElement("label");
       req.className = "check";
-      const box = document.createElement("input");
+      box = document.createElement("input");
       box.type = "checkbox";
       box.checked = !!input.required;
-      box.addEventListener("change", () => { input.required = box.checked; paint(); });
+      box.addEventListener("change", () => {
+        input.required = box.checked;
+        // The two cannot both hold. Requiring a value discards the default it would have replaced.
+        if (box.checked) input.default = "";
+        defaultBox.value = input.default;
+        sync();
+        paint();
+      });
       const t = document.createElement("span");
       t.className = "lbl";
       t.textContent = "required";
@@ -867,19 +939,28 @@ function drawInputs() {
 
     const pair = document.createElement("div");
     pair.className = "grid grid--2";
-    pair.appendChild(field("default", input.default, (v) => { input.default = v; },
-      { multiline: true, rows: 2, placeholder: "used when nothing is supplied" }));
+
+    const defaultLabel = field("default", input.default, (v) => { input.default = v; sync(); },
+      { multiline: true, rows: 2, placeholder: "used when the caller supplies nothing" });
+    defaultBox = defaultLabel.querySelector("textarea");
+    pair.appendChild(defaultLabel);
+
     pair.appendChild(field("test value", input.test, (v) => { input.test = v; },
       { multiline: true, rows: 2, placeholder: "not saved to the document" }));
     row.appendChild(pair);
 
+    sync();
     host.appendChild(row);
   });
 }
 
+/** Re-run on every paint, one per section. See the note where they are pushed. */
+const gates = [];
+
 function drawSections() {
   const host = $("sections");
   host.textContent = "";
+  gates.length = 0;
 
   doc.sections.forEach((section, i) => {
     const row = rowShell(() => { doc.sections.splice(i, 1); draw(); }, (top) => {
@@ -921,18 +1002,39 @@ function drawSections() {
     row.appendChild(field("text", section.text, (v) => { section.text = v; },
       { multiline: true, rows: 4, placeholder: "Summarize the agreement below. Concentrate on {{$focus}}." }));
 
-    const uses = varsIn(section.text);
     const note = document.createElement("p");
     note.className = "hint";
-    note.textContent = uses.length
-      ? `Falls back to absent when any of ${uses.join(", ")} is empty.`
-      : "Uses no inputs, so it always renders.";
     row.appendChild(note);
 
-    if (uses.length) {
-      row.appendChild(field("absent", section.absent, (v) => { section.absent = v; },
-        { multiline: true, rows: 2, placeholder: "What to say instead when a slot is empty." }));
-    }
+    const defaultLabel = field("default", section.default, (v) => { section.default = v; },
+      { multiline: true, rows: 2, placeholder: "What the model reads instead of this whole section." });
+    row.appendChild(defaultLabel);
+
+    const warn = document.createElement("p");
+    warn.className = "hint";
+    warn.textContent =
+      "This replaces the whole section, unlike an input default, which substitutes one value. "
+      + "It is written for the model to read, so say what is missing rather than leaving a silence.";
+    row.appendChild(warn);
+
+    /*
+     * Whether a default belongs here depends on the section's own text and on every input, both of
+     * which change under the keyboard. Deciding once at draw time left the field stuck at whatever
+     * was true when the row was built, so this is re-run on every paint instead.
+     */
+    gates.push(() => {
+      const uses = varsIn(section.text);
+      const open = unresolvable(section.text);
+
+      note.textContent = !uses.length
+        ? "Uses no inputs, so it always renders."
+        : open.length
+          ? `Replaced by its default when any of ${open.join(", ")} is empty.`
+          : `Always renders. Every input it uses (${uses.join(", ")}) carries a default, so none of them can be missing.`;
+
+      defaultLabel.hidden = open.length === 0;
+      warn.hidden = open.length === 0;
+    });
 
     host.appendChild(row);
   });
@@ -990,6 +1092,8 @@ function drawOutput() {
 /* ── Painting ─────────────────────────────────────────────────────── */
 
 function paint() {
+  for (const gate of gates) gate();
+
   $("out-yaml").textContent = toYaml();
   $("out-template").innerHTML = promptHtml("template");
   $("out-filled").innerHTML = promptHtml("filled");
@@ -1057,7 +1161,7 @@ document.querySelectorAll("[data-add]").forEach((button) => {
     if (what === "author") doc.authors.push({ text: "" });
     if (what === "capability") doc.capabilities.push({ name: "", id: "" });
     if (what === "input") doc.inputs.push({ name: "", description: "", default: "", test: "", required: false });
-    if (what === "section") doc.sections.push({ name: "", kind: "instructions", text: "", absent: "" });
+    if (what === "section") doc.sections.push({ name: "", kind: "instructions", text: "", default: "" });
     if (what === "field") doc.output.push({ name: "", type: "string", required: false, repeated: false });
     draw();
   });
@@ -1125,11 +1229,11 @@ function example() {
     ],
     sections: [
       { name: "instructions", kind: "instructions",
-        text: "Summarize the agreement below. Concentrate on {{$focus}}.", absent: "" },
+        text: "Summarize the agreement below. Concentrate on {{$focus}}.", default: "" },
       { name: "counterparty", kind: "context",
         text: "The counterparty is {{$company}}.",
-        absent: "The counterparty is not given. Identify it from the document, and say so if the document does not name one." },
-      { name: "document", kind: "input", text: "{{$document}}", absent: "" },
+        default: "The counterparty is not given. Identify it from the document, and say so if the document does not name one." },
+      { name: "document", kind: "input", text: "{{$document}}", default: "" },
     ],
     output: [
       { name: "summary", type: "string", required: true, repeated: false },
