@@ -1,0 +1,54 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: people-extractor
+  namespace: osint
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Contact Detail Extraction
+    automacene.org/description: Extract a person's contact and professional details from scraped website text.
+spec:
+  authors:
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_understanding/named_entity_recognition
+        id: 10104
+      - name: ai_ml_engineering/prompt_engineering/structured_output_generation
+        id: 70503
+  inputs:
+    - name: scraped_text
+      description: The website HTML or scraped text content.
+      required: true
+  output:
+    fields:
+      - name: name
+        type: string
+      - name: phone_number
+        type: string
+      - name: email
+        type: string
+      - name: address
+        type: string
+      - name: company
+        type: string
+      - name: role
+        type: string
+      - name: seniority
+        type: string
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |
+        Extract professional contact information from the following website text.
+        Find and extract: person name, phone number, email address, physical address, company, job title/role, and seniority level.
+        For seniority, classify as: C-level, Director, Manager, Senior, Junior, or Individual Contributor.
+        Leave fields as "N/A" if the information is not found.
+    - name: input
+      kind: input
+      text: |
+        Website Text: {{$scraped_text}}
+  settings:
+    temperature: 0.3
+    maxTokens: 1000

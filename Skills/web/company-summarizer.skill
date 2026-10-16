@@ -1,0 +1,54 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: company-summarizer
+  namespace: web
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Company Website Summarization
+    automacene.org/description: Summarize a company's website scrape into one factual paragraph covering the insights asked for.
+spec:
+  authors:
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_generation/summarization
+        id: 10302
+  inputs:
+    - name: company_name
+      description: Name of the company being analyzed.
+      required: true
+    - name: scraped_text
+      description: Raw text scraped from the company website (homepage, about page).
+      required: true
+    - name: insights_needed
+      description: Specific insights to extract from the scraped content.
+      default: business model, company size, key leadership, industry focus
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |
+        You are an expert business analyst. Analyze the following company website scrape and provide a concise summary.
+    - name: company
+      kind: input
+      text: |
+        COMPANY: {{$company_name}}
+
+        SCRAPED CONTENT:
+        {{$scraped_text}}
+    - name: task
+      kind: instructions
+      text: |
+        ---
+
+        Your task is to extract key insights from the scraped content, focusing on the following aspects:
+        {{$insights_needed}}
+
+        Format your response as a single paragraph. Be factual and only use information explicitly stated in the content. If information is not available, omit it.
+
+        Do not include: URLs, citations, "According to", or meta-commentary.
+        Start directly with the summary.
+  settings:
+    temperature: 0.5
+    maxTokens: 500
