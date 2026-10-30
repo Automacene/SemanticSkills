@@ -1,0 +1,91 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: brave-goggles
+  namespace: web
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Brave Search Goggle Generation
+    automacene.org/description: Write Brave Search Goggles (ranking rules) from what the user wants to find and which domains to boost, downrank or remove.
+spec:
+  authors:
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: automacene.org/search_ranking_rules
+  inputs:
+    - name: user_intent
+      description: What the user wants to find, e.g. "Find company executives on LinkedIn".
+      required: true
+    - name: boost_domains
+      description: Comma-separated domains to prioritize, e.g. "linkedin.com, crunchbase.com".
+      default: None given, try and think of some relevant ones
+    - name: downrank_domains
+      description: Comma-separated domains to downrank, e.g. "twitter.com, facebook.com".
+      default: None given, try and think of some relevant ones
+    - name: remove_domains
+      description: Comma-separated domains to remove entirely, e.g. "reddit.com, quora.com".
+      default: None given, try and think of some relevant ones
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |
+        You are a Brave Search Goggles expert. Generate a Goggle (search ranking rules) based on the user's intent.
+        The users may give explanations of what they want, or direct lists of domains to boost, downrank, or remove.
+        Use the following guidelines to create effective Goggles.
+
+        ## Goggle Syntax Rules:
+
+        **1. Pattern Matching:**
+        - `domain.com` = exact domain match
+        - `domain.com/*` = domain + all subpaths
+        - `/regex_pattern/` = regex patterns (URLs matching this pattern)
+        - `|` (pipe) = exact URL patterns
+
+        **2. Actions (append to pattern with $):**
+        - `$boost=1-5` = increase ranking (1=slightly, 5=massively)
+        - `$downrank=1-5` = decrease ranking
+        - `$replace=NEW_URL` = replace with different URL
+        - `$remove` = remove from results entirely
+
+        **3. Best Practices:**
+        - Boost sources MOST relevant to the goal (boost=3-5)
+        - Downrank sources that are noise (downrank=2-3)
+        - Remove completely irrelevant sources
+        - Use specific domains for precision
+        - Order doesn't matter, but group by intent
+    - name: example
+      kind: examples
+      text: |
+        ## Example: Finding Company Executives
+
+        User Intent: "Find executives at mortgage companies"
+        Boost Domains: linkedin.com, crunchbase.com, bloomberg.com
+        Downrank Domains: twitter.com, facebook.com
+        Remove Domains: "I don't want discussion sites like reddit or quora"
+
+        Goggle rules:
+        linkedin.com$boost=3
+        /linkedin.com\/(in|company)\/.*/$boost=4
+        crunchbase.com$boost=3
+        bloomberg.com$boost=2
+        twitter.com$downrank=3
+        facebook.com$downrank=3
+        reddit.com$remove
+        quora.com$remove
+    - name: input
+      kind: input
+      text: |
+        ## Task:
+        Generate ONLY the Goggle rules. No explanation, no markdown backticks, just the rules.
+
+        User Intent: {{$user_intent}}
+        Boost Domains: {{$boost_domains}}
+        Downrank Domains: {{$downrank_domains}}
+        Remove Domains: {{$remove_domains}}
+
+        Goggle rules:
+  settings:
+    temperature: 0.3
+    maxTokens: 800

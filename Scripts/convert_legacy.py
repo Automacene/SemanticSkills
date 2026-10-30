@@ -9,7 +9,7 @@ import sys
 import pathlib
 import yaml
 
-ROOT = pathlib.Path("/mnt/data/Git/Automacene/SemanticSkills")
+ROOT = pathlib.Path(__file__).resolve().parent.parent  # the repo this script is in
 FILLER = "TODO-CONVERT"
 
 NAMESPACES = {

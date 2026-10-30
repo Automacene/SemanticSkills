@@ -1,0 +1,60 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: business-criteria-selector
+  namespace: osint
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Business Criteria Evaluation
+    automacene.org/description: Decide whether scraped business content meets one criterion, answering 0 (not met), 1 (not enough information) or 2 (met).
+spec:
+  authors:
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: language_processing/language_understanding/contextual_comprehension
+        id: 10101
+      - name: automacene.org/criteria_evaluation
+  inputs:
+    - name: criteria
+      description: The criterion to evaluate, e.g. "Company has more than 50 employees" or "Located in California".
+      required: true
+    - name: content
+      description: The scraped website text, summary, or other business information.
+      required: true
+  output:
+    fields:
+      - name: evaluation_result
+        type: integer
+        required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |
+        You are a business analysis assistant. Evaluate whether the following business information meets the specified criteria.
+
+        Carefully analyze the provided content against the criteria. Your task is to determine:
+        - FALSE (0): The content clearly demonstrates that the criteria IS NOT met
+        - MISSING (1): There is insufficient information in the content to make a confident determination
+        - TRUE (2): The content sufficiently demonstrates that the criteria IS met
+
+        Be objective and thorough. Only return 0 or 2 when you have clear evidence against, or sufficient evidence for, the criteria.
+        When information is ambiguous, incomplete, or not explicitly addressed, return 1.
+    - name: criteria
+      kind: context
+      text: |
+        Criteria to evaluate:
+        {{$criteria}}
+    - name: content
+      kind: input
+      text: |
+        Business Content:
+        {{$content}}
+
+        Provide your answer as a single integer on the "ANSWER" line: 0 (FALSE), 1 (MISSING), or 2 (TRUE).
+
+        ANSWER:
+  settings:
+    temperature: 0.1
+    maxTokens: 500

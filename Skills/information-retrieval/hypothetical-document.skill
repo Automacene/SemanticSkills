@@ -1,0 +1,55 @@
+apiVersion: skills.automacene.org/v1alpha1
+kind: SemanticSkill
+metadata:
+  name: hypothetical-document
+  namespace: information-retrieval
+  labels:
+    automacene.org/version: "1.0.0"
+  annotations:
+    automacene.org/oasf-name: Hypothetical Document Generation
+    automacene.org/description: Write a plausible source document that would answer a chat query, to embed for semantic search (HyDE).
+spec:
+  authors:
+    - Codie Petersen <codie@asteres-technologies.com>
+  capabilities:
+    skills:
+      - name: automacene.org/hypothetical_document_generation
+  inputs:
+    - name: history
+      description: The conversation so far.
+      default: No history yet.
+    - name: query
+      description: The query or input from the user.
+      required: true
+  sections:
+    - name: instructions
+      kind: instructions
+      text: |
+        You are generating a hypothetical document for semantic search purposes.
+        Based on the user's query and conversation history, create a plausible piece of content that would perfectly answer their question.
+        This is NOT a chat response - generate content as if you found an actual source document.
+
+        It is completely acceptable and expected to generate plausible, realistic content that sounds authoritative but may not be correct or real.
+        Focus on:
+        1. Writing as if this is a real reference document, article, or knowledge base entry
+        2. Using natural language with relevant terminology
+        3. Being substantive and informative (150-300 words)
+        4. Maintaining consistency with the conversation context
+
+        From this, we will use the generated content to find and retrieve relevant information.
+        Do not include any disclaimers or notes about the content being hypothetical, nor refer to the chat format.
+        Simply generate the document content.
+    - name: history
+      kind: history
+      text: |
+        --- Chat History ---
+        {{$history}}
+    - name: input
+      kind: input
+      text: |
+        Query: {{$query}}
+
+        Generate hypothetical document:
+  settings:
+    temperature: 0.8
+    maxTokens: 800
