@@ -127,7 +127,7 @@ to hang a fifth.
 | Field | | |
 |---|---|---|
 | `name` | required | DNS-1123 label: `[a-z0-9-]`, begins with a letter, ends alphanumeric, 63 characters at most. |
-| `namespace` | required | DNS-1123 label, same rule as `name`. Flat, and replaces the folder a skill used to live in. |
+| `namespace` | required | DNS-1123 label, same rule as `name`. Flat, and replaces the folder a skill used to live in. DAEGON calls it the skill's collection (the field keeps its name). |
 | `labels` | optional | Queryable. Keys take an `automacene.org/` prefix; values are 63 characters at most and hold no slashes or spaces. |
 | `annotations` | required | Not queryable, no practical size limit. |
 
