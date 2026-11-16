@@ -11,7 +11,8 @@ string, a chat message array, or an MCP `prompts/get` response. That is the call
 
 ## Layout
 
-Skills live in a directory named for their namespace, one file each.
+Skills live in a directory named for their collection, one file each. A skill's collection is its document's
+`metadata.namespace` (the field keeps its name; DAEGON says "collection" for it, and "namespace" for data scopes).
 
 ```
 Skills/chat/vector.skill
@@ -19,11 +20,11 @@ Skills/summarize/notegen.skill
 Skills/writer/twosentencesummary.skill
 ```
 
-`Skills/` is where the Python loader fetches from, so it stays even though the namespace is
+`Skills/` is where the Python loader fetches from, so it stays even though the collection is
 in the document. The directory under it must match `metadata.namespace` and the filename must match `metadata.name`.
 Both are DNS-1123 labels, so lowercase letters, digits and hyphens, starting with a letter.
 
-| Namespace | | Namespace | |
+| Collection | | Collection | |
 |---|---|---|---|
 | `calendar` | 1 | `intent-detection` | 1 |
 | `chat` | 6 | `misc` | 3 |
